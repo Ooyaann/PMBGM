@@ -218,6 +218,9 @@ grant execute on function
   public.peran_saya(), public.instansi_saya(), public.adalah_staf(), public.adalah_admin()
   to anon, authenticated;
 
+-- Dipakai nilai default laporan.kode_tiket; ekspresi default berjalan dengan hak pengirim.
+grant execute on function public.buat_kode(text, integer) to authenticated;
+
 -- Publik tanpa login.
 grant execute on function
   public.cek_status_tiket(text),

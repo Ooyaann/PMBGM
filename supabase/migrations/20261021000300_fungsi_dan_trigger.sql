@@ -95,6 +95,8 @@ begin
 end;
 $$;
 
+alter table public.laporan alter column kode_tiket set default public.buat_kode('MBG-');
+
 create or replace function public.batas_sla(p_kategori public.kategori_laporan, p_tahap public.status_alur)
 returns interval
 language sql stable set search_path = ''
@@ -340,12 +342,10 @@ begin
     end if;
   end if;
 
-  if new.kode_tiket is null then
-    loop
-      new.kode_tiket := public.buat_kode('MBG-');
-      exit when not exists (select 1 from public.laporan where kode_tiket = new.kode_tiket);
-    end loop;
-  end if;
+  -- Kode bawaan dari default kolom; buat ulang bila (sangat jarang) bertabrakan.
+  while new.kode_tiket is null or exists (select 1 from public.laporan where kode_tiket = new.kode_tiket) loop
+    new.kode_tiket := public.buat_kode('MBG-');
+  end loop;
 
   -- Deteksi duplikat: sekolah sama + kategori sama + selisih kejadian ≤ 24 jam.
   select coalesce(l.grup_serupa, l.id) into new.grup_serupa

@@ -233,7 +233,7 @@ max_frequency = "1s"
 # Number of characters used in the email OTP.
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
-otp_expiry = 3600
+otp_expiry = 600
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]
@@ -255,6 +255,15 @@ otp_expiry = 3600
 # enabled = true
 # subject = "Your password has been changed"
 # content_path = "./supabase/templates/password_changed_notification.html"
+
+# Template kode masuk 6 angka (Keputusan K4: semua pelapor masuk lewat OTP email).
+[auth.email.template.magic_link]
+subject = "Kode masuk PantauGizi"
+content_path = "./supabase/templates/kode-masuk.html"
+
+[auth.email.template.confirmation]
+subject = "Kode masuk PantauGizi"
+content_path = "./supabase/templates/kode-masuk.html"
 
 [auth.sms]
 # Allow/disallow new user signups via SMS to your project.
