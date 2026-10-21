@@ -3,13 +3,14 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ArrowLeft, ArrowRight, Banknote, Camera, Check, Clock, EyeOff, FileText, HeartPulse, Loader2, Lock, LocateFixed,
-  MessageCircleMore, RotateCcw, Salad, School, Send, SprayCan, Tag, Timer, Truck, UserRound, Users, UtensilsCrossed, X,
+  ArrowLeft, ArrowRight, Camera, Check, Clock, EyeOff, FileText, Loader2, Lock, LocateFixed, RotateCcw, School, Send,
+  Tag, Timer, UserRound, Users, X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { MasukEmail } from "@/components/auth/masuk-email";
 import { Bertip } from "@/components/ui/bertip";
 import { AlurStatus } from "@/components/data/alur-status";
+import { IKON_KATEGORI } from "@/components/data/ikon-kategori";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { kirimLaporan } from "@/lib/aksi/laporan";
@@ -25,15 +26,6 @@ import { LaporanSerupa } from "./laporan-serupa";
 import { PanelDarurat } from "./panel-darurat";
 import { UnggahBukti } from "./unggah-bukti";
 
-const IKON_KATEGORI: Record<Kategori, typeof HeartPulse> = {
-  keracunan: HeartPulse,
-  makanan_tidak_layak: UtensilsCrossed,
-  kebersihan: SprayCan,
-  gizi_porsi: Salad,
-  distribusi: Truck,
-  pengadaan: Banknote,
-  lainnya: MessageCircleMore,
-};
 const IKON_MODE: Record<ModeIdentitas, typeof Lock> = { rahasia: Lock, publik: UserRound, anonim: EyeOff };
 const LANGKAH = [
   { label: "Masalah", ikon: Tag },

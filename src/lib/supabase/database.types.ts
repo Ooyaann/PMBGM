@@ -1021,6 +1021,11 @@ isOneToOne: false
 "buka_ulang_kasus":
 { Args: { "p_alasan": string,"p_laporan_id": string }; Returns: undefined
                            },
+"bukti_publik_kasus":
+{ Args: { "p_kasus_id": string }; Returns: {
+              "jenis": Database["public"]['Enums']["jenis_bukti"],"kategori": Database["public"]['Enums']["kategori_laporan"],"path_storage": string
+            }[]
+                           },
 "cari_laporan_serupa":
 { Args: { "p_kategori": Database["public"]['Enums']["kategori_laporan"],"p_sekolah_id": string,"p_waktu"?: string }; Returns: {
               "grup_serupa": string,"jumlah_dukungan": number,"jumlah_laporan": number,"laporan_pertama": string

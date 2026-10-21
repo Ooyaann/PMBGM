@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Ilustrasi dokumen tindak lanjut (data simulasi)">
+  <rect width="400" height="300" fill="#eef2f8"/>
+  <rect x="120" y="44" width="160" height="196" rx="16" fill="#ffffff" stroke="#c9d3e3" stroke-width="3"/>
+  <rect x="168" y="32" width="64" height="26" rx="8" fill="#9fb2cf"/>
+  <rect x="146" y="82" width="108" height="10" rx="5" fill="#d7dfeb"/>
+  <rect x="146" y="104" width="86" height="10" rx="5" fill="#d7dfeb"/>
+  <rect x="146" y="126" width="98" height="10" rx="5" fill="#d7dfeb"/>
+  <circle cx="200" cy="186" r="28" fill="#0f6b57"/>
+  <path d="M186 186l10 10 18-20" stroke="#ffffff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="122" y="252" width="156" height="26" rx="13" fill="#ffffff"/>
+  <text x="200" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5b6b66">Ilustrasi · simulasi</text>
+</svg>

@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { ambilPengguna, LABEL_PERAN } from "@/lib/sesi";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
-import { MenuAkun, MenuSeluler, NavDesktop, type InfoAkun } from "./nav-klien";
+import { MenuAkun, MenuSeluler, NavDesktop, NavDesktopDasar, type InfoAkun } from "./nav-klien";
 
 /** Bagian yang bergantung pada sesi; dialirkan terpisah agar kerangka header tetap statis. */
 async function SlotAkun() {
@@ -35,7 +35,10 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
       <div className="kontainer flex h-16 items-center justify-between gap-3">
         <Logo />
-        <NavDesktop />
+        {/* usePathname() adalah data runtime pada rute dinamis; dialirkan agar kerangka tetap statis. */}
+        <Suspense fallback={<NavDesktopDasar />}>
+          <NavDesktop />
+        </Suspense>
         <div className="flex items-center gap-2">
           <Link href="/lapor" className={cn(buttonVariants({ size: "lg" }), "hidden h-10 rounded-xl px-4 sm:inline-flex")}>
             <Megaphone /> Lapor

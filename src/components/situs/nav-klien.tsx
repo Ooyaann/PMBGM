@@ -18,15 +18,15 @@ function aktif(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function NavDesktop() {
-  const pathname = usePathname();
+/** Navigasi desktop. Tanpa `pathname` (fallback Suspense) tampil tanpa penanda halaman aktif. */
+export function NavDesktopDasar({ pathname }: { pathname?: string }) {
   return (
     <nav aria-label="Navigasi utama" className="hidden items-center gap-1 lg:flex">
       {NAV_UTAMA.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          aria-current={aktif(pathname, item.href) ? "page" : undefined}
+          aria-current={pathname && aktif(pathname, item.href) ? "page" : undefined}
           className={cn(
             "rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
             "aria-[current=page]:bg-secondary aria-[current=page]:text-secondary-foreground",
@@ -37,6 +37,10 @@ export function NavDesktop() {
       ))}
     </nav>
   );
+}
+
+export function NavDesktop() {
+  return <NavDesktopDasar pathname={usePathname()} />;
 }
 
 export interface InfoAkun {

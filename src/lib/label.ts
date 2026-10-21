@@ -111,6 +111,18 @@ export function kategoriRisiko(skor: number | null | undefined): KategoriRisiko 
   return skor < 70 ? "sedang" : "tinggi";
 }
 
+export type JenisTindakan = Enum<"jenis_tindakan">;
+export type JenisPeristiwa = Enum<"jenis_peristiwa">;
+
+export const TINDAKAN: Record<JenisTindakan, string> = {
+  inspeksi: "Inspeksi",
+  penutupan_sementara: "Ditutup sementara",
+  perbaikan: "Perbaikan",
+  klarifikasi: "Klarifikasi",
+  pembinaan: "Pembinaan",
+  lainnya: "Tindak lanjut",
+};
+
 export const PRIORITAS: Record<TingkatPrioritas, string> = {
   rendah: "Rendah",
   sedang: "Sedang",

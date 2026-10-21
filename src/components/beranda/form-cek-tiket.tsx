@@ -2,7 +2,7 @@ import { ArrowRight, Ticket } from "lucide-react";
 import { Bertip } from "@/components/ui/bertip";
 
 /** Cek status tanpa login (LC-01). Form GET biasa, tetap berfungsi tanpa JavaScript. */
-export function FormCekTiket({ className }: { className?: string }) {
+export function FormCekTiket({ className, nilai }: { className?: string; nilai?: string }) {
   return (
     <form action="/lacak" method="get" className={className} role="search" aria-label="Cek status laporan">
       <label htmlFor="tiket-beranda" className="sr-only">Kode tiket laporan</label>
@@ -11,6 +11,7 @@ export function FormCekTiket({ className }: { className?: string }) {
         <input
           id="tiket-beranda"
           name="tiket"
+          defaultValue={nilai}
           required
           placeholder="Cek status: MBG-XXXXXX"
           autoComplete="off"

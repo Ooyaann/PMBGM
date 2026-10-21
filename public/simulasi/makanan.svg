@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Ilustrasi foto makanan (data simulasi)">
+  <rect width="400" height="300" fill="#eef5f2"/>
+  <rect x="70" y="58" width="260" height="170" rx="22" fill="#cfd8d4"/>
+  <rect x="82" y="70" width="236" height="146" rx="16" fill="#f7f9f8"/>
+  <rect x="94" y="82" width="104" height="122" rx="10" fill="#f4ead2"/>
+  <ellipse cx="146" cy="143" rx="40" ry="34" fill="#fffaf0"/>
+  <rect x="208" y="82" width="98" height="56" rx="10" fill="#e9dccb"/>
+  <path d="M226 118c10-14 30-20 44-8 10 8 20 4 24-2" stroke="#b9774a" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <rect x="208" y="148" width="46" height="56" rx="10" fill="#d9ead3"/>
+  <path d="M218 168c8 4 16 4 26 0M218 184c8 4 16 4 26 0" stroke="#5f9a52" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <rect x="260" y="148" width="46" height="56" rx="10" fill="#fde9c7"/>
+  <circle cx="283" cy="176" r="14" fill="#f3a73b"/>
+  <rect x="122" y="250" width="156" height="26" rx="13" fill="#ffffff"/>
+  <text x="200" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5b6b66">Ilustrasi · simulasi</text>
+</svg>
