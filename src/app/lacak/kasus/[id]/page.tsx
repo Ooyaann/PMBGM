@@ -52,7 +52,10 @@ async function IsiKasus({ params }: { params: PageProps<"/lacak/kasus/[id]">["pa
             <span className="flex size-8 items-center justify-center rounded-lg bg-secondary text-primary"><Ikon className="size-4" aria-hidden /></span>
             {KATEGORI[k.kategori as Kategori].label} · <span className="font-mono">{k.kode_kasus}</span>
           </p>
-          <PenyegarRealtime kasusId={id} />
+          <PenyegarRealtime kanal={`kasus-${id}`} langganan={[
+            { tabel: "kasus", event: "UPDATE", filter: `id=eq.${id}` },
+            { tabel: "status_log", event: "INSERT", filter: `kasus_id=eq.${id}` },
+          ]} />
         </div>
         <h1 className="text-2xl font-extrabold sm:text-3xl">{k.judul}</h1>
         <div className="flex flex-wrap items-center gap-2">

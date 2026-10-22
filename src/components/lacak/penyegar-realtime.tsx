@@ -7,11 +7,17 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { buatKlienBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
+export interface Langganan {
+  tabel: "kasus" | "status_log" | "laporan" | "peringatan_dini";
+  event?: "INSERT" | "UPDATE" | "*";
+  filter?: string;
+}
+
 /**
- * Memperbarui halaman kasus saat status atau riwayatnya berubah (Supabase Realtime, RLS tetap berlaku).
+ * Memperbarui halaman saat data yang ditampilkan berubah (Supabase Realtime, RLS tetap berlaku).
  * Target PRD 7.3: tampil ≤ 3 detik setelah data berubah.
  */
-export function PenyegarRealtime({ kasusId }: { kasusId: string }) {
+export function PenyegarRealtime({ kanal: namaKanal, langganan }: { kanal: string; langganan: Langganan[] }) {
   const router = useRouter();
   const [tersambung, setTersambung] = useState(false);
   const [baru, setBaru] = useState(false);
@@ -28,21 +34,23 @@ export function PenyegarRealtime({ kasusId }: { kasusId: string }) {
         setTimeout(() => setBaru(false), 2500);
       }, 300);
     };
-    const kanal = supabase
-      .channel(`kasus-${kasusId}`)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "kasus", filter: `id=eq.${kasusId}` }, segarkan)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "status_log", filter: `kasus_id=eq.${kasusId}` }, segarkan)
-      .subscribe((status, galat) => {
-        setTersambung(status === "SUBSCRIBED");
-        if (process.env.NODE_ENV === "development" && status !== "SUBSCRIBED") {
-          console.warn("[realtime]", status, galat?.message ?? "");
-        }
-      });
+    let kanal = supabase.channel(namaKanal);
+    for (const l of langganan) {
+      kanal = kanal.on("postgres_changes", { event: l.event ?? "*", schema: "public", table: l.tabel, filter: l.filter }, segarkan);
+    }
+    kanal.subscribe((status, galat) => {
+      setTersambung(status === "SUBSCRIBED");
+      if (process.env.NODE_ENV === "development" && status !== "SUBSCRIBED") {
+        console.warn("[realtime]", status, galat?.message ?? "");
+      }
+    });
     return () => {
       if (jeda.current) clearTimeout(jeda.current);
       supabase.removeChannel(kanal);
     };
-  }, [kasusId, router]);
+    // Daftar langganan dianggap tetap selama komponen hidup; kanal dibuat ulang bila namanya berubah.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [namaKanal, router]);
 
   return (
     <Tooltip>

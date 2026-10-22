@@ -31,6 +31,10 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-jalur: var(--chart-jalur);
+  --color-chart-grid: var(--chart-grid);
 
   /* Warna semantik PantauGizi */
   --color-risiko-rendah: var(--risiko-rendah);
@@ -88,11 +92,24 @@
   --info: oklch(0.5 0.12 250);
   --info-lembut: oklch(0.96 0.025 250);
 
-  --chart-1: oklch(0.46 0.09 168);
-  --chart-2: oklch(0.72 0.14 75);
-  --chart-3: oklch(0.55 0.12 250);
-  --chart-4: oklch(0.58 0.19 27);
-  --chart-5: oklch(0.65 0.02 170);
+  /* Palet kategori grafik: urutan tetap, tervalidasi CVD (skill dataviz, mode terang).
+     Slot 3–5 di bawah 3:1 terhadap permukaan → setiap grafik wajib punya tampilan tabel. */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+  --chart-6: #008300;
+  --chart-7: #6250d6;
+  /* Jalur referensi (pagu/target) dan garis bantu, satu langkah dari permukaan. */
+  --chart-jalur: oklch(0.92 0.008 95);
+  --chart-grid: oklch(0.93 0.006 95);
+  /* Ramp sekuensial biru (magnitudo), dari dekat nol ke tinggi. */
+  --seq-100: #cde2fb;
+  --seq-250: #86b6ef;
+  --seq-400: #3987e5;
+  --seq-550: #1c5cab;
+  --seq-700: #0d366b;
   --radius: 0.75rem;
 }
 
