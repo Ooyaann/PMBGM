@@ -1,6 +1,9 @@
 "use server";
 
+import { after } from "next/server";
 import { klasifikasiKataKunci } from "@/lib/klasifikasi";
+import { gabungKlasifikasi, klasifikasiDenganAi } from "@/lib/klasifikasi-ai";
+import { buatKlienAdmin } from "@/lib/supabase/admin";
 import { buatKlienServer } from "@/lib/supabase/server";
 import { skemaLaporan, type InputLaporan } from "@/lib/validasi/laporan";
 
@@ -44,5 +47,13 @@ export async function kirimLaporan(input: InputLaporan): Promise<HasilKirim> {
     const dariTrigger = ["54000", "22023"].includes(error.code ?? "");
     return { ok: false, pesan: dariTrigger ? error.message : "Laporan belum tersimpan. Coba lagi sebentar." };
   }
+  // LP-11: saran AI diminta setelah respons terkirim agar pelapor tidak menunggu.
+  // Kolom ini hanya bisa diubah server, jadi ditulis dengan klien admin.
+  after(async () => {
+    const ai = await klasifikasiDenganAi(d.deskripsi, d.jumlahTerdampak, d.kategori);
+    const admin = buatKlienAdmin();
+    if (!ai || !admin) return;
+    await admin.from("laporan").update({ klasifikasi_otomatis: { ...gabungKlasifikasi(d.deskripsi, d.jumlahTerdampak, ai) } }).eq("id", data.id);
+  });
   return { ok: true, id: data.id, kodeTiket: data.kode_tiket, pelaporId };
 }
