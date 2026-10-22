@@ -111,6 +111,7 @@ async function KasusSemarang() {
   );
 }
 
+
 export default function HalamanKasus() {
   return (
     <div className="space-y-6">
