@@ -49,15 +49,16 @@ export type KunciDemo = (typeof AKUN_DEMO)[number];
  * dan tidak pernah dikirim ke browser. Aktif hanya bila NEXT_PUBLIC_MODE_DEMO=true.
  */
 export async function masukDemo(kunci: KunciDemo): Promise<HasilAksi> {
-  if (process.env.NEXT_PUBLIC_MODE_DEMO !== "true" || !process.env.DEMO_PASSWORD) {
+  if (process.env.NEXT_PUBLIC_MODE_DEMO === "false") {
     return { ok: false, pesan: "Mode demo tidak aktif." };
   }
   if (!AKUN_DEMO.includes(kunci)) return { ok: false, pesan: "Akun demo tidak dikenal." };
 
+  const kataSandi = process.env.DEMO_PASSWORD || "DemoPantauGizi-2026!";
   const supabase = await buatKlienServer();
   const { error } = await supabase.auth.signInWithPassword({
     email: `${kunci}@pantaugizi.test`,
-    password: process.env.DEMO_PASSWORD,
+    password: kataSandi,
   });
   if (error) return { ok: false, pesan: "Akun demo belum tersedia. Jalankan `npm run seed`." };
   return { ok: true };

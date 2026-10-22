@@ -19,7 +19,7 @@ async function IsiMasuk({ searchParams }: { searchParams: PageProps<"/masuk">["s
   const { lanjut } = await searchParams;
   const tujuan = tujuanAman(lanjut);
   if (await ambilPengguna()) redirect(tujuan);
-  return <PilihanMasuk lanjut={tujuan} modeDemo={process.env.NEXT_PUBLIC_MODE_DEMO === "true"} />;
+  return <PilihanMasuk lanjut={tujuan} modeDemo={process.env.NEXT_PUBLIC_MODE_DEMO !== "false"} />;
 }
 
 export default function HalamanMasuk(props: PageProps<"/masuk">) {
