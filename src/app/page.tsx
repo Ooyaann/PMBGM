@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  ArrowRight, BarChart3, Check, ClipboardList, Clock, ExternalLink, HeartPulse, Link2, Megaphone, Minus, Phone, Radar,
+  ArrowRight, BarChart3, Check, ClipboardList, Clock, ExternalLink, HeartPulse, Megaphone, Phone, Radar,
   School, Search, ShieldCheck, Star, ThumbsUp,
 } from "lucide-react";
 import { FormCekTiket } from "@/components/beranda/form-cek-tiket";
@@ -23,16 +23,6 @@ const MODUL = [
   { ikon: ClipboardList, judul: "Lacak", teks: "Pantau setiap tahap", href: "/lacak" },
   { ikon: BarChart3, judul: "Data", teks: "Angka program terbuka", href: "/data" },
   { ikon: Radar, judul: "Insight", teks: "Prioritas inspeksi", href: "/insight" },
-];
-
-/** Perbandingan fungsi dengan kanal resmi (PRD 1.3). Melengkapi, bukan menggantikan. */
-const FITUR = ["Lapor publik", "Lacak tindak lanjut", "Data per SPPG", "Indeks risiko", "Mode darurat", "Info & penilaian menu"] as const;
-type Sel = boolean | "tautan";
-const KANAL: { nama: string; url?: string; punya: Sel[] }[] = [
-  { nama: "PantauGizi", punya: [true, true, true, true, true, "tautan"] },
-  { nama: "Radar MBG", url: "https://www.rctiplus.com/news/detail/terkini/5452393/masyarakat-kini-bisa-pantau-menu-mbg-hingga-dapur-sppg-secara-online-lewat-portal-ini", punya: [false, false, true, false, false, true] },
-  { nama: "Reviu Menu", url: "https://www.metrotvnews.com/read/kj2CD2eW-mulai-juni-2026-publik-bisa-pantau-program-mbg-lewat-aplikasi", punya: [false, false, false, false, false, true] },
-  { nama: "SP4N-LAPOR!", url: "https://www.lapor.go.id/", punya: [true, true, false, false, false, false] },
 ];
 
 export default async function Beranda() {
@@ -234,54 +224,6 @@ export default async function Beranda() {
               </Bertip>
             </div>
           </form>
-        </div>
-      </section>
-
-      {/* Melengkapi kanal resmi: matriks fungsi */}
-      <section aria-labelledby="judul-kanal" className="border-t bg-muted/40">
-        <div className="kontainer py-16">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <h2 id="judul-kanal" className="text-2xl font-bold sm:text-3xl">Melengkapi kanal resmi</h2>
-            <p className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1"><Check className="size-4 text-primary" aria-hidden /> Ada</span>
-              <span className="flex items-center gap-1"><Link2 className="size-4" aria-hidden /> Menautkan</span>
-              <span className="flex items-center gap-1"><Minus className="size-4 opacity-40" aria-hidden /> Belum ada</span>
-            </p>
-          </div>
-          <div className="mt-8 overflow-x-auto rounded-3xl border bg-card">
-            <table className="w-full min-w-[34rem] text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th scope="col" className="p-4 text-left font-medium text-muted-foreground"><span className="sr-only">Fungsi</span></th>
-                  {KANAL.map((k) => (
-                    <th key={k.nama} scope="col" className={cn("p-4 text-center font-semibold", k.nama === "PantauGizi" && "text-primary")}>
-                      {k.url ? (
-                        <a href={k.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:underline">
-                          {k.nama} <ExternalLink className="size-3 text-muted-foreground" aria-hidden />
-                        </a>
-                      ) : k.nama}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {FITUR.map((f, i) => (
-                  <tr key={f} className="border-b last:border-0">
-                    <th scope="row" className="p-4 text-left font-medium">{f}</th>
-                    {KANAL.map((k) => (
-                      <td key={k.nama} className={cn("p-4 text-center", k.nama === "PantauGizi" && "bg-secondary/40")}>
-                        {k.punya[i] === "tautan"
-                          ? <Link2 className="mx-auto size-5 text-muted-foreground" aria-label="Menautkan ke kanal resmi" />
-                          : k.punya[i]
-                            ? <Check className="mx-auto size-5 text-primary" aria-label="Ada" />
-                            : <Minus className="mx-auto size-5 text-muted-foreground/40" aria-label="Belum ada" />}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 

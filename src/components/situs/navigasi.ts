@@ -1,4 +1,4 @@
-import { BarChart3, ClipboardList, Megaphone, Radar, School, type LucideIcon } from "lucide-react";
+import { BarChart3, ClipboardList, Home, Megaphone, Radar, School, type LucideIcon } from "lucide-react";
 
 export interface ItemNav {
   href: string;
@@ -6,8 +6,9 @@ export interface ItemNav {
   ikon: LucideIcon;
 }
 
-/** Empat modul inti (PRD 3.1) ditambah Cari Sekolah Saya. */
+/** Navigasi utama situs PantauGizi */
 export const NAV_UTAMA: ItemNav[] = [
+  { href: "/", label: "Beranda", ikon: Home },
   { href: "/lapor", label: "Lapor", ikon: Megaphone },
   { href: "/lacak", label: "Lacak", ikon: ClipboardList },
   { href: "/data", label: "Data Terbuka", ikon: BarChart3 },

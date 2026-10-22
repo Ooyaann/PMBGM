@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { PilihanMasuk } from "@/components/auth/pilihan-masuk";
 import { TandaLogo } from "@/components/situs/logo";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,6 +26,14 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
   return (
     <div className="kontainer flex justify-center py-12 sm:py-16">
       <div className="w-full max-w-md">
+        <div className="mb-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" aria-hidden /> Kembali ke Beranda
+          </Link>
+        </div>
         <div className="mb-6 text-center">
           <TandaLogo className="mx-auto size-12" />
           <h1 className="mt-4 text-2xl font-extrabold">Masuk</h1>

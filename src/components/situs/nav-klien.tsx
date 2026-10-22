@@ -15,6 +15,7 @@ import { NAV_UTAMA } from "./navigasi";
 import { TandaLogo } from "./logo";
 
 function aktif(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
