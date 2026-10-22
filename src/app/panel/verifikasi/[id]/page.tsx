@@ -83,7 +83,7 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
   const { laporan: l, komponen, foto, identitas, serupa, kasusTerbuka, riwayat, indeksSppg } = d;
   const Ikon = IKON_KATEGORI[l.kategori];
   const Mode = IKON_MODE[l.mode_identitas];
-  const ai = l.klasifikasi_otomatis as { kategori_saran?: Kategori; urgensi?: string; cocok?: string[]; metode?: string; alasan?: string } | null;
+  const ai = l.klasifikasi_otomatis as { kategori_saran?: Kategori; urgensi?: string; cocok?: string[]; metode?: string; alasan?: string; model?: string; yakin?: number; diperiksa_ulang?: boolean } | null;
   const sekolah = l.sekolah!;
 
   return (
@@ -139,6 +139,11 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
                 </span>
                 {ai.urgensi && ai.urgensi !== "normal" && <span className="text-muted-foreground">· urgensi {ai.urgensi}</span>}
                 {ai.alasan && <span className="w-full text-muted-foreground">{ai.alasan}</span>}
+                {ai.metode === "ai" && ai.model && (
+                  <span className="w-full text-[11px] text-muted-foreground" title="Model kecil memeriksa semua laporan; model utama memeriksa ulang bila ragu atau darurat">
+                    {ai.model}{ai.yakin != null ? ` · yakin ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diperiksa ulang" : ""}
+                  </span>
+                )}
               </p>
             )}
           </section>

@@ -16,8 +16,8 @@
     "seed": "tsx --env-file-if-exists=.env.local scripts/seed/index.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "0.132.0",
     "@base-ui/react": "^1.9.0",
+    "@google/genai": "2.28.0",
     "@react-pdf/renderer": "4.9.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
