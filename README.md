@@ -98,9 +98,9 @@ src/proxy.ts           pembaruan sesi dan perlindungan rute /panel dan /akun
 - [x] Seed data simulasi Jawa Tengah dan Kota Semarang, akun demo per peran
 - [x] Proyek Next.js 16 dan koneksi Supabase ber-tipe (browser, server, proxy)
 - [x] Diuji di Supabase lokal: login 7 akun demo, RLS per peran, storage bukti privat/publik, realtime (±0,2 detik), eskalasi SLA via pg_cron
-- [ ] Landing page dan halaman publik
-- [ ] Modul Lapor (form bertahap, mode darurat, unggah bukti)
-- [ ] Modul Lacak (cek status, timeline, Papan Akuntabilitas)
-- [ ] Modul Data Terbuka (dashboard, profil SPPG, unduh data)
-- [ ] Modul Insight (peta risiko, prioritas inspeksi, peringatan dini)
-- [ ] Panel verifikator, instansi, dan admin
+- [x] Landing page dan halaman publik
+- [x] Modul Lapor (form bertahap, mode darurat, unggah bukti)
+- [x] Modul Lacak (cek status, timeline, Papan Akuntabilitas)
+- [x] Modul Data Terbuka (dashboard, profil SPPG, unduh data)
+- [x] Modul Insight (peta risiko, prioritas inspeksi, peringatan dini)
+- [x] Panel verifikator, instansi, dan admin
