@@ -355,14 +355,14 @@ isOneToOne: false
                   ]
                 },"notifikasi": {
                   Row: {
-                    "dibaca": boolean,"dibuat_pada": string,"id": number,"isi": string | null,"judul": string,"kasus_id": string | null,"laporan_id": string | null,"pengguna_id": string
+                    "dibaca": boolean,"dibuat_pada": string,"email_terkirim_pada": string | null,"id": number,"isi": string | null,"judul": string,"kasus_id": string | null,"laporan_id": string | null,"pengguna_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "dibaca"?: boolean,"dibuat_pada"?: string,"id"?: never,"isi"?: string | null,"judul": string,"kasus_id"?: string | null,"laporan_id"?: string | null,"pengguna_id": string
+                    "dibaca"?: boolean,"dibuat_pada"?: string,"email_terkirim_pada"?: string | null,"id"?: never,"isi"?: string | null,"judul": string,"kasus_id"?: string | null,"laporan_id"?: string | null,"pengguna_id": string
                   }
                   Update: {
-                    "dibaca"?: boolean,"dibuat_pada"?: string,"id"?: never,"isi"?: string | null,"judul"?: string,"kasus_id"?: string | null,"laporan_id"?: string | null,"pengguna_id"?: string
+                    "dibaca"?: boolean,"dibuat_pada"?: string,"email_terkirim_pada"?: string | null,"id"?: never,"isi"?: string | null,"judul"?: string,"kasus_id"?: string | null,"laporan_id"?: string | null,"pengguna_id"?: string
                   }
                   Relationships: [
                     {
@@ -1033,6 +1033,11 @@ isOneToOne: false
                            },
 "cek_status_tiket":
 { Args: { "p_kode": string }; Returns: Json
+                           },
+"daftar_pengguna":
+{ Args: { "p_batas"?: number,"p_cari"?: string }; Returns: {
+              "dibuat_pada": string,"email": string,"id": string,"instansi_id": string,"instansi_nama": string,"jumlah_laporan": number,"nama": string,"peran": Database["public"]['Enums']["peran_pengguna"],"terverifikasi": boolean
+            }[]
                            },
 "deteksi_lonjakan":
 { Args: Record<PropertyKey, never>; Returns: number
