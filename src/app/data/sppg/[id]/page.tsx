@@ -14,6 +14,7 @@ import { BilahKomponen, GrafikGaris } from "@/components/grafik/grafik";
 import { KartuGrafik } from "@/components/grafik/kartu-grafik";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ambilProfilSppg } from "@/lib/data/data-terbuka";
+import { komponenIndeks } from "@/lib/indeks";
 import { angka, durasiJam, persen, tanggal } from "@/lib/format";
 import { kategoriRisiko, RISIKO, type Kategori, type StatusAlur } from "@/lib/label";
 
@@ -35,13 +36,7 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
   const awal = riwayat[0]?.indeks;
   const arah = skor != null && awal != null ? skor - awal : null;
 
-  const komponen = i ? [
-    { label: "Laporan", nilai: 0.35 * Number(i.l), warna: "var(--chart-1)", keterangan: `${i.jumlah_laporan} terverifikasi · 30 hari` },
-    { label: "Keracunan", nilai: 0.25 * Number(i.k), warna: "var(--chart-2)", keterangan: `${i.jumlah_keracunan} kasus · 30 hari` },
-    { label: "SLHS", nilai: 0.15 * Number(i.s), warna: "var(--chart-3)", keterangan: Number(i.s) === 100 ? "Belum berlaku" : "Berlaku" },
-    { label: "Keterlambatan", nilai: 0.15 * Number(i.t), warna: "var(--chart-4)", keterangan: `${persen(Number(i.t))} kasus lewat batas` },
-    { label: "Kepuasan", nilai: 0.1 * (100 - Number(i.p)), warna: "var(--chart-5)", keterangan: i.ada_rating ? `Skor kepuasan ${Math.round(Number(i.p))}/100` : "Belum ada penilaian (netral)" },
-  ] : [];
+  const komponen = i ? komponenIndeks(i) : [];
 
   return (
     <div className="space-y-6">

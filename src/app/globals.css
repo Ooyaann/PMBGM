@@ -110,6 +110,11 @@
   --seq-400: #3987e5;
   --seq-550: #1c5cab;
   --seq-700: #0d366b;
+  /* Isian peta per kategori risiko (tint), titik SPPG memakai --risiko-* penuh di atasnya. */
+  --peta-rendah: #b9e2c4;
+  --peta-sedang: #f6d58a;
+  --peta-tinggi: #f0a093;
+  --peta-kosong: #ebe9e4;
   --radius: 0.75rem;
 }
 

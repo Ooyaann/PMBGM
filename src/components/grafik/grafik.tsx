@@ -182,6 +182,50 @@ export function GrafikGaris({ data, labelNilai, format, tinggi = 220, ambang, do
 }
 
 // ---------------------------------------------------------------------------
+// Garis beberapa seri (perbandingan 2–3 entitas). Warna mengikuti urutan entitas, bukan peringkat.
+// ---------------------------------------------------------------------------
+export function GrafikGarisMulti({ label, seri, format, tinggi = 240, ambang, domain }: {
+  label: string[];
+  seri: { label: string; warna: string; nilai: (number | null)[] }[];
+  format: Format;
+  tinggi?: number;
+  ambang?: { nilai: number; label: string }[];
+  domain?: [number, number];
+}) {
+  const data = label.map((l, j) => Object.fromEntries([["label", l], ...seri.map((s, i) => [`s${i}`, s.nilai[j]])]));
+  return (
+    <div style={{ height: tinggi }} className="group relative">
+      <KerangkaGrafik />
+      <ResponsiveContainer>
+        <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
+          {GRID}
+          <XAxis dataKey="label" {...SUMBU} interval="preserveStartEnd" minTickGap={16} />
+          <YAxis {...SUMBU} width={40} domain={domain ?? ["auto", "auto"]} tickFormatter={(v: number) => fmt(format, v, true)} />
+          {ambang?.map((a) => (
+            <ReferenceLine key={a.nilai} y={a.nilai} stroke="var(--border)" strokeWidth={1}
+              label={{ value: a.label, position: "insideTopRight", fontSize: 10, fill: "var(--muted-foreground)" }} />
+          ))}
+          <Tooltip
+            cursor={{ stroke: "var(--border)" }}
+            content={({ active, payload, label: l }: IsiTooltip) =>
+              active && payload?.length ? (
+                <KotakTooltip judul={String(l)} baris={seri.map((s, i) => {
+                  const v = (payload[0].payload as Record<string, number | null>)[`s${i}`];
+                  return { label: s.label, nilai: v == null ? "–" : fmt(format, v), warna: s.warna };
+                })} />
+              ) : null}
+          />
+          {seri.map((s, i) => (
+            <Line key={i} type="monotone" dataKey={`s${i}`} stroke={s.warna} strokeWidth={2} isAnimationActive={false}
+              connectNulls dot={false} activeDot={{ r: 5, fill: s.warna, stroke: "var(--card)", strokeWidth: 2 }} />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Kolom bertumpuk per kategori: urutan warna tetap, celah 2px warna permukaan antar-segmen.
 // ---------------------------------------------------------------------------
 export function GrafikTumpuk({ data, seri, tinggi = 260 }: {

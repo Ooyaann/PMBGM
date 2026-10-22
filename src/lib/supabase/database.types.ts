@@ -1051,8 +1051,16 @@ isOneToOne: false
 "identitas_pelapor":
 { Args: { "p_laporan_id": string }; Returns: Json
                            },
+"indeks_risiko_lalu":
+{ Args: { "p_hari"?: number }; Returns: {
+              "indeks": number,"sppg_id": string
+            }[]
+                           },
 "instansi_saya":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"jumlah_sinyal_ditinjau":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "label_kategori":
 { Args: { "p": Database["public"]['Enums']["kategori_laporan"] }; Returns: string

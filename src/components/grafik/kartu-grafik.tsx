@@ -37,27 +37,32 @@ export function KartuGrafik({ judul, ringkasan, sumber, tabel, aksi, children, c
         </p>
       )}
       <div className="mt-4">{children}</div>
-      {tabel && (
-        <details className="group mt-3">
-          <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground [&::-webkit-details-marker]:hidden">
-            <Table2 className="size-3.5" aria-hidden /> Tabel
-            <ChevronDown className="size-3.5 transition group-open:rotate-180" aria-hidden />
-          </summary>
-          <div className="mt-2 max-h-80 overflow-auto rounded-xl border">
-            <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-muted text-xs text-muted-foreground">
-                <tr>{tabel.kolom.map((k) => <th key={k} scope="col" className="p-2 text-left font-medium">{k}</th>)}</tr>
-              </thead>
-              <tbody className="angka divide-y">
-                {tabel.baris.map((b, i) => (
-                  <tr key={i}>{b.map((sel, j) => <td key={j} className="p-2">{sel}</td>)}</tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
-      )}
+      {tabel && <TabelData tabel={tabel} className="mt-3" />}
     </section>
+  );
+}
+
+/** Padanan tabel untuk grafik atau peta, terlipat secara bawaan. */
+export function TabelData({ tabel, className }: { tabel: DataTabel; className?: string }) {
+  return (
+    <details className={cn("group", className)}>
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <Table2 className="size-3.5" aria-hidden /> Tabel
+        <ChevronDown className="size-3.5 transition group-open:rotate-180" aria-hidden />
+      </summary>
+      <div className="mt-2 max-h-80 overflow-auto rounded-xl border">
+        <table className="w-full text-sm">
+          <thead className="sticky top-0 bg-muted text-xs text-muted-foreground">
+            <tr>{tabel.kolom.map((k) => <th key={k} scope="col" className="p-2 text-left font-medium">{k}</th>)}</tr>
+          </thead>
+          <tbody className="angka divide-y">
+            {tabel.baris.map((b, i) => (
+              <tr key={i}>{b.map((sel, j) => <td key={j} className="p-2">{sel}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
   );
 }
 
