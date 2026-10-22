@@ -13,6 +13,7 @@ import { kirimKodeMasuk, verifikasiKode } from "@/lib/aksi/auth";
 export function MasukEmail({ onBerhasil, labelTombol = "Kirim kode" }: { onBerhasil: () => void; labelTombol?: string }) {
   const [email, setEmail] = useState("");
   const [kode, setKode] = useState("");
+  const [kodeUji, setKodeUji] = useState<string | null>(null);
   const [tahap, setTahap] = useState<"email" | "kode">("email");
   const [galat, setGalat] = useState<string | null>(null);
   const [sibuk, mulai] = useTransition();
@@ -20,9 +21,12 @@ export function MasukEmail({ onBerhasil, labelTombol = "Kirim kode" }: { onBerha
   const minta = () =>
     mulai(async () => {
       setGalat(null);
+      setKodeUji(null);
       const hasil = await kirimKodeMasuk(email);
-      if (hasil.ok) setTahap("kode");
-      else setGalat(hasil.pesan);
+      if (hasil.ok) {
+        if (hasil.kodeUji) setKodeUji(hasil.kodeUji);
+        setTahap("kode");
+      } else setGalat(hasil.pesan);
     });
 
   const verifikasi = (nilai: string) =>
@@ -73,6 +77,14 @@ export function MasukEmail({ onBerhasil, labelTombol = "Kirim kode" }: { onBerha
       <p className="text-sm">
         Kode dikirim ke <strong className="break-all">{email}</strong>
       </p>
+      {kodeUji && (
+        <div className="rounded-xl border border-primary/30 bg-secondary/50 p-3 text-xs space-y-1">
+          <p className="font-semibold text-primary">Mode Pengujian (Bypass Limit Email Supabase):</p>
+          <p className="text-muted-foreground">
+            Gunakan kode verifikasi berikut: <strong className="font-mono text-sm font-bold text-foreground">{kodeUji}</strong>
+          </p>
+        </div>
+      )}
       {process.env.NODE_ENV === "development" && (
         <p className="rounded-lg bg-info-lembut p-2.5 text-xs text-info">
           Lokal: kode ada di Mailpit{" "}

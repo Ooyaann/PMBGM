@@ -3,8 +3,10 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { buatKlienServer } from "@/lib/supabase/server";
+import { buatKlienAdmin } from "@/lib/supabase/admin";
+import { kirimEmail } from "@/lib/email";
 
-export type HasilAksi = { ok: true } | { ok: false; pesan: string };
+export type HasilAksi = { ok: true; kodeUji?: string } | { ok: false; pesan: string };
 
 const skemaEmail = z.email({ error: "Format email belum benar." }).trim().toLowerCase();
 const skemaKode = z.string().regex(/^\d{6}$/, { error: "Kode terdiri dari 6 angka." });
@@ -20,11 +22,37 @@ export async function kirimKodeMasuk(email: string): Promise<HasilAksi> {
     options: { shouldCreateUser: true },
   });
   if (error) {
+    if (error.status === 429) {
+      // Supabase shared mailer rate limit exceeded (3 email/jam). Gunakan admin fallback.
+      const admin = buatKlienAdmin();
+      if (admin) {
+        const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
+          type: "magiclink",
+          email: hasil.data,
+        });
+        if (!linkErr && linkData?.properties?.email_otp) {
+          const otp = linkData.properties.email_otp;
+          const terkirim = await kirimEmail({
+            ke: hasil.data,
+            subjek: `Kode Masuk PantauGizi: ${otp}`,
+            teks: `Kode verifikasi masuk Anda adalah: ${otp}`,
+            html: `<p>Kode verifikasi masuk Anda adalah: <strong>${otp}</strong></p>`,
+          });
+          if (terkirim) return { ok: true };
+          return {
+            ok: true,
+            kodeUji: otp,
+          };
+        }
+      }
+      return {
+        ok: false,
+        pesan: "Batas pengiriman email Supabase (3 email/jam) telah tercapai. Silakan gunakan tab Akun Demo untuk pengujian instan.",
+      };
+    }
     return {
       ok: false,
-      pesan: error.status === 429
-        ? "Terlalu sering meminta kode. Tunggu sebentar lalu coba lagi."
-        : "Kode belum bisa dikirim. Periksa alamat email Anda.",
+      pesan: "Kode belum bisa dikirim. Periksa alamat email Anda.",
     };
   }
   return { ok: true };
