@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const KELOMPOK = [
   {
     id: "lapor", judul: "Melapor", ikon: Megaphone, tanya: [
-      ["Siapa yang boleh melapor?", "Siapa saja: orang tua, siswa, guru, komite sekolah, kader posyandu, atau warga. Cukup masuk dengan kode OTP yang dikirim ke email."],
+      ["Siapa yang boleh melapor?", "Siapa saja: orang tua, siswa, guru, komite sekolah, kader posyandu, atau warga. Cukup daftar dengan email dan kata sandi."],
       ["Apa yang harus saya lakukan bila ada keracunan?", "Utamakan keselamatan: bawa korban ke puskesmas atau IGD terdekat dan hubungi 119. Setelah itu laporkan di PantauGizi dengan kategori Keracunan agar langsung masuk antrean darurat."],
       ["Apakah wajib melampirkan foto?", "Tidak wajib, tetapi foto menaikkan skor kredibilitas sehingga laporan lebih cepat diperiksa."],
       ["Ada orang lain yang sudah melapor kejadian yang sama.", "Formulir akan menampilkan laporan serupa. Tekan “Saya juga mengalami” untuk mendukungnya, atau tetap kirim laporan Anda; verifikator akan menggabungkannya menjadi satu kasus."],

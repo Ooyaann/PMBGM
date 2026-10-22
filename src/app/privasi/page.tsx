@@ -51,7 +51,7 @@ export default function HalamanPrivasi() {
             );
           })}
         </ul>
-        <p className="text-sm text-muted-foreground">Masuk dengan kode OTP email tetap diperlukan agar laporan bisa dilacak dan tidak disalahgunakan, termasuk untuk mode Anonim. Email tidak pernah ditampilkan ke instansi maupun publik.</p>
+        <p className="text-sm text-muted-foreground">Masuk dengan email dan kata sandi tetap diperlukan agar laporan bisa dilacak dan tidak disalahgunakan, termasuk untuk mode Anonim. Email tidak pernah ditampilkan ke instansi maupun publik.</p>
       </BagianInfo>
 
       <BagianInfo id="akses" judul="Siapa melihat apa" ikon={Users}>
