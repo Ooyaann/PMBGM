@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 async function KasusProvinsi() {
   const { bulanan, wilayah } = await ambilKasusProvinsi();
-  const puncak = bulanan.reduce((m, b) => (b.kasus > m.kasus ? b : m), bulanan[0]);
+  const puncak = bulanan.length > 0 ? bulanan.reduce((m, b) => (b.kasus > m.kasus ? b : m), bulanan[0]) : null;
   const total = bulanan.reduce((s, b) => s + b.kasus, 0);
   const maks = wilayah[0]?.kasus ?? 1;
   return (
@@ -26,11 +26,11 @@ async function KasusProvinsi() {
       <KartuGrafik
         judul="Dugaan keracunan · Jawa Tengah"
         sumber="simulasi"
-        ringkasan={`${angka(total)} kasus sepanjang tahun; puncak ${labelBulan(puncak.bulan, true)} (${puncak.kasus} kasus).`}
+        ringkasan={puncak ? `${angka(total)} kasus sepanjang tahun; puncak ${labelBulan(puncak.bulan, true)} (${puncak.kasus} kasus).` : `${angka(total)} kasus sepanjang tahun.`}
         tabel={{ kolom: ["Bulan", "Kasus", "Korban"], baris: bulanan.map((b) => [labelBulan(b.bulan), b.kasus, b.korban]) }}
       >
         <GrafikBatang data={bulanan.map((b) => ({ label: labelBulan(b.bulan), nilai: b.kasus }))} labelNilai="Kasus" format="angka"
-          tinggi={260} sorot={labelBulan(puncak.bulan)} />
+          tinggi={260} sorot={puncak ? labelBulan(puncak.bulan) : undefined} />
       </KartuGrafik>
 
       <KartuGrafik

@@ -48,10 +48,16 @@ function KontainerGrafik({ tinggi, children }: { tinggi: number; children: React
   const sudahMount = useSyncExternalStore(tanpaLangganan, () => true, () => false);
 
   return (
-    <div style={{ height: tinggi }} className="group relative">
+    <div style={{ height: tinggi }} className="group relative w-full min-w-0">
       <KerangkaGrafik />
       {sudahMount ? (
-        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minWidth={0}
+          minHeight={0}
+          initialDimension={{ width: 320, height: tinggi }}
+        >
           {children}
         </ResponsiveContainer>
       ) : null}
