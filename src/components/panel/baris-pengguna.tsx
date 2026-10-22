@@ -41,8 +41,8 @@ export function BarisPengguna({ u, instansi, diriSendiri }: {
   const berubah = peran !== u.peran || ver !== u.terverifikasi || (peran === "instansi" && inst !== u.instansiId);
 
   return (
-    <li className="grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_9rem_minmax(0,14rem)_auto_auto] md:items-center">
-      <div className="min-w-0">
+    <li className="flex flex-col gap-3 p-4 lg:flex-row lg:items-center">
+      <div className="min-w-0 lg:flex-1">
         <p className="flex items-center gap-1.5 truncate font-semibold">
           {u.nama ?? "Tanpa nama"}
           {u.terverifikasi && <BadgeCheck className="size-4 shrink-0 text-risiko-rendah" aria-label="Pelapor terverifikasi" />}
@@ -50,30 +50,32 @@ export function BarisPengguna({ u, instansi, diriSendiri }: {
         </p>
         <p className="truncate text-xs text-muted-foreground">{u.email} · {u.jumlahLaporan} laporan</p>
       </div>
-      <Select value={peran} items={PERAN} onValueChange={(v) => v && setPeran(v as Peran)} disabled={diriSendiri}>
-        <SelectTrigger aria-label={`Peran ${u.email}`} className="h-9 w-full"><SelectValue /></SelectTrigger>
-        <SelectContent>{PERAN.map((p) => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent>
-      </Select>
-      {peran === "instansi" ? (
-        <Select value={inst} items={instansi} onValueChange={(v) => setInst(v as string | null)}>
-          <SelectTrigger aria-label={`Instansi ${u.email}`} className="h-9 w-full min-w-0"><SelectValue placeholder="Pilih instansi" /></SelectTrigger>
-          <SelectContent alignItemWithTrigger={false} className="max-h-72">
-            {instansi.map((i) => <SelectItem key={i.value} value={i.value}>{i.label}</SelectItem>)}
-          </SelectContent>
+      <div className="flex flex-wrap items-center gap-2">
+        <Select value={peran} items={PERAN} onValueChange={(v) => v && setPeran(v as Peran)} disabled={diriSendiri}>
+          <SelectTrigger aria-label={`Peran ${u.email}`} className="h-9 w-36"><SelectValue /></SelectTrigger>
+          <SelectContent>{PERAN.map((p) => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent>
         </Select>
-      ) : <span className="hidden md:block" />}
-      <label className={cn("inline-flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm", ver && "border-risiko-rendah/40 bg-risiko-rendah-lembut")}>
-        <input type="checkbox" checked={ver} onChange={(e) => setVer(e.target.checked)} className="accent-[var(--primary)]" />
-        <BadgeCheck className="size-4 text-risiko-rendah" aria-hidden /> <span className="sr-only md:not-sr-only">Terverifikasi</span>
-      </label>
-      <Button size="lg" disabled={!berubah || sibuk || (peran === "instansi" && !inst)} onClick={() => mulai(async () => {
-        const r = await aturPeran({ penggunaId: u.id, peran, instansiId: peran === "instansi" ? inst : null, terverifikasi: ver });
-        if (!r.ok) { toast.error(r.pesan); return; }
-        toast.success(`${u.nama ?? u.email} diperbarui`);
-        router.refresh();
-      })}>
-        {sibuk ? <Loader2 className="animate-spin" aria-hidden /> : <Save aria-hidden />} Simpan
-      </Button>
+        {peran === "instansi" ? (
+          <Select value={inst} items={instansi} onValueChange={(v) => setInst(v as string | null)}>
+            <SelectTrigger aria-label={`Instansi ${u.email}`} className="h-9 w-56 min-w-0"><SelectValue placeholder="Pilih instansi" /></SelectTrigger>
+            <SelectContent alignItemWithTrigger={false} className="max-h-72">
+              {instansi.map((i) => <SelectItem key={i.value} value={i.value}>{i.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        ) : null}
+        <label className={cn("inline-flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm", ver && "border-risiko-rendah/40 bg-risiko-rendah-lembut")}>
+          <input type="checkbox" checked={ver} onChange={(e) => setVer(e.target.checked)} className="accent-[var(--primary)]" />
+          <BadgeCheck className="size-4 text-risiko-rendah" aria-hidden /> <span className="sr-only sm:not-sr-only">Terverifikasi</span>
+        </label>
+        <Button size="lg" disabled={!berubah || sibuk || (peran === "instansi" && !inst)} onClick={() => mulai(async () => {
+          const r = await aturPeran({ penggunaId: u.id, peran, instansiId: peran === "instansi" ? inst : null, terverifikasi: ver });
+          if (!r.ok) { toast.error(r.pesan); return; }
+          toast.success(`${u.nama ?? u.email} diperbarui`);
+          router.refresh();
+        })}>
+          {sibuk ? <Loader2 className="animate-spin" aria-hidden /> : <Save aria-hidden />} Simpan
+        </Button>
+      </div>
     </li>
   );
 }

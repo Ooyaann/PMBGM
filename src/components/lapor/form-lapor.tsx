@@ -84,9 +84,14 @@ function Galat({ pesan }: { pesan?: string }) {
   return pesan ? <p role="alert" className="mt-1.5 text-sm text-destructive">{pesan}</p> : null;
 }
 
-export function FormLapor({ pengguna, sla }: { pengguna: PenggunaLapor | null; sla: AturanSla }) {
+export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
+  pengguna: PenggunaLapor | null;
+  sla: AturanSla;
+  /** Sekolah terisi dari Cari Sekolah (/lapor?sekolah=…). */
+  sekolahAwal?: SekolahPilihan | null;
+}) {
   const router = useRouter();
-  const [draf, setDraf] = useState<Draf>(DRAF_KOSONG);
+  const [draf, setDraf] = useState<Draf>(sekolahAwal ? { ...DRAF_KOSONG, sekolah: sekolahAwal } : DRAF_KOSONG);
   const [tahap, setTahap] = useState(0);
   const [bukti, setBukti] = useState<BuktiSiap[]>([]);
   const [galat, setGalat] = useState<Record<string, string>>({});

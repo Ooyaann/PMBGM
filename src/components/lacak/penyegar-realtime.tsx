@@ -8,7 +8,7 @@ import { buatKlienBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 export interface Langganan {
-  tabel: "kasus" | "status_log" | "laporan" | "peringatan_dini";
+  tabel: "kasus" | "status_log" | "laporan" | "peringatan_dini" | "notifikasi";
   event?: "INSERT" | "UPDATE" | "*";
   filter?: string;
 }
