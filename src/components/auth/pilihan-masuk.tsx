@@ -2,12 +2,11 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Building2, ChevronDown, ClipboardCheck, GraduationCap, KeyRound, Loader2, Mail, Settings, Sparkles, UserRound, Users, Utensils } from "lucide-react";
+import { Building2, ChevronDown, ClipboardCheck, GraduationCap, KeyRound, Loader2, Settings, Sparkles, UserRound, Users, Utensils } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { masukDemo, type KunciDemo } from "@/lib/aksi/auth";
-import { MasukEmail } from "./masuk-email";
 import { MasukPassword } from "./masuk-password";
 
 const PERSONA: { kunci: KunciDemo; nama: string; peran: string; ikon: typeof UserRound; keterangan: string }[] = [
@@ -45,25 +44,16 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
     });
   };
 
-  const formEmail = <MasukEmail onBerhasil={selesai} />;
   const formPassword = <MasukPassword onBerhasil={selesai} />;
-  if (!modeDemo) return (
-    <Tabs defaultValue="password">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="password"><KeyRound aria-hidden /> Kata Sandi</TabsTrigger>
-        <TabsTrigger value="email"><Mail aria-hidden /> Email OTP</TabsTrigger>
-      </TabsList>
-      <TabsContent value="password" className="mt-5">{formPassword}</TabsContent>
-      <TabsContent value="email" className="mt-5">{formEmail}</TabsContent>
-    </Tabs>
-  );
+
+  // Kalau bukan mode demo, langsung tampilkan form email + password
+  if (!modeDemo) return formPassword;
 
   return (
     <Tabs defaultValue="demo">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="demo"><Sparkles aria-hidden /> Demo</TabsTrigger>
-        <TabsTrigger value="password"><KeyRound aria-hidden /> Kata Sandi</TabsTrigger>
-        <TabsTrigger value="email"><Mail aria-hidden /> Email OTP</TabsTrigger>
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="demo"><Sparkles aria-hidden /> Akun Demo</TabsTrigger>
+        <TabsTrigger value="password"><KeyRound aria-hidden /> Daftar / Masuk</TabsTrigger>
       </TabsList>
 
       <TabsContent value="demo" className="mt-5 space-y-4">
@@ -129,10 +119,6 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
 
       <TabsContent value="password" className="mt-5">
         {formPassword}
-      </TabsContent>
-
-      <TabsContent value="email" className="mt-5">
-        {formEmail}
       </TabsContent>
     </Tabs>
   );

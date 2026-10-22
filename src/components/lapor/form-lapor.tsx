@@ -7,7 +7,7 @@ import {
   Tag, Timer, UserRound, Users, X,
 } from "lucide-react";
 import { toast } from "sonner";
-import { MasukEmail } from "@/components/auth/masuk-email";
+import { MasukPassword } from "@/components/auth/masuk-password";
 import { Bertip } from "@/components/ui/bertip";
 import { AlurStatus } from "@/components/data/alur-status";
 import { IKON_KATEGORI } from "@/components/data/ikon-kategori";
@@ -456,7 +456,7 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
               {!pengguna && (
                 <section aria-labelledby="judul-masuk" className="rounded-2xl border-2 border-primary/25 p-4">
                   <h3 id="judul-masuk" className="mb-3 font-semibold">Masuk untuk mengirim</h3>
-                  <MasukEmail onBerhasil={() => router.refresh()} labelTombol="Kirim kode" />
+                  <MasukPassword onBerhasil={() => router.refresh()} />
                 </section>
               )}
             </div>
@@ -507,7 +507,7 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
             <DialogTitle>Masuk</DialogTitle>
             <DialogDescription>Isian laporan tetap tersimpan.</DialogDescription>
           </DialogHeader>
-          <MasukEmail onBerhasil={() => { setDialogMasuk(false); router.refresh(); toast.success("Berhasil masuk"); }} />
+          <MasukPassword onBerhasil={() => { setDialogMasuk(false); router.refresh(); toast.success("Berhasil masuk"); }} />
         </DialogContent>
       </Dialog>
     </div>
