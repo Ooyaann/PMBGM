@@ -9,9 +9,9 @@ import { kirimEmail } from "@/lib/email";
 export type HasilAksi = { ok: true; kodeUji?: string } | { ok: false; pesan: string };
 
 const skemaEmail = z.email({ error: "Format email belum benar." }).trim().toLowerCase();
-const skemaKode = z.string().regex(/^\d{6}$/, { error: "Kode terdiri dari 6 angka." });
+const skemaKode = z.string().regex(/^\d{6,8}$/, { error: "Kode terdiri dari 6 hingga 8 angka." });
 
-/** Kirim kode 6 angka ke email. Akun pelapor dibuat otomatis bila belum ada (Keputusan K4). */
+/** Kirim kode OTP ke email. Akun pelapor dibuat otomatis bila belum ada (Keputusan K4). */
 export async function kirimKodeMasuk(email: string): Promise<HasilAksi> {
   const hasil = skemaEmail.safeParse(email);
   if (!hasil.success) return { ok: false, pesan: hasil.error.issues[0].message };
@@ -22,37 +22,29 @@ export async function kirimKodeMasuk(email: string): Promise<HasilAksi> {
     options: { shouldCreateUser: true },
   });
   if (error) {
-    if (error.status === 429) {
-      // Supabase shared mailer rate limit exceeded (3 email/jam). Gunakan admin fallback.
-      const admin = buatKlienAdmin();
-      if (admin) {
-        const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
-          type: "magiclink",
-          email: hasil.data,
-        });
-        if (!linkErr && linkData?.properties?.email_otp) {
-          const otp = linkData.properties.email_otp;
-          const terkirim = await kirimEmail({
-            ke: hasil.data,
-            subjek: `Kode Masuk PantauGizi: ${otp}`,
-            teks: `Kode verifikasi masuk Anda adalah: ${otp}`,
-            html: `<p>Kode verifikasi masuk Anda adalah: <strong>${otp}</strong></p>`,
-          });
-          if (terkirim) return { ok: true };
-          return {
-            ok: true,
-            kodeUji: otp,
-          };
-        }
-      }
+    // Jika kena rate limit (429) atau error mailer Supabase, fallback ke generateLink admin
+    const admin = buatKlienAdmin();
+    const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
+      type: "magiclink",
+      email: hasil.data,
+    });
+    if (!linkErr && linkData?.properties?.email_otp) {
+      const otp = linkData.properties.email_otp;
+      const terkirim = await kirimEmail({
+        ke: hasil.data,
+        subjek: `Kode Masuk PantauGizi: ${otp}`,
+        teks: `Kode verifikasi masuk Anda adalah: ${otp}`,
+        html: `<p>Kode verifikasi masuk Anda adalah: <strong>${otp}</strong></p>`,
+      });
+      if (terkirim) return { ok: true };
       return {
-        ok: false,
-        pesan: "Batas pengiriman email Supabase (3 email/jam) telah tercapai. Silakan gunakan tab Akun Demo untuk pengujian instan.",
+        ok: true,
+        kodeUji: otp,
       };
     }
     return {
       ok: false,
-      pesan: "Kode belum bisa dikirim. Periksa alamat email Anda.",
+      pesan: "Kode belum bisa dikirim saat ini. Silakan coba sesaat lagi atau gunakan tab Akun Demo.",
     };
   }
   return { ok: true };
@@ -61,10 +53,14 @@ export async function kirimKodeMasuk(email: string): Promise<HasilAksi> {
 export async function verifikasiKode(email: string, kode: string): Promise<HasilAksi> {
   const e = skemaEmail.safeParse(email);
   const k = skemaKode.safeParse(kode);
-  if (!e.success || !k.success) return { ok: false, pesan: "Email atau kode belum benar." };
+  if (!e.success || !k.success) return { ok: false, pesan: "Email atau kode belum benar (6–8 angka)." };
 
   const supabase = await buatKlienServer();
-  const { error } = await supabase.auth.verifyOtp({ email: e.data, token: k.data, type: "email" });
+  let { error } = await supabase.auth.verifyOtp({ email: e.data, token: k.data, type: "email" });
+  if (error) {
+    const resSignup = await supabase.auth.verifyOtp({ email: e.data, token: k.data, type: "signup" });
+    error = resSignup.error;
+  }
   if (error) return { ok: false, pesan: "Kode salah atau sudah kedaluwarsa. Minta kode baru." };
   return { ok: true };
 }

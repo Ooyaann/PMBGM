@@ -91,31 +91,50 @@ export function MasukEmail({ onBerhasil, labelTombol = "Kirim kode" }: { onBerha
           <a href="http://127.0.0.1:54324" target="_blank" rel="noreferrer" className="font-semibold underline">127.0.0.1:54324</a>.
         </p>
       )}
-      <InputOTP
-        maxLength={6}
-        value={kode}
-        onChange={(v) => {
-          setKode(v);
-          if (v.length === 6) verifikasi(v);
-        }}
-        inputMode="numeric"
-        autoFocus
-        disabled={sibuk}
-        aria-label="Kode masuk 6 angka"
-      >
-        <InputOTPGroup>
-          {Array.from({ length: 6 }, (_, i) => (
-            <InputOTPSlot key={i} index={i} className="size-12 text-lg" />
-          ))}
-        </InputOTPGroup>
-      </InputOTP>
-      {galat && <p role="alert" className="text-sm text-destructive">{galat}</p>}
-      <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" variant="ghost" size="lg" onClick={() => setTahap("email")} disabled={sibuk}>
-          <ArrowLeft aria-hidden /> Ganti
+      {(() => {
+        const panjangOtp = kodeUji ? kodeUji.length : 8;
+        return (
+          <>
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={panjangOtp}
+                value={kode}
+                onChange={(v) => {
+                  setKode(v);
+                  if (v.length === panjangOtp) verifikasi(v);
+                }}
+                inputMode="numeric"
+                autoFocus
+                disabled={sibuk}
+                aria-label={`Kode masuk ${panjangOtp} angka`}
+              >
+                <InputOTPGroup className="flex-wrap justify-center gap-1.5 sm:gap-2">
+                  {Array.from({ length: panjangOtp }, (_, i) => (
+                    <InputOTPSlot key={i} index={i} className="size-10 sm:size-11 rounded-lg border text-base font-bold sm:text-lg" />
+                  ))}
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            {galat && <p role="alert" className="text-sm text-destructive text-center">{galat}</p>}
+            <Button
+              type="button"
+              size="lg"
+              className="w-full rounded-xl"
+              onClick={() => verifikasi(kode)}
+              disabled={sibuk || kode.length < 6}
+            >
+              {sibuk ? <Loader2 className="mr-2 size-4 animate-spin" aria-hidden /> : null}
+              Verifikasi & Masuk
+            </Button>
+          </>
+        );
+      })()}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-2">
+        <Button type="button" variant="ghost" size="sm" onClick={() => setTahap("email")} disabled={sibuk}>
+          <ArrowLeft className="mr-1 size-4" aria-hidden /> Ganti email
         </Button>
-        <Button type="button" variant="outline" size="lg" onClick={minta} disabled={sibuk}>
-          {sibuk && <Loader2 className="animate-spin" aria-hidden />} Kirim ulang
+        <Button type="button" variant="ghost" size="sm" onClick={minta} disabled={sibuk}>
+          {sibuk && <Loader2 className="mr-1 size-4 animate-spin" aria-hidden />} Kirim ulang kode
         </Button>
       </div>
     </div>
