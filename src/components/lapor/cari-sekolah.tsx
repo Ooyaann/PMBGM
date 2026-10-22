@@ -31,19 +31,36 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
   const [aktif, setAktif] = useState(0);
   const permintaan = useRef(0);
 
+  const kontainer = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function klikLuar(e: MouseEvent) {
+      if (kontainer.current && !kontainer.current.contains(e.target as Node)) {
+        setTerbuka(false);
+      }
+    }
+    document.addEventListener("mousedown", klikLuar);
+    return () => document.removeEventListener("mousedown", klikLuar);
+  }, []);
+
   useEffect(() => {
     const q = kueri.trim();
-    if (q.length < 2) return;
     const nomor = ++permintaan.current;
     const jeda = setTimeout(async () => {
       setMemuat(true);
       const supabase = buatKlienBrowser();
-      const { data } = await supabase
+      let kueriDb = supabase
         .from("sekolah")
         .select("id, nama, jenjang, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama)")
-        .ilike("nama", `%${q.replace(/[%_]/g, "")}%`)
-        .order("nama")
-        .limit(8);
+        .order("nama");
+
+      if (q.length >= 2) {
+        kueriDb = kueriDb.ilike("nama", `%${q.replace(/[%_]/g, "")}%`).limit(12);
+      } else {
+        kueriDb = kueriDb.limit(20);
+      }
+
+      const { data } = await kueriDb;
       const sppgIds = [...new Set((data ?? []).map((s) => s.sppg?.id).filter(Boolean))] as string[];
       const { data: indeks } = sppgIds.length
         ? await supabase.from("indeks_risiko").select("sppg_id, indeks").in("sppg_id", sppgIds)
@@ -60,9 +77,8 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
         indeks: s.sppg?.id ? petaIndeks.get(s.sppg.id) ?? null : null,
       })));
       setAktif(0);
-      setTerbuka(true);
       setMemuat(false);
-    }, 250);
+    }, q.length >= 2 ? 250 : 0);
     return () => clearTimeout(jeda);
   }, [kueri]);
 
@@ -109,7 +125,7 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
   };
 
   return (
-    <div className="relative">
+    <div ref={kontainer} className="relative">
       <label htmlFor={`${idDaftar}-input`} className="sr-only">Nama sekolah</label>
       <div className="relative">
         <Search className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden />
@@ -124,9 +140,10 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
           value={kueri}
           onChange={(e) => {
             setKueri(e.target.value);
-            if (e.target.value.trim().length < 2) setTerbuka(false);
+            setTerbuka(true);
           }}
-          onFocus={() => hasil.length && setTerbuka(true)}
+          onFocus={() => setTerbuka(true)}
+          onClick={() => setTerbuka(true)}
           onKeyDown={(e) => {
             if (!terbuka || !hasil.length) return;
             if (e.key === "ArrowDown") { e.preventDefault(); setAktif((a) => (a + 1) % hasil.length); }
@@ -134,7 +151,7 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
             if (e.key === "Enter") { e.preventDefault(); pilih(hasil[aktif]); }
             if (e.key === "Escape") setTerbuka(false);
           }}
-          placeholder="Nama sekolah"
+          placeholder="Cari atau pilih sekolah..."
           className="h-12 w-full rounded-xl border border-input bg-card pr-10 pl-11 text-base placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
         />
         {memuat && <Loader2 className="absolute top-1/2 right-3.5 size-5 -translate-y-1/2 animate-spin text-muted-foreground" aria-hidden />}
@@ -146,7 +163,7 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
           aria-label="Hasil pencarian sekolah"
           className="absolute z-20 mt-2 max-h-80 w-full overflow-auto rounded-xl border bg-popover p-1.5 shadow-xl"
         >
-          {hasil.length === 0 && <li className="p-3 text-sm text-muted-foreground">Tidak ditemukan</li>}
+          {hasil.length === 0 && !memuat && <li className="p-3 text-sm text-muted-foreground">Tidak ditemukan</li>}
           {hasil.map((s, i) => (
             <li
               key={s.id}

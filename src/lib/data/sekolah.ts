@@ -14,20 +14,25 @@ export interface HasilSekolah {
   kasusTotal: number;
 }
 
-/** Cari sekolah dengan nama atau NPSN (LM-02), lengkap dengan SPPG pelayan dan jumlah kasus. */
-export async function cariSekolah(kueri: string): Promise<HasilSekolah[]> {
+/** Cari sekolah dengan nama atau NPSN (LM-02), lengkap dengan SPPG pelayan dan jumlah kasus. Jika kueri kosong, menampilkan seluruh sekolah. */
+export async function cariSekolah(kueri = ""): Promise<HasilSekolah[]> {
   "use cache";
   cacheLife("minutes");
   cacheTag(TAG_DATA_PUBLIK);
   const q = kueri.trim().replace(/[%_,()]/g, "");
-  if (q.length < 2) return [];
   const supabase = buatKlienPublik();
-  const { data } = await supabase
+  let kueriDb = supabase
     .from("sekolah")
     .select("id, nama, npsn, jenjang, jumlah_siswa, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama, status_slhs)")
-    .or(`nama.ilike.%${q}%,npsn.eq.${q}`)
-    .order("nama")
-    .limit(20);
+    .order("nama");
+
+  if (q.length >= 2) {
+    kueriDb = kueriDb.or(`nama.ilike.%${q}%,npsn.eq.${q}`).limit(50);
+  } else {
+    kueriDb = kueriDb.limit(200);
+  }
+
+  const { data } = await kueriDb;
   const sekolah = data ?? [];
   if (!sekolah.length) return [];
 

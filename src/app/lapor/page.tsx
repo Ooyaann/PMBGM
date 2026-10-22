@@ -8,6 +8,9 @@ import { ambilAturanSla } from "@/lib/data/publik";
 import { ambilSekolahPilihan } from "@/lib/data/sekolah";
 import { ambilPengguna } from "@/lib/sesi";
 
+// Saran AI berjalan setelah respons (after) dan model utama bisa antre ~60 detik.
+export const maxDuration = 120;
+
 export const metadata: Metadata = {
   title: "Lapor",
   description: "Laporkan masalah Makan Bergizi Gratis di sekolah. Identitas bisa dirahasiakan, kode tiket langsung terbit.",

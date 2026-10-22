@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore, type ReactNode } from "react";
 import {
   Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
   type TooltipContentProps, type TooltipValueType,
@@ -40,6 +41,24 @@ function KerangkaGrafik() {
   );
 }
 
+const tanpaLangganan = () => () => {};
+
+/** Pembungkus responsif yang aman untuk SSR, mencegah kalkulasi dimensi negatif (-1x-1). */
+function KontainerGrafik({ tinggi, children }: { tinggi: number; children: ReactNode }) {
+  const sudahMount = useSyncExternalStore(tanpaLangganan, () => true, () => false);
+
+  return (
+    <div style={{ height: tinggi }} className="group relative">
+      <KerangkaGrafik />
+      {sudahMount ? (
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+          {children}
+        </ResponsiveContainer>
+      ) : null}
+    </div>
+  );
+}
+
 function KotakTooltip({ judul, baris }: { judul: string; baris: { label: string; nilai: string; warna?: string }[] }) {
   return (
     <div className="min-w-36 rounded-xl border bg-popover px-3 py-2 text-xs shadow-lg">
@@ -68,33 +87,30 @@ export function GrafikTargetRealisasi({ data, labelTarget, labelNilai, format, t
   tinggi?: number;
 }) {
   return (
-    <div style={{ height: tinggi }} className="group relative">
-      <KerangkaGrafik />
-      <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-          {GRID}
-          <XAxis dataKey="label" xAxisId="jalur" {...SUMBU} />
-          <XAxis dataKey="label" xAxisId="nilai" hide />
-          <YAxis {...SUMBU} width={70} tickFormatter={(v: number) => fmt(format, v, true)} />
-          <Tooltip
-            cursor={{ fill: "var(--muted)", opacity: 0.6 }}
-            content={({ active, payload, label }: IsiTooltip) => {
-              if (!active || !payload?.length) return null;
-              const d = payload[0].payload as { target: number; nilai: number };
-              return (
-                <KotakTooltip judul={String(label)} baris={[
-                  { label: labelNilai, nilai: fmt(format, d.nilai, true), warna: "var(--chart-1)" },
-                  { label: labelTarget, nilai: fmt(format, d.target, true), warna: "var(--chart-jalur)" },
-                  { label: "Capaian", nilai: persen(d.target ? (100 * d.nilai) / d.target : null) },
-                ]} />
-              );
-            }}
-          />
-          <Bar dataKey="target" xAxisId="jalur" fill="var(--chart-jalur)" barSize={24} radius={[4, 4, 0, 0]} isAnimationActive={false} />
-          <Bar dataKey="nilai" xAxisId="nilai" fill="var(--chart-1)" barSize={12} radius={[4, 4, 0, 0]} isAnimationActive={false} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <KontainerGrafik tinggi={tinggi}>
+      <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+        {GRID}
+        <XAxis dataKey="label" xAxisId="jalur" {...SUMBU} />
+        <XAxis dataKey="label" xAxisId="nilai" hide />
+        <YAxis {...SUMBU} width={70} tickFormatter={(v: number) => fmt(format, v, true)} />
+        <Tooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.6 }}
+          content={({ active, payload, label }: IsiTooltip) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[0].payload as { target: number; nilai: number };
+            return (
+              <KotakTooltip judul={String(label)} baris={[
+                { label: labelNilai, nilai: fmt(format, d.nilai, true), warna: "var(--chart-1)" },
+                { label: labelTarget, nilai: fmt(format, d.target, true), warna: "var(--chart-jalur)" },
+                { label: "Capaian", nilai: persen(d.target ? (100 * d.nilai) / d.target : null) },
+              ]} />
+            );
+          }}
+        />
+        <Bar dataKey="target" xAxisId="jalur" fill="var(--chart-jalur)" barSize={24} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+        <Bar dataKey="nilai" xAxisId="nilai" fill="var(--chart-1)" barSize={12} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+      </BarChart>
+    </KontainerGrafik>
   );
 }
 
@@ -110,36 +126,33 @@ export function GrafikBatang({ data, labelNilai, format, tinggi = 220, sorot }: 
   sorot?: string;
 }) {
   return (
-    <div style={{ height: tinggi }} className="group relative">
-      <KerangkaGrafik />
-      <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-          {GRID}
-          <XAxis dataKey="label" {...SUMBU} />
-          <YAxis {...SUMBU} width={48} allowDecimals={false} tickFormatter={(v: number) => fmt(format, v, true)} />
-          <Tooltip
-            cursor={{ fill: "var(--muted)", opacity: 0.6 }}
-            content={({ active, payload, label }: IsiTooltip) =>
-              active && payload?.length ? (
-                <KotakTooltip judul={String(label)} baris={[{ label: labelNilai, nilai: fmt(format, Number(payload[0].value)) }]} />
-              ) : null}
-          />
-          <Bar dataKey="nilai" barSize={22} radius={[4, 4, 0, 0]} isAnimationActive={false}
-            shape={(p: { x?: number; y?: number; width?: number; height?: number; payload?: { label: string } }) => {
-              const { x = 0, y = 0, width = 0, height = 0 } = p;
-              const r = Math.min(4, height);
-              return (
-                <path
-                  d={`M${x},${y + height} V${y + r} Q${x},${y} ${x + r},${y} H${x + width - r} Q${x + width},${y} ${x + width},${y + r} V${y + height} Z`}
-                  fill="var(--chart-1)"
-                  opacity={sorot && p.payload?.label !== sorot ? 0.35 : 1}
-                />
-              );
-            }}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <KontainerGrafik tinggi={tinggi}>
+      <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+        {GRID}
+        <XAxis dataKey="label" {...SUMBU} />
+        <YAxis {...SUMBU} width={48} allowDecimals={false} tickFormatter={(v: number) => fmt(format, v, true)} />
+        <Tooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.6 }}
+          content={({ active, payload, label }: IsiTooltip) =>
+            active && payload?.length ? (
+              <KotakTooltip judul={String(label)} baris={[{ label: labelNilai, nilai: fmt(format, Number(payload[0].value)) }]} />
+            ) : null}
+        />
+        <Bar dataKey="nilai" barSize={22} radius={[4, 4, 0, 0]} isAnimationActive={false}
+          shape={(p: { x?: number; y?: number; width?: number; height?: number; payload?: { label: string } }) => {
+            const { x = 0, y = 0, width = 0, height = 0 } = p;
+            const r = Math.min(4, height);
+            return (
+              <path
+                d={`M${x},${y + height} V${y + r} Q${x},${y} ${x + r},${y} H${x + width - r} Q${x + width},${y} ${x + width},${y + r} V${y + height} Z`}
+                fill="var(--chart-1)"
+                opacity={sorot && p.payload?.label !== sorot ? 0.35 : 1}
+              />
+            );
+          }}
+        />
+      </BarChart>
+    </KontainerGrafik>
   );
 }
 
@@ -155,29 +168,26 @@ export function GrafikGaris({ data, labelNilai, format, tinggi = 220, ambang, do
   domain?: [number, number];
 }) {
   return (
-    <div style={{ height: tinggi }} className="group relative">
-      <KerangkaGrafik />
-      <ResponsiveContainer>
-        <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
-          {GRID}
-          <XAxis dataKey="label" {...SUMBU} interval="preserveStartEnd" minTickGap={16} />
-          <YAxis {...SUMBU} width={40} domain={domain ?? ["auto", "auto"]} tickFormatter={(v: number) => fmt(format, v, true)} />
-          {ambang?.map((a) => (
-            <ReferenceLine key={a.nilai} y={a.nilai} stroke="var(--border)" strokeWidth={1}
-              label={{ value: a.label, position: "insideTopRight", fontSize: 10, fill: "var(--muted-foreground)" }} />
-          ))}
-          <Tooltip
-            cursor={{ stroke: "var(--border)" }}
-            content={({ active, payload, label }: IsiTooltip) =>
-              active && payload?.length ? (
-                <KotakTooltip judul={String(label)} baris={[{ label: labelNilai, nilai: fmt(format, Number(payload[0].value)) }]} />
-              ) : null}
-          />
-          <Line type="monotone" dataKey="nilai" stroke="var(--chart-1)" strokeWidth={2} isAnimationActive={false}
-            dot={false} activeDot={{ r: 5, fill: "var(--chart-1)", stroke: "var(--card)", strokeWidth: 2 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <KontainerGrafik tinggi={tinggi}>
+      <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
+        {GRID}
+        <XAxis dataKey="label" {...SUMBU} interval="preserveStartEnd" minTickGap={16} />
+        <YAxis {...SUMBU} width={40} domain={domain ?? ["auto", "auto"]} tickFormatter={(v: number) => fmt(format, v, true)} />
+        {ambang?.map((a) => (
+          <ReferenceLine key={a.nilai} y={a.nilai} stroke="var(--border)" strokeWidth={1}
+            label={{ value: a.label, position: "insideTopRight", fontSize: 10, fill: "var(--muted-foreground)" }} />
+        ))}
+        <Tooltip
+          cursor={{ stroke: "var(--border)" }}
+          content={({ active, payload, label }: IsiTooltip) =>
+            active && payload?.length ? (
+              <KotakTooltip judul={String(label)} baris={[{ label: labelNilai, nilai: fmt(format, Number(payload[0].value)) }]} />
+            ) : null}
+        />
+        <Line type="monotone" dataKey="nilai" stroke="var(--chart-1)" strokeWidth={2} isAnimationActive={false}
+          dot={false} activeDot={{ r: 5, fill: "var(--chart-1)", stroke: "var(--card)", strokeWidth: 2 }} />
+      </LineChart>
+    </KontainerGrafik>
   );
 }
 
@@ -194,34 +204,31 @@ export function GrafikGarisMulti({ label, seri, format, tinggi = 240, ambang, do
 }) {
   const data = label.map((l, j) => Object.fromEntries([["label", l], ...seri.map((s, i) => [`s${i}`, s.nilai[j]])]));
   return (
-    <div style={{ height: tinggi }} className="group relative">
-      <KerangkaGrafik />
-      <ResponsiveContainer>
-        <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
-          {GRID}
-          <XAxis dataKey="label" {...SUMBU} interval="preserveStartEnd" minTickGap={16} />
-          <YAxis {...SUMBU} width={40} domain={domain ?? ["auto", "auto"]} tickFormatter={(v: number) => fmt(format, v, true)} />
-          {ambang?.map((a) => (
-            <ReferenceLine key={a.nilai} y={a.nilai} stroke="var(--border)" strokeWidth={1}
-              label={{ value: a.label, position: "insideTopRight", fontSize: 10, fill: "var(--muted-foreground)" }} />
-          ))}
-          <Tooltip
-            cursor={{ stroke: "var(--border)" }}
-            content={({ active, payload, label: l }: IsiTooltip) =>
-              active && payload?.length ? (
-                <KotakTooltip judul={String(l)} baris={seri.map((s, i) => {
-                  const v = (payload[0].payload as Record<string, number | null>)[`s${i}`];
-                  return { label: s.label, nilai: v == null ? "–" : fmt(format, v), warna: s.warna };
-                })} />
-              ) : null}
-          />
-          {seri.map((s, i) => (
-            <Line key={i} type="monotone" dataKey={`s${i}`} stroke={s.warna} strokeWidth={2} isAnimationActive={false}
-              connectNulls dot={false} activeDot={{ r: 5, fill: s.warna, stroke: "var(--card)", strokeWidth: 2 }} />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <KontainerGrafik tinggi={tinggi}>
+      <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
+        {GRID}
+        <XAxis dataKey="label" {...SUMBU} interval="preserveStartEnd" minTickGap={16} />
+        <YAxis {...SUMBU} width={40} domain={domain ?? ["auto", "auto"]} tickFormatter={(v: number) => fmt(format, v, true)} />
+        {ambang?.map((a) => (
+          <ReferenceLine key={a.nilai} y={a.nilai} stroke="var(--border)" strokeWidth={1}
+            label={{ value: a.label, position: "insideTopRight", fontSize: 10, fill: "var(--muted-foreground)" }} />
+        ))}
+        <Tooltip
+          cursor={{ stroke: "var(--border)" }}
+          content={({ active, payload, label: l }: IsiTooltip) =>
+            active && payload?.length ? (
+              <KotakTooltip judul={String(l)} baris={seri.map((s, i) => {
+                const v = (payload[0].payload as Record<string, number | null>)[`s${i}`];
+                return { label: s.label, nilai: v == null ? "–" : fmt(format, v), warna: s.warna };
+              })} />
+            ) : null}
+        />
+        {seri.map((s, i) => (
+          <Line key={i} type="monotone" dataKey={`s${i}`} stroke={s.warna} strokeWidth={2} isAnimationActive={false}
+            connectNulls dot={false} activeDot={{ r: 5, fill: s.warna, stroke: "var(--card)", strokeWidth: 2 }} />
+        ))}
+      </LineChart>
+    </KontainerGrafik>
   );
 }
 
@@ -234,31 +241,28 @@ export function GrafikTumpuk({ data, seri, tinggi = 260 }: {
   tinggi?: number;
 }) {
   return (
-    <div style={{ height: tinggi }} className="group relative">
-      <KerangkaGrafik />
-      <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-          {GRID}
-          <XAxis dataKey="label" {...SUMBU} />
-          <YAxis {...SUMBU} width={36} allowDecimals={false} />
-          <Tooltip
-            cursor={{ fill: "var(--muted)", opacity: 0.6 }}
-            content={({ active, payload, label }: IsiTooltip) => {
-              if (!active || !payload?.length) return null;
-              const isi = seri
-                .map((s) => ({ label: s.label, nilai: Number((payload[0].payload as Record<string, number>)[s.kunci] ?? 0), warna: s.warna }))
-                .filter((b) => b.nilai > 0);
-              return <KotakTooltip judul={String(label)} baris={isi.map((b) => ({ ...b, nilai: angka(b.nilai) }))} />;
-            }}
-          />
-          {seri.map((s, i) => (
-            <Bar key={s.kunci} dataKey={s.kunci} stackId="a" fill={s.warna} barSize={24} isAnimationActive={false}
-              stroke="var(--card)" strokeWidth={2}
-              radius={i === seri.length - 1 ? [4, 4, 0, 0] : 0} />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <KontainerGrafik tinggi={tinggi}>
+      <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+        {GRID}
+        <XAxis dataKey="label" {...SUMBU} />
+        <YAxis {...SUMBU} width={36} allowDecimals={false} />
+        <Tooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.6 }}
+          content={({ active, payload, label }: IsiTooltip) => {
+            if (!active || !payload?.length) return null;
+            const isi = seri
+              .map((s) => ({ label: s.label, nilai: Number((payload[0].payload as Record<string, number>)[s.kunci] ?? 0), warna: s.warna }))
+              .filter((b) => b.nilai > 0);
+            return <KotakTooltip judul={String(label)} baris={isi.map((b) => ({ ...b, nilai: angka(b.nilai) }))} />;
+          }}
+        />
+        {seri.map((s, i) => (
+          <Bar key={s.kunci} dataKey={s.kunci} stackId="a" fill={s.warna} barSize={24} isAnimationActive={false}
+            stroke="var(--card)" strokeWidth={2}
+            radius={i === seri.length - 1 ? [4, 4, 0, 0] : 0} />
+        ))}
+      </BarChart>
+    </KontainerGrafik>
   );
 }
 

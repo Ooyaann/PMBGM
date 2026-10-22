@@ -72,6 +72,12 @@ function waktuLokal(tanggal: Date) {
   return geser.toISOString().slice(0, 16);
 }
 
+function amanIso(nilai: string): string {
+  if (!nilai) return "";
+  const t = new Date(nilai);
+  return Number.isNaN(t.getTime()) ? "" : t.toISOString();
+}
+
 const kelasInput =
   "h-12 w-full rounded-xl border border-input bg-background px-3.5 text-base focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none aria-invalid:border-destructive";
 
@@ -127,7 +133,7 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
     if (t === 1 && !draf.sekolah) g.sekolah = "Pilih sekolah dari daftar.";
     if (t === 2) {
       const cek = skemaLaporan.pick({ waktuKejadian: true, jumlahTerdampak: true, deskripsi: true }).safeParse({
-        waktuKejadian: draf.waktu ? new Date(draf.waktu).toISOString() : "",
+        waktuKejadian: amanIso(draf.waktu),
         jumlahTerdampak: draf.jumlah === "" ? 0 : Number(draf.jumlah),
         deskripsi: draf.deskripsi,
       });
@@ -158,7 +164,7 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
     const hasil = await kirimLaporan({
       kategori: draf.kategori!,
       sekolahId: draf.sekolah!.id,
-      waktuKejadian: new Date(draf.waktu).toISOString(),
+      waktuKejadian: amanIso(draf.waktu) || new Date().toISOString(),
       jumlahTerdampak: Number(draf.jumlah || 0),
       deskripsi: draf.deskripsi,
       lokasi: draf.lokasi,

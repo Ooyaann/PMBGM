@@ -26,6 +26,10 @@ delete SKEMA_JSON.$schema;
 const MODEL_KECIL = process.env.GEMINI_MODEL_KECIL || "gemini-3.5-flash-lite";
 const MODEL_UTAMA = process.env.GEMINI_MODEL_UTAMA || "gemini-3.8-flash";
 const AMBANG_YAKIN = 0.7;
+// Diukur Oktober 2026 di tier gratis: flash-lite < 1 detik, 3.8 Flash antre sekitar 60 detik.
+// Berjalan di latar belakang (after), jadi model utama boleh menunggu lebih lama.
+const BATAS_KECIL_MS = 20_000;
+const BATAS_UTAMA_MS = 90_000;
 
 const SISTEM = `Anda membantu verifikator PantauGizi memilah laporan warga tentang program Makan Bergizi Gratis (MBG) di sekolah.
 Pilih satu kategori:
@@ -43,7 +47,7 @@ export interface KlasifikasiAi extends Saran {
   diperiksa_ulang: boolean;
 }
 
-async function tanya(ai: GoogleGenAI, model: string, isi: string, pikir: "minimal" | "low"): Promise<Saran | null> {
+async function tanya(ai: GoogleGenAI, model: string, isi: string, pikir: "minimal" | "low", batasMs: number): Promise<Saran | null> {
   try {
     const hasil = await ai.interactions.create({
       model,
@@ -52,7 +56,8 @@ async function tanya(ai: GoogleGenAI, model: string, isi: string, pikir: "minima
       response_format: { type: "text", mime_type: "application/json", schema: SKEMA_JSON },
       generation_config: { thinking_level: pikir, max_output_tokens: 1024 },
       store: false,
-    }, { timeout_ms: 20_000 });
+    // Tanpa pengulangan otomatis SDK: rantai model sendiri yang menjadi cadangan.
+    }, { timeout_ms: batasMs, retries: { strategy: "none" } });
     const v = SkemaSaran.safeParse(JSON.parse(hasil.output_text ?? ""));
     return v.success ? v.data : null;
   } catch (galat) {
@@ -73,12 +78,12 @@ export async function klasifikasiDenganAi(deskripsi: string, jumlahTerdampak: nu
   const ai = new GoogleGenAI({ apiKey: kunci });
   const isi = `Kategori pilihan pelapor: ${kategoriPelapor}\nJumlah terdampak: ${jumlahTerdampak}\n\n<laporan>\n${deskripsi}\n</laporan>`;
 
-  const kecil = await tanya(ai, MODEL_KECIL, isi, "minimal");
+  const kecil = await tanya(ai, MODEL_KECIL, isi, "minimal", BATAS_KECIL_MS);
   const perluUlang = !kecil || kecil.yakin < AMBANG_YAKIN || kecil.urgensi === "darurat" || kecil.kategori_saran !== kategoriPelapor;
   if (kecil && !perluUlang) return { ...kecil, metode: "ai", model: MODEL_KECIL, diperiksa_ulang: false };
 
   // gemini-3.8-flash tidak menerima thinking "minimal"; "low" cukup untuk klasifikasi.
-  const utama = await tanya(ai, MODEL_UTAMA, isi, "low");
+  const utama = await tanya(ai, MODEL_UTAMA, isi, "low", BATAS_UTAMA_MS);
   if (utama) return { ...utama, metode: "ai", model: MODEL_UTAMA, diperiksa_ulang: Boolean(kecil) };
   return kecil ? { ...kecil, metode: "ai", model: MODEL_KECIL, diperiksa_ulang: false } : null;
 }

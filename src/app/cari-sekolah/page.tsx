@@ -20,19 +20,34 @@ const JENJANG: Record<string, string> = { paud: "PAUD/TK", sd: "SD", smp: "SMP",
 async function Hasil({ searchParams }: { searchParams: PageProps<"/cari-sekolah">["searchParams"] }) {
   const { q } = await searchParams;
   const kueri = typeof q === "string" ? q.slice(0, 80) : "";
-  if (kueri.trim().length < 2) {
-    return (
-      <p className="flex items-center justify-center gap-2 rounded-3xl border border-dashed p-10 text-sm text-muted-foreground">
-        <School className="size-5" aria-hidden /> Ketik minimal 2 huruf nama sekolah atau NPSN
-      </p>
-    );
-  }
   const hasil = await cariSekolah(kueri);
   if (!hasil.length) {
-    return <p className="rounded-3xl border bg-card p-10 text-center text-sm text-muted-foreground">Sekolah “{kueri}” tidak ditemukan</p>;
+    return (
+      <div className="rounded-3xl border bg-card p-10 text-center text-sm text-muted-foreground">
+        <p>Sekolah “{kueri}” tidak ditemukan</p>
+        <Link href="/cari-sekolah" className="mt-2 inline-block font-semibold text-primary hover:underline">
+          Tampilkan semua sekolah
+        </Link>
+      </div>
+    );
   }
   return (
-    <ul className="grid gap-3 md:grid-cols-2" aria-live="polite">
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted-foreground">
+        <p>
+          {kueri ? (
+            <>Menampilkan <strong className="text-foreground">{hasil.length}</strong> sekolah untuk “<strong className="text-foreground">{kueri}</strong>”</>
+          ) : (
+            <>Menampilkan seluruh <strong className="text-foreground">{hasil.length}</strong> sekolah terdaftar di Kota Semarang</>
+          )}
+        </p>
+        {kueri && (
+          <Link href="/cari-sekolah" className="text-xs font-semibold text-primary hover:underline">
+            Tampilkan semua
+          </Link>
+        )}
+      </div>
+      <ul className="grid gap-3 md:grid-cols-2" aria-live="polite">
       {hasil.map((s) => (
         <li key={s.id} className="flex flex-col gap-4 rounded-3xl border bg-card p-5">
           <div className="flex items-start gap-3">
@@ -69,6 +84,7 @@ async function Hasil({ searchParams }: { searchParams: PageProps<"/cari-sekolah"
         </li>
       ))}
     </ul>
+    </div>
   );
 }
 
