@@ -23,162 +23,265 @@ import {
   ShieldAlert,
   ShieldCheck,
   Sparkles,
-  Star,
   Users,
   UtensilsCrossed,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { InfoMetrik } from "@/components/ui/info-metrik";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-interface KartuPanduan {
+interface ItemPanduan {
   id: string;
   kategori: "lapor" | "aktor" | "metrik" | "keamanan" | "status" | "pintasan";
   judul: string;
-  subjudul: string;
+  ringkasan: string;
+  badgeRingkas: string[];
   ikon: LucideIcon;
   warnaAksen: string;
   warnaBg: string;
-  kontenUtama: React.ReactNode;
-  tautan?: { href: string; label: string };
+  warnaBorder: string;
+  kontenModal: React.ReactNode;
+  tautanAksi?: { href: string; label: string };
   kataKunci: string[];
 }
 
 const KATEGORI = [
-  { id: "semua", label: "Semua Panduan" },
-  { id: "lapor", label: "Tahapan Lapor" },
-  { id: "aktor", label: "Pihak & Wewenang" },
-  { id: "metrik", label: "Kamus Label & Metrik" },
+  { id: "semua", label: "Semua Topik" },
+  { id: "lapor", label: "Cara Melapor" },
+  { id: "aktor", label: "Pihak Penanggung Jawab" },
+  { id: "metrik", label: "Arti Angka & Label" },
   { id: "keamanan", label: "Anti-Manipulasi" },
-  { id: "status", label: "Status & Batas Waktu" },
-  { id: "pintasan", label: "Pintasan Fitur" },
+  { id: "status", label: "Status Tiket & SLA" },
+  { id: "pintasan", label: "Peta Fitur" },
 ] as const;
 
 export function DasborPanduan() {
   const [kueri, setKueri] = useState("");
   const [kategoriAktif, setKategoriAktif] = useState<string>("semua");
+  const [kartuTerpilih, setKartuTerpilih] = useState<ItemPanduan | null>(null);
 
-  const DAFTAR_KARTU: KartuPanduan[] = [
-    // 1. TAHAPAN LAPOR
+  const DAFTAR_KARTU: ItemPanduan[] = [
+    // 1. CARA MELAPOR
     {
-      id: "tahapan-lapor",
+      id: "cara-melapor",
       kategori: "lapor",
       judul: "Alur & Tahapan Melapor",
-      subjudul: "Panduan langkah demi langkah warga & guru melapor masalah menu makanan.",
+      ringkasan: "Panduan 4 langkah mudah dari kirim foto bukti makanan hingga menerima kode tiket unik.",
+      badgeRingkas: ["4 Langkah Mudah", "Opsi Anonim & Rahasia", "Mode Darurat 2 Jam"],
       ikon: Megaphone,
-      warnaAksen: "text-emerald-700 dark:text-emerald-400",
-      warnaBg: "bg-emerald-500/10 border-emerald-500/20",
+      warnaAksen: "text-emerald-700 dark:text-emerald-300",
+      warnaBg: "bg-emerald-500/10",
+      warnaBorder: "hover:border-emerald-500/50 hover:shadow-emerald-500/10",
       kataKunci: ["lapor", "foto", "bukti", "anonim", "rahasia", "tiket", "keracunan", "darurat", "tahapan"],
-      tautan: { href: "/lapor", label: "Buka Formulir Lapor" },
-      kontenUtama: (
-        <div className="space-y-3 text-xs leading-relaxed text-muted-foreground">
-          <div className="space-y-2">
-            <div className="flex gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-bold text-white">1</span>
-              <div>
-                <strong className="text-foreground">Ambil Foto Bukti Nyata:</strong> Foto makanan dengan jelas (porsi kurang, bau basi, kemasan rusak, atau benda asing). Foto otomatis dibersihkan dari metadata privasi lokasi.
+      tautanAksi: { href: "/lapor", label: "Buka Formulir Lapor Sekarang" },
+      kontenModal: (
+        <div className="space-y-6 text-foreground/90">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Warga dan bapak/ibu guru dapat melaporkan segala permasalahan menu makanan MBG secara aman. Sistem kami secara otomatis melindungi privasi pelapor.
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex gap-4 rounded-2xl border bg-muted/30 p-4 sm:p-5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-sm font-extrabold text-white">
+                1
+              </span>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-foreground">Ambil Foto Bukti Nyata</h4>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Foto makanan dengan jelas (misal: porsi terlalu sedikit, basi/asam, kemasan rusak, atau ada benda asing). Sistem otomatis membersihkan data lokasi pribadi dari foto.
+                </p>
               </div>
             </div>
-            <div className="flex gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-bold text-white">2</span>
-              <div>
-                <strong className="text-foreground">Pilih Sekolah:</strong> Tentukan sekolah penerima. Sistem akan langsung menghubungkan ke dapur SPPG penyedia tanpa Anda perlu tahu alamat dapurnya.
+
+            <div className="flex gap-4 rounded-2xl border bg-muted/30 p-4 sm:p-5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-sm font-extrabold text-white">
+                2
+              </span>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-foreground">Pilih Nama Sekolah Penerima</h4>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Cukup ketik nama sekolah anak Anda. Sistem secara otomatis menautkan ke dapur SPPG penyedia makanan tanpa Anda perlu mencari tahu lokasi dapurnya.
+                </p>
               </div>
             </div>
-            <div className="flex gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-bold text-white">3</span>
-              <div>
-                <strong className="text-foreground">Pilih Tingkat Privasi:</strong> Anda bebas memilih nama terbuka, nama rahasia (hanya dilihat verifikator), atau pelapor anonim.
+
+            <div className="flex gap-4 rounded-2xl border bg-muted/30 p-4 sm:p-5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-sm font-extrabold text-white">
+                3
+              </span>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-foreground">Tentukan Privasi Identitas Anda</h4>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Anda memiliki kendali penuh: bisa melapor dengan nama terbuka, opsi <strong>Rahasia</strong> (hanya dilihat verifikator resmi), atau sepenuhnya <strong>Anonim</strong>.
+                </p>
               </div>
             </div>
-            <div className="flex gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-bold text-white">4</span>
-              <div>
-                <strong className="text-foreground">Dapatkan Kode Tiket:</strong> Simpan 8 karakter kode tiket (misal <span className="font-mono font-semibold text-foreground">#MBG-7821</span>) untuk memantau kemajuan tindak lanjut di menu Lacak.
+
+            <div className="flex gap-4 rounded-2xl border bg-muted/30 p-4 sm:p-5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-sm font-extrabold text-white">
+                4
+              </span>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-foreground">Simpan Kode Tiket Pemantauan</h4>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Setelah terkirim, Anda menerima 8 digit kode tiket unik (contoh: <span className="font-mono font-bold text-foreground">#MBG-7821</span>) untuk memantau kemajuan tindakan di menu Lacak.
+                </p>
               </div>
             </div>
           </div>
-          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-2.5 text-rose-800 dark:text-rose-300">
-            <strong>Mode Darurat:</strong> Jika ada anak muntah, diare, atau pingsan, aktifkan tombol darurat keracunan. SLA respons langsung dipersingkat menjadi maksimal 2 jam dengan rujukan medis instan.
+
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 sm:p-5 text-rose-950 dark:text-rose-200">
+            <h4 className="flex items-center gap-2 font-bold text-sm sm:text-base">
+              <ShieldAlert className="size-5 text-rose-600 dark:text-rose-400" />
+              Khusus Keadaan Darurat Medis / Keracunan
+            </h4>
+            <p className="mt-1.5 text-xs sm:text-sm leading-relaxed">
+              Jika siswa mengalami gejala muntah, diare massal, atau pingsan, centang tombol <strong>Darurat Keracunan</strong>. Laporan langsung dialirkan ke jalur prioritas tinggi dengan batas waktu respon 2 jam dan tembusan medis instan ke Dinas Kesehatan Kota.
+            </p>
           </div>
         </div>
       ),
     },
 
-    // 2. PIHAK & WEWENANG
+    // 2. PIHAK PENANGGUNG JAWAB
     {
-      id: "pihak-wewenang",
+      id: "pihak-penanggung-jawab",
       kategori: "aktor",
-      judul: "Siapa yang Memproses Laporan?",
-      subjudul: "Pembagian tugas terarah tanpa birokrasi berbelit dan tanpa perantara manual.",
+      judul: "Siapa yang Menangani Laporan?",
+      ringkasan: "Pembagian tugas terarah antara verifikator independen, dapur SPPG, Dinas Kesehatan, dan Korwil BGN.",
+      badgeRingkas: ["Verifikator Independen", "Dapur SPPG", "Dinas Kesehatan", "Korwil BGN"],
       ikon: Users,
-      warnaAksen: "text-teal-700 dark:text-teal-400",
-      warnaBg: "bg-teal-500/10 border-teal-500/20",
-      kataKunci: ["aktor", "pihak", "verifikator", "sppg", "dinkes", "bgn", "wewenang", "independen"],
-      tautan: { href: "/tentang", label: "Pelajari Tata Kelola" },
-      kontenUtama: (
-        <div className="space-y-2 text-xs leading-relaxed text-muted-foreground">
-          <div className="rounded-lg border bg-card p-2.5">
-            <span className="font-semibold text-foreground">1. Tim Verifikator Wilayah:</span>
-            <p className="mt-0.5">Tim independen yang memeriksa keabsahan foto bukti, memastikan bukan hoaks, dan menggabungkan aduan serupa sebelum diteruskan ke dapur.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <span className="font-semibold text-foreground">2. Pengelola Dapur SPPG:</span>
-            <p className="mt-0.5">Penanggung jawab operasional yang wajib memperbaiki menu, mensterilkan alat, dan mengunggah foto bukti perbaikan nyata.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <span className="font-semibold text-foreground">3. Dinas Kesehatan Kab/Kota:</span>
-            <p className="mt-0.5">Otoritas medis yang langsung menangani investigasi keracunan, pengujian laboratorium sampel makanan, dan evaluasi izin SLHS dapur.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <span className="font-semibold text-foreground">4. Korwil BGN (Badan Gizi Nasional):</span>
-            <p className="mt-0.5">Pengawas wilayah yang memantau batas waktu respon (SLA) semua dapur dan menegur dapur yang lambat menindaklanjuti.</p>
+      warnaAksen: "text-teal-700 dark:text-teal-300",
+      warnaBg: "bg-teal-500/10",
+      warnaBorder: "hover:border-teal-500/50 hover:shadow-teal-500/10",
+      kataKunci: ["aktor", "pihak", "verifikator", "sppg", "dinkes", "bgn", "wewenang", "independen", "penanggung"],
+      tautanAksi: { href: "/tentang", label: "Pelajari Struktur Tata Kelola" },
+      kontenModal: (
+        <div className="space-y-5 text-foreground/90">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            PMBGM tidak menggunakan perantara admin manual yang lambat. Setiap pihak memiliki tugas dan batas wewenang yang tegas:
+          </p>
+
+          <div className="space-y-3.5">
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-300 font-bold text-xs">
+                  A
+                </span>
+                <h4 className="font-bold text-foreground text-sm sm:text-base">Tim Verifikator Wilayah (Independen)</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground pl-9">
+                Bertugas memverifikasi keaslian foto bukti, menyaring laporan palsu/spam, dan menggabungkan aduan serupa dari sekolah yang sama sebelum diteruskan ke dapur.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-300 font-bold text-xs">
+                  B
+                </span>
+                <h4 className="font-bold text-foreground text-sm sm:text-base">Pengelola Dapur SPPG Mitra</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground pl-9">
+                Penanggung jawab utama masakan yang wajib memperbaiki porsi menu, mensterilkan alat dapur, mengganti bahan segar, serta <strong>wajib mengunggah foto bukti fisik perbaikan</strong>.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-300 font-bold text-xs">
+                  C
+                </span>
+                <h4 className="font-bold text-foreground text-sm sm:text-base">Dinas Kesehatan Kab/Kota</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground pl-9">
+                Otoritas medis yang langsung diterjunkan untuk investigasi keracunan, pengujian laboratorium sampel makanan, evaluasi izin Sertifikat Laik Higiene Sanitasi (SLHS), dan menerbitkan Berita Acara Pemeriksaan (BAP).
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-300 font-bold text-xs">
+                  D
+                </span>
+                <h4 className="font-bold text-foreground text-sm sm:text-base">Korwil BGN (Badan Gizi Nasional)</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground pl-9">
+                Pengawas wilayah yang memantau ketepatan waktu penanganan aduan (SLA) semua dapur di kota dan melakukan intervensi teguran bila ada dapur yang mengabaikan aduan warga.
+              </p>
+            </div>
           </div>
         </div>
       ),
     },
 
-    // 3. KAMUS METRIK & LABEL
+    // 3. KAMUS ANGKA & LABEL
     {
-      id: "kamus-metrik",
+      id: "arti-angka-label",
       kategori: "metrik",
       judul: "Kamus Angka, Label & Metrik",
-      subjudul: "Penjelasan lengkap ramah awam tanpa rumus rumit atau jargon membingungkan.",
+      ringkasan: "Penjelasan arti Skor Risiko 0–100, status SLHS Dinkes, waktu tanggap, dan sinyal lonjakan.",
+      badgeRingkas: ["Skor Risiko 0–100", "Izin SLHS", "Waktu Tanggap", "Sinyal Lonjakan"],
       ikon: HelpCircle,
-      warnaAksen: "text-blue-700 dark:text-blue-400",
-      warnaBg: "bg-blue-500/10 border-blue-500/20",
+      warnaAksen: "text-blue-700 dark:text-blue-300",
+      warnaBg: "bg-blue-500/10",
+      warnaBorder: "hover:border-blue-500/50 hover:shadow-blue-500/10",
       kataKunci: ["metrik", "skor", "risiko", "slhs", "tanggap", "selesai", "terlambat", "sinyal", "arti", "kamus"],
-      tautan: { href: "/metodologi", label: "Buka Metodologi Terbuka" },
-      kontenUtama: (
-        <div className="space-y-2 text-xs leading-relaxed text-muted-foreground">
-          <div className="flex items-start gap-2 rounded-lg border bg-card p-2.5">
-            <InfoMetrik jenis="risiko" className="mt-0.5" />
-            <div>
-              <strong className="text-foreground">Indeks Risiko Dapur (0–100):</strong>
-              <p>Makin rendah makin aman. 0–39 Rendah (Aman), 40–69 Sedang (Waspada), 70+ Tinggi (Prioritas Pengawasan). Dihitung otomatis dari 5 faktor: aduan warga, keracunan, sertifikat sanitasi, ketepatan waktu, dan rating kepuasan.</p>
+      tautanAksi: { href: "/metodologi", label: "Lihat Rumus Matematis Terbuka" },
+      kontenModal: (
+        <div className="space-y-5 text-foreground/90">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Seluruh data di PMBGM dirancang transparan agar warga awam dapat langsung menilai kondisi dapur yang memasak makanan untuk anak-anaknya:
+          </p>
+
+          <div className="space-y-3.5">
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-2">
+              <h4 className="font-bold text-foreground text-sm sm:text-base">1. Indeks Risiko Dapur (Skala 0–100)</h4>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Tingkat kerentanan dapur. <strong>Makin rendah angkanya, makin aman dan sehat dapurnya</strong>. Dihitung otomatis dari jumlah aduan warga, kasus keracunan, kelengkapan izin sanitasi, ketepatan waktu respon, dan kepuasan orang tua.
+              </p>
+              <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3">
+                <div className="rounded-xl bg-emerald-500/15 p-2.5 text-center text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+                  0–39: Rendah (Aman)
+                </div>
+                <div className="rounded-xl bg-amber-500/15 p-2.5 text-center text-xs font-semibold text-amber-800 dark:text-amber-300">
+                  40–69: Sedang (Waspada)
+                </div>
+                <div className="rounded-xl bg-rose-500/15 p-2.5 text-center text-xs font-semibold text-rose-800 dark:text-rose-300">
+                  70+: Tinggi (Perlu Evaluasi)
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex items-start gap-2 rounded-lg border bg-card p-2.5">
-            <InfoMetrik jenis="slhs" className="mt-0.5" />
-            <div>
-              <strong className="text-foreground">SLHS (Sertifikat Laik Higiene Sanitasi):</strong>
-              <p>Sertifikat resmi kelayakan air, tempat masak, dan kebersihan alat dari Dinas Kesehatan. Dapur tanpa SLHS otomatis mendapat penalti risiko tinggi.</p>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1.5">
+              <h4 className="font-bold text-foreground text-sm sm:text-base">2. SLHS (Sertifikat Laik Higiene Sanitasi)</h4>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Bukti inspeksi resmi dari Dinas Kesehatan bahwa sumber air, tempat masak, dan ventilasi dapur memenuhi standar kebersihan pangan. Dapur tanpa SLHS otomatis mendapat penalti risiko tinggi.
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-2 rounded-lg border bg-card p-2.5">
-            <InfoMetrik jenis="tanggap" className="mt-0.5" />
-            <div>
-              <strong className="text-foreground">Waktu Tanggap:</strong>
-              <p>Rata-rata waktu (jam) yang dibutuhkan dapur memberikan tanggapan resmi sejak aduan dinyatakan lolos verifikasi.</p>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1.5">
+              <h4 className="font-bold text-foreground text-sm sm:text-base">3. Waktu Tanggap & Tingkat Selesai</h4>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                <strong>Waktu Tanggap:</strong> Berapa jam yang dibutuhkan dapur memberi respon pertama sejak laporan diverifikasi. <br />
+                <strong>Tingkat Selesai:</strong> Persentase laporan yang telah diselesaikan tuntas dengan bukti foto nyata.
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-2 rounded-lg border bg-card p-2.5">
-            <InfoMetrik jenis="sinyal" className="mt-0.5" />
-            <div>
-              <strong className="text-foreground">Sinyal Lonjakan Peringatan Dini:</strong>
-              <p>Deteksi otomatis jika aduan untuk 1 dapur melonjak lebih dari 3× rata-rata harian dalam 24 jam terakhir. Mencegah KLB meluas.</p>
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1.5">
+              <h4 className="font-bold text-foreground text-sm sm:text-base">4. Sinyal Lonjakan Aduan</h4>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Deteksi otomatis saat aduan untuk satu dapur melonjak melebihi 3× rata-rata harian dalam 24 jam terakhir. Sinyal ini memicu verifikasi lapangan cepat bersama Dinas Kesehatan.
+              </p>
             </div>
           </div>
         </div>
@@ -187,134 +290,228 @@ export function DasborPanduan() {
 
     // 4. JAMINAN ANTI-MANIPULASI
     {
-      id: "anti-manipulasi",
+      id: "jaminan-anti-manipulasi",
       kategori: "keamanan",
-      judul: "Jaminan Anti-Manipulasi & Integritas",
-      subjudul: "Bagaimana sistem menjamin laporan ditindaklanjuti sungguhan, bukan sekadar janji di atas kertas.",
+      judul: "Jaminan Anti-Manipulasi Tindakan",
+      ringkasan: "Bagaimana platform memastikan dapur benar-benar melakukan perbaikan nyata di lapangan.",
+      badgeRingkas: ["Foto Fisik Wajib", "Masa Sanggah 3 Hari", "Kunci BAP Dinkes", "Jejak Audit Kekal"],
       ikon: ShieldCheck,
-      warnaAksen: "text-purple-700 dark:text-purple-400",
-      warnaBg: "bg-purple-500/10 border-purple-500/20",
+      warnaAksen: "text-purple-700 dark:text-purple-300",
+      warnaBg: "bg-purple-500/10",
+      warnaBorder: "hover:border-purple-500/50 hover:shadow-purple-500/10",
       kataKunci: ["manipulasi", "transparansi", "bukti", "foto", "sanggah", "bap", "dinkes", "rating", "keamanan"],
-      tautan: { href: "/lacak/akuntabilitas", label: "Lihat Papan Akuntabilitas" },
-      kontenUtama: (
-        <div className="space-y-2 text-xs leading-relaxed text-muted-foreground">
-          <div className="rounded-lg border bg-card p-2.5">
-            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-              <Camera className="size-3.5 text-primary" /> 1. Wajib Unggah Foto Fisik Perbaikan
+      tautanAksi: { href: "/lacak/akuntabilitas", label: "Lihat Papan Akuntabilitas Terbuka" },
+      kontenModal: (
+        <div className="space-y-5 text-foreground/90">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Kami membangun sistem dengan transparansi dua arah sehingga tidak ada pihak yang dapat memanipulasi penyelesaian kasus:
+          </p>
+
+          <div className="space-y-3.5">
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <Camera className="size-4 text-primary" />
+                <h4 className="font-bold text-foreground text-sm sm:text-base">1. Wajib Unggah Foto Fisik Perbaikan</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Dapur dilarang menutup aduan hanya dengan kata-kata manis. Setiap tindakan perbaikan wajib melampirkan foto fisik (alat yang dibersihkan, penggantian menu baru, atau nota bahan) yang langsung tampil di linimasa publik kasus.
+              </p>
             </div>
-            <p className="mt-1">Dapur dilarang menutup aduan hanya dengan kata-kata. Dapur wajib mengunggah foto dapur bersih, penggantian menu, atau nota bahan baru yang langsung tampil di linimasa publik kasus.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-              <RotateCcw className="size-3.5 text-primary" /> 2. Masa Sanggah 3 Hari bagi Pelapor
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <RotateCcw className="size-4 text-primary" />
+                <h4 className="font-bold text-foreground text-sm sm:text-base">2. Hak Masa Sanggah 3 Hari bagi Pelapor</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Ketika pihak dapur menyatakan laporan sudah &quot;Selesai&quot;, status belum ditutup permanen. Pelapor memiliki waktu 3 hari untuk mengonfirmasi hasil, memberi nilai rating bintang 1–5, atau <strong>membuka sanggahan</strong> bila di sekolah anak masalah belum tuntas.
+              </p>
             </div>
-            <p className="mt-1">Saat dapur menandai laporan selesai, status belum final. Pelapor memiliki waktu 3 hari untuk mengonfirmasi perbaikan, memberi rating bintang 1–5, atau membuka sanggahan jika makanan masih bermasalah.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-              <Lock className="size-3.5 text-primary" /> 3. Kasus Keracunan Dikunci Dinkes
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <Lock className="size-4 text-primary" />
+                <h4 className="font-bold text-foreground text-sm sm:text-base">3. Kasus Keracunan Dikunci Dinkes</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Kasus keracunan makanan dikunci oleh sistem dan tidak dapat diselesaikan secara sepihak oleh pengelola dapur. Kasus hanya dapat ditutup setelah petugas Dinas Kesehatan mengunggah Berita Acara Pemeriksaan (BAP) resmi.
+              </p>
             </div>
-            <p className="mt-1">Kasus keracunan makanan tidak bisa diselesaikan sepihak oleh dapur SPPG. Hanya verifikator Dinas Kesehatan yang berhak menutup kasus setelah Berita Acara Pemeriksaan (BAP) selesai.</p>
-          </div>
-          <div className="rounded-lg border bg-card p-2.5">
-            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-              <Scale className="size-3.5 text-primary" /> 4. Jejak Audit Tak Terhapus (Immutable)
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-1">
+              <div className="flex items-center gap-2">
+                <Scale className="size-4 text-primary" />
+                <h4 className="font-bold text-foreground text-sm sm:text-base">4. Catatan Waktu Tidak Dapat Dihapus (Immutable Log)</h4>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Seluruh aktivitas perubahan status, jam tindakan, dan berkas foto tercatat permanen di database publik dan tidak dapat dihapus atau diubah diam-diam.
+              </p>
             </div>
-            <p className="mt-1">Semua riwayat perubahan status, jam tindakan, dan berkas foto tercatat permanen di database publik dan tidak dapat dihapus atau diubah diam-diam.</p>
           </div>
         </div>
       ),
     },
 
-    // 5. STATUS TIKET & BATAS WAKTU SLA
+    // 5. STATUS TIKET & SLA
     {
-      id: "status-sla",
+      id: "status-tiket-sla",
       kategori: "status",
-      judul: "Arti Status Tiket & Batas Waktu SLA",
-      subjudul: "Memahami 5 fase penanganan aduan dan jaminan batas waktu layanan resmi.",
+      judul: "Fase Status Tiket & Batas Waktu",
+      ringkasan: "Ketahui arti 5 status tiket Anda dan jaminan batas waktu respon resmi (SLA).",
+      badgeRingkas: ["Diterima (6 Jam)", "Diverifikasi (2 Jam)", "Diteruskan (6 Jam)", "Tindak Lanjut (3 Hari)"],
       ikon: Clock,
-      warnaAksen: "text-amber-700 dark:text-amber-400",
-      warnaBg: "bg-amber-500/10 border-amber-500/20",
+      warnaAksen: "text-amber-700 dark:text-amber-300",
+      warnaBg: "bg-amber-500/10",
+      warnaBorder: "hover:border-amber-500/50 hover:shadow-amber-500/10",
       kataKunci: ["status", "sla", "tiket", "lacak", "diterima", "diverifikasi", "diteruskan", "ditindaklanjuti", "selesai"],
-      tautan: { href: "/lacak", label: "Cek Status Tiket Anda" },
-      kontenUtama: (
-        <div className="space-y-2 text-xs leading-relaxed text-muted-foreground">
-          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-            <div className="rounded-lg border bg-card p-2">
-              <span className="font-semibold text-foreground">Diterima:</span> Laporan masuk sistem, sedang dalam antrean tim verifikasi (SLA: maksimal 6 jam).
+      tautanAksi: { href: "/lacak", label: "Cek Status Tiket Anda" },
+      kontenModal: (
+        <div className="space-y-5 text-foreground/90">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Setiap aduan yang masuk memiliki batas waktu pelayanan (SLA) resmi. Sistem otomatis menghitung mundur sisa waktu penanganan:
+          </p>
+
+          <div className="space-y-3">
+            <div className="rounded-2xl border bg-card p-4 sm:p-5">
+              <span className="font-bold text-foreground block text-sm sm:text-base">1. Status Diterima</span>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Laporan masuk ke sistem dan masuk ke antrean tim verifikator wilayah. <br />
+                <span className="font-semibold text-foreground">Batas waktu:</span> Maksimal 6 jam (atau 2 jam untuk darurat keracunan).
+              </p>
             </div>
-            <div className="rounded-lg border bg-card p-2">
-              <span className="font-semibold text-foreground">Diverifikasi:</span> Bukti dinyatakan valid dan laporan serupa telah digabung (SLA: 2 jam).
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5">
+              <span className="font-bold text-foreground block text-sm sm:text-base">2. Status Diverifikasi</span>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Foto bukti diperiksa keabsahannya dan laporan serupa telah digabungkan agar tidak tumpang tindih. <br />
+                <span className="font-semibold text-foreground">Batas waktu:</span> Maksimal 2 jam.
+              </p>
             </div>
-            <div className="rounded-lg border bg-card p-2">
-              <span className="font-semibold text-foreground">Diteruskan:</span> Otomatis dikirim ke SPPG & Dinas Kesehatan penanggung jawab (SLA: 6 jam).
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5">
+              <span className="font-bold text-foreground block text-sm sm:text-base">3. Status Diteruskan</span>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Sistem otomatis meneruskan tiket ke pengelola dapur SPPG dan Dinas Kesehatan wilayah terkait. <br />
+                <span className="font-semibold text-foreground">Batas waktu:</span> Maksimal 6 jam.
+              </p>
             </div>
-            <div className="rounded-lg border bg-card p-2">
-              <span className="font-semibold text-foreground">Ditindaklanjuti:</span> Dapur sedang melakukan perbaikan fisik menu/sanitasi (SLA: 3 hari kerja).
+
+            <div className="rounded-2xl border bg-card p-4 sm:p-5">
+              <span className="font-bold text-foreground block text-sm sm:text-base">4. Status Ditindaklanjuti</span>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Dapur sedang melakukan tindakan nyata (perbaikan menu, sterilisasi alat, atau penggantian bahan baku). <br />
+                <span className="font-semibold text-foreground">Batas waktu:</span> Maksimal 3 hari kerja.
+              </p>
             </div>
-          </div>
-          <div className="rounded-lg border border-primary/20 bg-secondary/30 p-2.5">
-            <strong className="text-foreground">Selesai & Masa Sanggah:</strong>
-            <p className="mt-0.5">Perbaikan selesai dengan unggahan foto bukti. Masuk masa konfirmasi 3 hari bagi pelapor sebelum tiket ditutup secara permanen.</p>
+
+            <div className="rounded-2xl border border-primary/30 bg-primary/10 p-4 sm:p-5">
+              <span className="font-bold text-foreground block text-sm sm:text-base">5. Status Selesai & Masa Sanggah</span>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Perbaikan dinyatakan tuntas dengan unggahan foto bukti fisik. Pelapor memiliki waktu 3 hari untuk memberikan konfirmasi dan penilaian rating sebelum status tiket ditutup permanen.
+              </p>
+            </div>
           </div>
         </div>
       ),
     },
 
-    // 6. PINTASAN FITUR & EKSPLORASI
+    // 6. PETA FITUR
     {
-      id: "pintasan-fitur",
+      id: "peta-fitur-situs",
       kategori: "pintasan",
       judul: "Pintasan Akses & Peta Informasi",
-      subjudul: "Akses cepat ke seluruh modul dan alat pengawasan terbuka PMBGM.",
+      ringkasan: "Akses cepat ke seluruh modul pengawasan publik, direktori dapur, dan unduh data terbuka.",
+      badgeRingkas: ["Cari Sekolah", "Direktori SPPG", "Peta Risiko", "Unduh Data CSV"],
       ikon: Compass,
-      warnaAksen: "text-cyan-700 dark:text-cyan-400",
-      warnaBg: "bg-cyan-500/10 border-cyan-500/20",
+      warnaAksen: "text-cyan-700 dark:text-cyan-300",
+      warnaBg: "bg-cyan-500/10",
+      warnaBorder: "hover:border-cyan-500/50 hover:shadow-cyan-500/10",
       kataKunci: ["pintasan", "fitur", "cari", "sekolah", "data", "insight", "faq", "privasi", "unduh"],
-      kontenUtama: (
-        <div className="grid grid-cols-2 gap-2 text-xs">
-          <Link href="/cari-sekolah" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <School className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Cari Sekolah</span>
-              <span className="text-[11px] text-muted-foreground">Cek SPPG penyuplai</span>
-            </div>
-          </Link>
-          <Link href="/data/sppg" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <UtensilsCrossed className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Direktori Dapur</span>
-              <span className="text-[11px] text-muted-foreground">Cek rapor kepatuhan</span>
-            </div>
-          </Link>
-          <Link href="/insight" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <Radar className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Peta Risiko</span>
-              <span className="text-[11px] text-muted-foreground">Analisis prioritas kota</span>
-            </div>
-          </Link>
-          <Link href="/data/unduh" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <BarChart3 className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Unduh Data</span>
-              <span className="text-[11px] text-muted-foreground">Dataset CSV & API terbuka</span>
-            </div>
-          </Link>
-          <Link href="/faq" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <FileText className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Tanya Jawab (FAQ)</span>
-              <span className="text-[11px] text-muted-foreground">Jawaban pertanyaan umum</span>
-            </div>
-          </Link>
-          <Link href="/privasi" className="flex items-center gap-2 rounded-lg border bg-card p-2.5 transition hover:border-primary">
-            <ShieldAlert className="size-4 text-primary" />
-            <div>
-              <span className="block font-semibold text-foreground">Privasi & Keamanan</span>
-              <span className="text-[11px] text-muted-foreground">Perlindungan pelapor</span>
-            </div>
-          </Link>
+      kontenModal: (
+        <div className="space-y-4">
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Gunakan tautan cepat di bawah ini untuk menjelajahi seluruh fitur yang ada di platform PMBGM:
+          </p>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Link
+              href="/cari-sekolah"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <School className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Cari Sekolah Anak</span>
+                <span className="text-xs text-muted-foreground">Ketahui SPPG mitra penyuplai makanan</span>
+              </div>
+            </Link>
+
+            <Link
+              href="/data/sppg"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <UtensilsCrossed className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Direktori Dapur SPPG</span>
+                <span className="text-xs text-muted-foreground">Cek rapor risiko & status izin sanitasi</span>
+              </div>
+            </Link>
+
+            <Link
+              href="/insight"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Radar className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Peta Risiko Wilayah</span>
+                <span className="text-xs text-muted-foreground">Analisis prioritas inspeksi se-kota</span>
+              </div>
+            </Link>
+
+            <Link
+              href="/data/unduh"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <BarChart3 className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Unduh Data Terbuka</span>
+                <span className="text-xs text-muted-foreground">Dataset resmi CSV & API terbuka</span>
+              </div>
+            </Link>
+
+            <Link
+              href="/faq"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <FileText className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Tanya Jawab (FAQ)</span>
+                <span className="text-xs text-muted-foreground">Jawaban pertanyaan umum masyarakat</span>
+              </div>
+            </Link>
+
+            <Link
+              href="/privasi"
+              className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 transition hover:border-primary hover:shadow-sm"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <ShieldAlert className="size-5" />
+              </span>
+              <div>
+                <span className="block font-bold text-foreground text-sm">Kebijakan Privasi</span>
+                <span className="text-xs text-muted-foreground">Jaminan keamanan data pelapor</span>
+              </div>
+            </Link>
+          </div>
         </div>
       ),
     },
@@ -326,33 +523,33 @@ export function DasborPanduan() {
       const cocokKategori = kategoriAktif === "semua" || k.kategori === kategoriAktif;
       if (!cocokKategori) return false;
       if (!q) return true;
-      const teksCocok =
+      return (
         k.judul.toLowerCase().includes(q) ||
-        k.subjudul.toLowerCase().includes(q) ||
-        k.kataKunci.some((kunci) => kunci.toLowerCase().includes(q));
-      return teksCocok;
+        k.ringkasan.toLowerCase().includes(q) ||
+        k.kataKunci.some((kunci) => kunci.toLowerCase().includes(q))
+      );
     });
   }, [kueri, kategoriAktif]);
 
   return (
     <div className="space-y-8">
-      {/* Search Bar & Filter Tabs */}
-      <div className="space-y-4 rounded-3xl border bg-card p-4 sm:p-6 shadow-sm">
+      {/* Search Bar & Filter Pills */}
+      <div className="space-y-4 rounded-3xl border bg-card p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <label className="flex h-12 flex-1 items-center gap-3 rounded-2xl border border-input bg-background px-4 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
+          <label className="flex h-12 flex-1 items-center gap-3 rounded-2xl border border-input bg-background px-4 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition">
             <Search className="size-5 text-muted-foreground shrink-0" aria-hidden />
             <input
               type="text"
               value={kueri}
               onChange={(e) => setKueri(e.target.value)}
-              placeholder="Cari topik (misal: cara lapor, rumus risiko, anti manipulasi, batas waktu, foto valid...)"
+              placeholder="Cari panduan (contoh: cara lapor, rumus skor risiko, masa sanggah, bukti foto, keracunan...)"
               className="h-full w-full bg-transparent text-sm placeholder:text-muted-foreground/70 focus:outline-none"
             />
             {kueri && (
               <button
                 type="button"
                 onClick={() => setKueri("")}
-                className="text-xs text-muted-foreground hover:text-foreground font-medium"
+                className="text-xs text-muted-foreground hover:text-foreground font-medium px-2 py-1 rounded-md"
               >
                 Reset
               </button>
@@ -360,7 +557,7 @@ export function DasborPanduan() {
           </label>
         </div>
 
-        {/* Filter Pills */}
+        {/* Filter Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar" role="tablist">
           {KATEGORI.map((kat) => (
             <button
@@ -369,9 +566,9 @@ export function DasborPanduan() {
               aria-selected={kategoriAktif === kat.id}
               onClick={() => setKategoriAktif(kat.id)}
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-4 text-xs font-semibold whitespace-nowrap transition",
+                "inline-flex h-9 items-center rounded-full px-4 text-xs font-semibold whitespace-nowrap transition-all",
                 kategoriAktif === kat.id
-                  ? "bg-primary text-primary-foreground shadow-sm"
+                  ? "bg-primary text-primary-foreground shadow-xs"
                   : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
@@ -381,43 +578,61 @@ export function DasborPanduan() {
         </div>
       </div>
 
-      {/* Grid Kotakan Menu Panduan */}
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* Grid Kartu Kotakan Dashboard Rapi */}
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {hasilFilter.map((kartu) => {
           const Ikon = kartu.ikon;
           return (
             <div
               key={kartu.id}
-              className="flex flex-col justify-between rounded-3xl border bg-card p-5 sm:p-6 shadow-sm transition hover:border-primary/40 hover:shadow-md"
+              onClick={() => setKartuTerpilih(kartu)}
+              className={cn(
+                "group cursor-pointer rounded-3xl border bg-card p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between",
+                kartu.warnaBorder
+              )}
             >
               <div className="space-y-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className={cn("flex size-11 items-center justify-center rounded-2xl border", kartu.warnaBg)}>
-                      <Ikon className={cn("size-6", kartu.warnaAksen)} aria-hidden />
-                    </span>
-                    <div>
-                      <h2 className="text-lg font-bold text-foreground leading-snug">{kartu.judul}</h2>
-                      <p className="text-xs text-muted-foreground">{kartu.subjudul}</p>
-                    </div>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span
+                    className={cn(
+                      "flex size-12 items-center justify-center rounded-2xl transition group-hover:scale-105",
+                      kartu.warnaBg
+                    )}
+                  >
+                    <Ikon className={cn("size-6", kartu.warnaAksen)} aria-hidden />
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">
+                    Buka Panduan <ArrowRight className="size-3.5" />
+                  </span>
                 </div>
 
-                <div className="border-t pt-3">
-                  {kartu.kontenUtama}
+                <div>
+                  <h3 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                    {kartu.judul}
+                  </h3>
+                  <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
+                    {kartu.ringkasan}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {kartu.badgeRingkas.map((b) => (
+                    <span
+                      key={b}
+                      className="rounded-lg bg-muted/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+                    >
+                      {b}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              {kartu.tautan && (
-                <div className="mt-5 border-t pt-3 flex justify-end">
-                  <Link
-                    href={kartu.tautan.href}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
-                  >
-                    {kartu.tautan.label} <ArrowRight className="size-3.5" aria-hidden />
-                  </Link>
-                </div>
-              )}
+              <div className="mt-5 pt-3 border-t flex items-center justify-between text-xs font-bold text-foreground/80 group-hover:text-primary">
+                <span>Klik untuk baca detail</span>
+                <span className="flex size-7 items-center justify-center rounded-full bg-muted group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <ArrowRight className="size-3.5" />
+                </span>
+              </div>
             </div>
           );
         })}
@@ -433,6 +648,61 @@ export function DasborPanduan() {
           </Button>
         </div>
       )}
+
+      {/* MODAL POP-UP DETAIL PANDUAN */}
+      <Dialog open={!!kartuTerpilih} onOpenChange={(buka) => !buka && setKartuTerpilih(null)}>
+        {kartuTerpilih && (
+          <DialogContent
+            className="sm:max-w-2xl max-h-[88vh] overflow-y-auto p-6 sm:p-8 rounded-3xl"
+            showCloseButton={true}
+          >
+            <DialogHeader className="space-y-3 border-b pb-4">
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "flex size-11 items-center justify-center rounded-2xl shrink-0",
+                    kartuTerpilih.warnaBg
+                  )}
+                >
+                  <kartuTerpilih.ikon className={cn("size-6", kartuTerpilih.warnaAksen)} aria-hidden />
+                </span>
+                <div>
+                  <DialogTitle className="text-xl sm:text-2xl font-extrabold text-foreground">
+                    {kartuTerpilih.judul}
+                  </DialogTitle>
+                  <DialogDescription className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                    {kartuTerpilih.ringkasan}
+                  </DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
+
+            <div className="py-2">
+              {kartuTerpilih.kontenModal}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-4 mt-2">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-xl font-semibold"
+                onClick={() => setKartuTerpilih(null)}
+              >
+                Tutup Panduan
+              </Button>
+              {kartuTerpilih.tautanAksi && (
+                <Button
+                  size="lg"
+                  className="rounded-xl font-bold"
+                  render={<Link href={kartuTerpilih.tautanAksi.href} onClick={() => setKartuTerpilih(null)} />}
+                >
+                  {kartuTerpilih.tautanAksi.label} <ArrowRight className="size-4 ml-1.5" />
+                </Button>
+              )}
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 }
