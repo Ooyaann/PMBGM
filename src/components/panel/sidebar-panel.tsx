@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,6 +11,8 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  PanelLeft,
+  PanelLeftClose,
   Radar,
   Scale,
   ShieldAlert,
@@ -22,6 +24,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
+import { Bertip } from "@/components/ui/bertip";
 import { TandaLogo } from "@/components/situs/logo";
 import { keluar } from "@/lib/aksi/auth";
 import type { Peran } from "@/lib/sesi";
@@ -149,15 +152,73 @@ export function SidebarPanel({
   instansi: InfoInstansiPanel | null;
 }) {
   const [mobileBuka, setMobileBuka] = useState(false);
+  const [desktopSembunyi, setDesktopSembunyi] = useState(false);
+  const [topbarTampil, setTopbarTampil] = useState(true);
+  const prevScrollY = useRef(0);
   const pathname = usePathname();
   const menu = ambilMenuPeran(pengguna.peran, instansi);
   const tema = ambilTemaPeran(pengguna.peran, instansi);
   const IkonTema = tema.ikon;
 
+  // Preferensi hide/show dari localStorage
+  useEffect(() => {
+    try {
+      const tersimpan = localStorage.getItem("pantaugizi_panel_sidebar_tersembunyi");
+      if (tersimpan === "true") setDesktopSembunyi(true);
+    } catch {}
+  }, []);
+
+  const toggleSidebar = () => {
+    setDesktopSembunyi((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("pantaugizi_panel_sidebar_tersembunyi", String(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // Keyboard shortcut Ctrl+B atau Cmd+B
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+        const target = e.target as HTMLElement | null;
+        if (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  // Smart hide mobile topbar on scroll
+  useEffect(() => {
+    const onScroll = () => {
+      const currentScrollY = window.scrollY;
+      const prev = prevScrollY.current;
+      if (currentScrollY < 60) {
+        setTopbarTampil(true);
+      } else if (currentScrollY > prev && currentScrollY - prev > 8) {
+        setTopbarTampil(false);
+      } else if (currentScrollY < prev && prev - currentScrollY > 8) {
+        setTopbarTampil(true);
+      }
+      prevScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
-      {/* Mobile Top Bar */}
-      <div className="flex h-14 items-center justify-between border-b bg-card px-4 lg:hidden">
+      {/* Mobile Top Bar dengan auto hide on scroll */}
+      <div
+        className={cn(
+          "sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-card px-4 transition-transform duration-300 ease-in-out lg:hidden",
+          topbarTampil ? "translate-y-0" : "-translate-y-full"
+        )}
+      >
         <div className="flex items-center gap-2.5">
           <TandaLogo className="size-7" />
           <span className="font-black text-sm tracking-tight">
@@ -186,25 +247,44 @@ export function SidebarPanel({
       {/* Sidebar Kontainer */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r bg-card shadow-lg transition-transform duration-200 lg:static lg:z-auto lg:w-64 lg:shrink-0 lg:shadow-none",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r bg-card shadow-lg transition-all duration-300 ease-in-out lg:static lg:z-auto lg:shrink-0 lg:shadow-none",
           mobileBuka ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+          desktopSembunyi
+            ? "lg:w-0 lg:p-0 lg:border-none lg:overflow-hidden lg:opacity-0 pointer-events-none"
+            : "lg:w-64 lg:opacity-100"
         )}
       >
         {/* Header Sidebar: Logo & Identitas Peran */}
         <div className="border-b p-5">
-          <Link href="/" className="group flex items-center gap-2.5">
-            <TandaLogo className="size-8" />
-            <div className="flex flex-col leading-none">
-              <span className="text-lg font-black tracking-tight">
-                <span className="text-teal-600">P</span>
-                <span className="text-foreground">MBG</span>
-                <span className="text-emerald-600">M</span>
-              </span>
-              <span className="mt-0.5 text-[9px] font-bold tracking-wider text-muted-foreground uppercase">
-                Panel Kerja
-              </span>
-            </div>
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link href="/" className="group flex items-center gap-2.5">
+              <TandaLogo className="size-8" />
+              <div className="flex flex-col leading-none">
+                <span className="text-lg font-black tracking-tight">
+                  <span className="text-teal-600">P</span>
+                  <span className="text-foreground">MBG</span>
+                  <span className="text-emerald-600">M</span>
+                </span>
+                <span className="mt-0.5 text-[9px] font-bold tracking-wider text-muted-foreground uppercase">
+                  Panel Kerja
+                </span>
+              </div>
+            </Link>
+            <Bertip
+              label="Sembunyikan menu (Ctrl+B)"
+              sisi="right"
+              render={
+                <button
+                  type="button"
+                  onClick={toggleSidebar}
+                  className="hidden lg:inline-flex size-8 items-center justify-center rounded-xl border border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                  aria-label="Sembunyikan menu"
+                />
+              }
+            >
+              <PanelLeftClose className="size-4" />
+            </Bertip>
+          </div>
 
           {/* Badge Peran Kerja */}
           <div className={cn("mt-4 flex items-start gap-2.5 rounded-xl border p-2.5", tema.badgeKls)}>
@@ -269,6 +349,27 @@ export function SidebarPanel({
           </form>
         </div>
       </aside>
+
+      {/* Tombol Floating untuk Membuka Kembali Sidebar Panel (Show) saat Tersembunyi */}
+      {desktopSembunyi && (
+        <div className="fixed top-3.5 left-4 z-40 hidden lg:block animate-in fade-in zoom-in-95 duration-200">
+          <Bertip
+            label="Tampilkan menu panel (Ctrl+B)"
+            sisi="right"
+            render={
+              <button
+                type="button"
+                onClick={toggleSidebar}
+                className="group flex items-center gap-2 rounded-2xl border border-border/80 bg-card/95 px-3 py-2 text-xs font-bold text-foreground shadow-lg shadow-black/5 backdrop-blur-md transition-all hover:bg-primary/10 hover:border-primary/40 hover:text-primary hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                aria-label="Tampilkan menu panel"
+              />
+            }
+          >
+            <PanelLeft className="size-4 text-primary transition-transform group-hover:scale-110" />
+            <span>Panel Menu</span>
+          </Bertip>
+        </div>
+      )}
     </>
   );
 }

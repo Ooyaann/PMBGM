@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -7,8 +8,11 @@ import {
   LogOut,
   Megaphone,
   Menu,
+  PanelLeft,
+  PanelLeftClose,
   UserRound,
 } from "lucide-react";
+import { Bertip } from "@/components/ui/bertip";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -46,6 +50,65 @@ function aktif(pathname: string, href: string) {
 export function SidebarGlobal({ akun }: { akun: InfoAkunGlobal | null }) {
   const pathname = usePathname();
 
+  // State untuk toggle hide/show navbar sidebar di desktop
+  const [tersembunyi, setTersembunyi] = useState(false);
+
+  // State untuk auto hide/show mobile header on scroll
+  const [headerTampil, setHeaderTampil] = useState(true);
+  const prevScrollY = useRef(0);
+
+  // Ambil preferensi hide/show dari localStorage
+  useEffect(() => {
+    try {
+      const tersimpan = localStorage.getItem("pantaugizi_sidebar_tersembunyi");
+      if (tersimpan === "true") {
+        setTersembunyi(true);
+      }
+    } catch {}
+  }, []);
+
+  const toggleSidebar = () => {
+    setTersembunyi((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("pantaugizi_sidebar_tersembunyi", String(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // Keyboard shortcut Ctrl+B atau Cmd+B untuk toggle menu
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+        const target = e.target as HTMLElement | null;
+        if (target && ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  // Smart hide saat scroll ke bawah, show saat scroll ke atas (Mobile)
+  useEffect(() => {
+    const onScroll = () => {
+      const currentScrollY = window.scrollY;
+      const prev = prevScrollY.current;
+      if (currentScrollY < 60) {
+        setHeaderTampil(true);
+      } else if (currentScrollY > prev && currentScrollY - prev > 8) {
+        setHeaderTampil(false);
+      } else if (currentScrollY < prev && prev - currentScrollY > 8) {
+        setHeaderTampil(true);
+      }
+      prevScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Di area kerja panel internal staf, SidebarPanel internal yang tampil
   if (pathname.startsWith("/panel")) {
     return null;
@@ -62,8 +125,13 @@ export function SidebarGlobal({ akun }: { akun: InfoAkunGlobal | null }) {
 
   return (
     <>
-      {/* HEADER KHUSUS MOBILE / TABLET (< lg) */}
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur-md lg:hidden">
+      {/* HEADER KHUSUS MOBILE / TABLET (< lg) dengan auto hide/show saat scroll */}
+      <header
+        className={cn(
+          "sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background/90 px-4 backdrop-blur-md transition-transform duration-300 ease-in-out lg:hidden",
+          headerTampil ? "translate-y-0" : "-translate-y-full"
+        )}
+      >
         <Logo />
         <div className="flex items-center gap-2">
           <Link
@@ -177,11 +245,32 @@ export function SidebarGlobal({ akun }: { akun: InfoAkunGlobal | null }) {
       </header>
 
       {/* LEFT SIDEBAR KHUSUS DESKTOP (lg+) */}
-      <aside className="hidden lg:flex lg:w-64 xl:w-72 lg:flex-col lg:justify-between lg:h-screen lg:sticky lg:top-0 border-r border-border/70 bg-card/95 backdrop-blur-md p-5 z-40 shrink-0">
+      <aside
+        className={cn(
+          "hidden lg:flex lg:flex-col lg:justify-between lg:h-screen lg:sticky lg:top-0 bg-card/95 backdrop-blur-md z-40 shrink-0 transition-all duration-300 ease-in-out",
+          tersembunyi
+            ? "lg:w-0 lg:p-0 lg:border-none lg:overflow-hidden lg:opacity-0 pointer-events-none"
+            : "lg:w-64 xl:w-72 lg:p-5 lg:border-r border-border/70 lg:opacity-100"
+        )}
+      >
         <div className="space-y-6">
-          {/* Logo Brand Header */}
-          <div className="px-1 py-1">
+          {/* Logo Brand Header & Tombol Sembunyikan Navigasi */}
+          <div className="flex items-center justify-between px-1 py-1">
             <Logo />
+            <Bertip
+              label="Sembunyikan menu (Ctrl+B)"
+              sisi="right"
+              render={
+                <button
+                  type="button"
+                  onClick={toggleSidebar}
+                  className="inline-flex size-8 items-center justify-center rounded-xl border border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                  aria-label="Sembunyikan menu navigasi"
+                />
+              }
+            >
+              <PanelLeftClose className="size-4" />
+            </Bertip>
           </div>
 
           {/* Tombol Aksi Utama: Lapor Masalah */}
@@ -287,6 +376,27 @@ export function SidebarGlobal({ akun }: { akun: InfoAkunGlobal | null }) {
           )}
         </div>
       </aside>
+
+      {/* Tombol Floating untuk Membuka Kembali Navigasi (Show) saat Tersembunyi di Desktop */}
+      {tersembunyi && (
+        <div className="fixed top-3.5 left-4 z-40 hidden lg:block animate-in fade-in zoom-in-95 duration-200">
+          <Bertip
+            label="Tampilkan menu navigasi (Ctrl+B)"
+            sisi="right"
+            render={
+              <button
+                type="button"
+                onClick={toggleSidebar}
+                className="group flex items-center gap-2 rounded-2xl border border-border/80 bg-card/95 px-3 py-2 text-xs font-bold text-foreground shadow-lg shadow-black/5 backdrop-blur-md transition-all hover:bg-primary/10 hover:border-primary/40 hover:text-primary hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                aria-label="Tampilkan menu navigasi"
+              />
+            }
+          >
+            <PanelLeft className="size-4 text-primary transition-transform group-hover:scale-110" />
+            <span>Buka Menu</span>
+          </Bertip>
+        </div>
+      )}
     </>
   );
 }
