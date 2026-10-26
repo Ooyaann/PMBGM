@@ -5,7 +5,7 @@ import { MODE_IDENTITAS, type ModeIdentitas } from "@/lib/label";
 
 export const metadata: Metadata = {
   title: "Privasi",
-  description: "Data apa yang dikumpulkan PantauGizi, siapa yang bisa melihatnya, dan bagaimana identitas pelapor dilindungi.",
+  description: "Data apa yang dikumpulkan PMBGM, siapa yang bisa melihatnya, dan bagaimana identitas pelapor dilindungi.",
 };
 
 const ISI = [

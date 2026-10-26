@@ -63,7 +63,7 @@ const WARNA_BADGE: Record<KategoriRisiko, { bg: string; fg: string }> = {
 };
 
 const angkaId = (v: number | null | undefined, d = 0) => (v == null ? "–" : v.toLocaleString("id-ID", { maximumFractionDigits: d }));
-const singkat = (nama: string) => nama.replace("SPPG Contoh ", "SPPG ").replace(/^Kabupaten /, "Kab. ");
+const singkat = (nama: string) => nama.replace(/^Kabupaten /, "Kab. ");
 const tglJam = (iso: string) => new Intl.DateTimeFormat("id-ID", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Jakarta" }).format(new Date(iso));
 
 function Badge({ skor }: { skor: number | null }) {
@@ -151,7 +151,7 @@ function Tabel({ kolom, baris, lebar }: { kolom: string[]; baris: (string | Reac
 function Kaki({ dibuat }: { dibuat: string }) {
   return (
     <View style={s.kaki} fixed>
-      <Text>PantauGizi · Laporan ringkas Insight · {tglJam(dibuat)} WIB</Text>
+      <Text>PMBGM · Laporan ringkas Insight · {tglJam(dibuat)} WIB</Text>
       <Text render={({ pageNumber, totalPages }) => `${pageNumber}/${totalPages}`} />
     </View>
   );
@@ -193,12 +193,12 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
 
 
   return (
-    <Document title="Laporan Ringkas Insight · PantauGizi" author="PantauGizi" subject="Pengawasan partisipatif Makan Bergizi Gratis" language="id">
+    <Document title="Laporan Ringkas Insight · PMBGM" author="PMBGM" subject="Pengawasan partisipatif Makan Bergizi Gratis" language="id">
       <Page size="A4" style={s.halaman}>
         <Kaki dibuat={d.dibuat} />
         <View style={s.kepala}>
           <View>
-            <Text style={s.merek}>PantauGizi</Text>
+            <Text style={s.merek}>PMBGM</Text>
             <Text style={s.sub}>Pengawasan partisipatif Makan Bergizi Gratis · Jawa Tengah</Text>
           </View>
           <View>

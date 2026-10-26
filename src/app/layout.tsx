@@ -19,11 +19,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PantauGizi · Pengawasan Partisipatif Makan Bergizi Gratis",
-    template: "%s · PantauGizi",
+    default: "PMBGM · Pemantau MBG Masyarakat",
+    template: "%s · PMBGM",
   },
   description:
-    "Laporkan masalah Makan Bergizi Gratis, pantau tindak lanjutnya secara terbuka, dan cek risiko dapur SPPG yang memasak untuk anak Anda.",
+    "PMBGM (Pemantau MBG Masyarakat) — Laporkan masalah Makan Bergizi Gratis, pantau tindak lanjutnya secara terbuka, dan cek kepatuhan higienitas dapur SPPG anak Anda.",
 };
 
 export const viewport: Viewport = {

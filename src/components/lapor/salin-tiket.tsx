@@ -20,7 +20,7 @@ export function SalinTiket({ kode }: { kode: string }) {
       </Button>
       {bisaBagikan && (
         <Button type="button" variant="outline" size="lg" className="bg-card"
-          onClick={() => navigator.share({ title: "Tiket laporan PantauGizi", text: `Kode tiket laporan MBG: ${kode}`, url: `${location.origin}/lacak?tiket=${kode}` }).catch(() => {})}>
+          onClick={() => navigator.share({ title: "Tiket laporan PMBGM", text: `Kode tiket laporan MBG: ${kode}`, url: `${location.origin}/lacak?tiket=${kode}` }).catch(() => {})}>
           <Share2 aria-hidden /> Bagikan
         </Button>
       )}

@@ -1,4 +1,4 @@
-import { BarChart3, ClipboardList, Home, Megaphone, Radar, School, type LucideIcon } from "lucide-react";
+import { BarChart3, BookOpen, ClipboardList, Home, Megaphone, Radar, School, type LucideIcon } from "lucide-react";
 
 export interface ItemNav {
   href: string;
@@ -6,7 +6,7 @@ export interface ItemNav {
   ikon: LucideIcon;
 }
 
-/** Navigasi utama situs PantauGizi */
+/** Navigasi utama situs PMBGM */
 export const NAV_UTAMA: ItemNav[] = [
   { href: "/", label: "Beranda", ikon: Home },
   { href: "/lapor", label: "Lapor", ikon: Megaphone },
@@ -14,4 +14,6 @@ export const NAV_UTAMA: ItemNav[] = [
   { href: "/data", label: "Data Terbuka", ikon: BarChart3 },
   { href: "/insight", label: "Insight", ikon: Radar },
   { href: "/cari-sekolah", label: "Cari Sekolah", ikon: School },
+  { href: "/panduan", label: "Panduan", ikon: BookOpen },
 ];
+

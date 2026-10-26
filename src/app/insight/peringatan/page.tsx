@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { BadgeCheck, Clock, Eye, FileStack, History, ShieldCheck, Siren, TrendingUp } from "lucide-react";
+import { BadgeCheck, Building2, Clock, Eye, FileStack, History, ShieldCheck, Siren, TrendingUp } from "lucide-react";
 import { LabelSumber } from "@/components/data/label-sumber";
 import { Waktu } from "@/components/data/waktu";
 import { Tile } from "@/components/data-terbuka/remah";
 import { PenyegarRealtime } from "@/components/lacak/penyegar-realtime";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ambilPeringatan, type Peringatan } from "@/lib/data/insight";
 import { angka } from "@/lib/format";
@@ -38,7 +39,7 @@ function KartuPeringatan({ p }: { p: Peringatan }) {
         </span>
         <div className="min-w-0 flex-1">
           <Link href={`/data/sppg/${p.sppgId}`} className="block truncate font-bold hover:underline">
-            {p.sppg.replace("SPPG Contoh ", "SPPG ")}
+            {p.sppg}
           </Link>
           <p className="text-xs text-muted-foreground">
             {p.kecamatan} · <span className={p.aktif ? "font-semibold text-darurat" : ""}>{p.aktif ? "Aktif" : "Selesai"}</span> · <Waktu iso={p.dibuatPada} />
@@ -49,6 +50,14 @@ function KartuPeringatan({ p }: { p: Peringatan }) {
           <span className="text-[11px] text-muted-foreground">dari biasanya</span>
         </p>
       </div>
+
+      {p.aktif && (
+        <div className="mt-3 flex items-center gap-1.5 rounded-xl bg-amber-500/10 px-3 py-1.5 text-xs text-amber-800 dark:text-amber-300">
+          <Building2 className="size-3.5 shrink-0" aria-hidden />
+          <span className="truncate">Penanggung Jawab: Dinas Kesehatan Kota & {p.sppg}</span>
+        </div>
+      )}
+
       <dl className="mt-4 space-y-1.5 text-xs">
         {[
           { label: "Rata-rata/hari", nilai: p.rataHarian, warna: "bg-[var(--seq-250)]" },
@@ -75,9 +84,21 @@ async function Isi() {
     <>
       <dl className="grid grid-cols-3 gap-3">
         <Tile ikon={Siren} label="Aktif" nilai={angka(aktif.length)} />
-        <Tile ikon={Eye} label="Ditinjau" nilai={angka(ditinjau)} sub="Belum terverifikasi" />
+        <Tile
+          ikon={Eye}
+          label="Sinyal Ditinjau"
+          nilai={angka(ditinjau)}
+          sub={<InfoMetrik jenis="sinyal">Menunggu verifikasi lapangan</InfoMetrik>}
+        />
         <Tile ikon={History} label="90 hari" nilai={angka(daftar.length)} />
       </dl>
+
+      <div className="rounded-2xl border bg-muted/40 p-4 text-xs text-muted-foreground flex items-start gap-3">
+        <InfoMetrik jenis="sinyal" className="shrink-0 mt-0.5 text-primary" />
+        <p className="leading-relaxed">
+          <strong className="text-foreground">Bagaimana sistem bekerja:</strong> Sinyal lonjakan terdeteksi otomatis saat laporan warga terverifikasi melonjak &gt;3× rata-rata harian dalam 24 jam. Tim verifikator bersama Dinas Kesehatan segera melakukan uji lapangan sebelum menetapkan status darurat.
+        </p>
+      </div>
 
       {aktif.length ? (
         <ul className="grid gap-3 md:grid-cols-2">{aktif.map((p) => <KartuPeringatan key={p.id} p={p} />)}</ul>
@@ -88,7 +109,7 @@ async function Isi() {
           </span>
           <span>
             <span className="block font-semibold">Tidak ada lonjakan aktif</span>
-            {ditinjau > 0 && <span className="text-muted-foreground">{ditinjau} sinyal sedang diverifikasi sebelum diumumkan</span>}
+            {ditinjau > 0 && <span className="text-muted-foreground">{ditinjau} sinyal aduan sedang diverifikasi oleh tim verifikator dan Dinkes</span>}
           </span>
         </p>
       )}

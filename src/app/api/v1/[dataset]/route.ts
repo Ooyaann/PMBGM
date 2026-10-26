@@ -51,7 +51,7 @@ export async function GET(request: Request, { params }: RouteContext<"/api/v1/[d
       headers: {
         ...KORS,
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="pantaugizi-${d.kunci}.csv"`,
+        "Content-Disposition": `attachment; filename="pmbgm-${d.kunci}.csv"`,
       },
     });
   }

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
-  ArrowDownRight, ArrowUpRight, Banknote, FolderOpen, HeartPulse, Layers, Minus, ShoppingBasket, Users, Utensils, Wallet,
+  Banknote, CheckCircle2, AlertTriangle, ShieldCheck, ShieldAlert, FolderOpen, HeartPulse, Layers, Users, Utensils, Wallet,
 } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
 import { LabelSumber } from "@/components/data/label-sumber";
@@ -13,52 +13,64 @@ import { KartuGrafik, Legenda } from "@/components/grafik/kartu-grafik";
 import { SERI_KATEGORI, pivotKategori } from "@/components/grafik/seri-kategori";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  ANGGARAN_BAHAN_PORSI, ambilHargaPangan, ambilWilayah, labelBulan,
+  ambilKepatuhanWilayah, ambilWilayah, labelBulan,
 } from "@/lib/data/data-terbuka";
-import { angka, persen, rupiah, rupiahRingkas } from "@/lib/format";
+import { angka, persen, rupiahRingkas } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Data wilayah" };
 
-async function KartuHarga({ wilayahId }: { wilayahId: string }) {
-  const harga = await ambilHargaPangan(wilayahId);
-  if (!harga) return null;
-  const rasio = (100 * harga.biayaPorsi) / ANGGARAN_BAHAN_PORSI;
+async function KartuKepatuhanDapur({ wilayahId }: { wilayahId: string }) {
+  const data = await ambilKepatuhanWilayah(wilayahId);
+  if (!data) return null;
+
   return (
     <KartuGrafik
-      judul="Harga pangan"
+      judul="Kepatuhan Higienitas Dapur (SLHS)"
       sumber="simulasi"
-      ringkasan={`Bahan inti satu porsi ≈ ${rupiah(harga.biayaPorsi)}, ${persen(rasio)} dari asumsi anggaran bahan ${rupiah(ANGGARAN_BAHAN_PORSI)}.`}
+      ringkasan={`${data.persenSlhs}% dapur SPPG di wilayah ini telah memiliki Sertifikat Laik Higiene Sanitasi (SLHS) resmi dari Dinas Kesehatan.`}
       tabel={{
-        kolom: ["Komoditas", "Harga", "Perubahan", "Takaran/porsi", "Biaya/porsi"],
-        baris: harga.komoditas.map((k) => [k.komoditas, `${rupiah(k.harga)}/${k.satuan}`, persen(k.perubahan), k.takaran ?? "–", rupiah(k.biayaPorsi)]),
+        kolom: ["Status Standar Sanitasi", "Jumlah Dapur", "Keterangan"],
+        baris: [
+          ["SLHS Berlaku", `${data.slhsBerlaku} SPPG`, "Lolos uji kebersihan & air bersih"],
+          ["Proses Pengujian", `${data.slhsProses} SPPG`, "Sedang dalam inspeksi lab"],
+          ["Belum / Tanpa SLHS", `${data.slhsTanpa} SPPG`, "Prioritas pembinaan higienitas"],
+          ["Status Operasional", `${data.beroperasi} Aktif / ${data.ditutup} Ditutup Sementara`, "Evaluasi pengawasan lapangan"],
+        ],
       }}
     >
-      <ul className="divide-y">
-        {harga.komoditas.map((k) => {
-          const Arah = k.perubahan == null || Math.abs(k.perubahan) < 0.5 ? Minus : k.perubahan > 0 ? ArrowUpRight : ArrowDownRight;
-          return (
-            <li key={k.komoditas} className="flex items-center justify-between gap-3 py-2.5 text-sm">
-              <span className="min-w-0">
-                <span className="block truncate font-medium">{k.komoditas}</span>
-                <span className="text-xs text-muted-foreground">{k.takaran} per porsi</span>
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="angka font-semibold">{rupiah(k.harga)}<span className="font-normal text-muted-foreground">/{k.satuan}</span></span>
-                <span className="angka inline-flex w-16 items-center justify-end gap-0.5 text-xs text-muted-foreground" title="Dibanding bulan lalu">
-                  <Arah className="size-3.5" aria-hidden /> {persen(k.perubahan == null ? null : Math.abs(k.perubahan))}
-                </span>
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-      <div className="mt-4 rounded-2xl bg-muted/60 p-3">
-        <p className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5"><ShoppingBasket className="size-3.5" aria-hidden /> Bahan inti / porsi</span>
-          <span className="angka font-semibold text-foreground">{rupiah(harga.biayaPorsi)} / {rupiah(ANGGARAN_BAHAN_PORSI)}</span>
-        </p>
-        <Meter nilai={rasio} className="mt-2 block" />
+      <div className="space-y-4">
+        <div className="grid grid-cols-3 gap-2 text-center text-xs">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2.5">
+            <span className="block text-lg font-bold text-emerald-700 dark:text-emerald-400">{data.slhsBerlaku}</span>
+            <span className="font-semibold text-emerald-800 dark:text-emerald-300">SLHS Berlaku</span>
+          </div>
+          <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-2.5">
+            <span className="block text-lg font-bold text-amber-700 dark:text-amber-400">{data.slhsProses}</span>
+            <span className="font-semibold text-amber-800 dark:text-amber-300">Proses Uji</span>
+          </div>
+          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-2.5">
+            <span className="block text-lg font-bold text-rose-700 dark:text-rose-400">{data.slhsTanpa}</span>
+            <span className="font-semibold text-rose-800 dark:text-rose-300">Tanpa SLHS</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl bg-muted/60 p-3.5">
+          <p className="flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5 font-medium">
+              <ShieldCheck className="size-4 text-primary" aria-hidden /> Tingkat Kepatuhan SLHS
+            </span>
+            <span className="angka font-bold text-foreground">{data.persenSlhs}% Memenuhi Standar</span>
+          </p>
+          <Meter nilai={data.persenSlhs} className="mt-2 block" />
+        </div>
+
+        {data.ditutup > 0 && (
+          <p className="flex items-center gap-2 rounded-xl border border-destructive/20 bg-destructive/10 p-2.5 text-xs font-medium text-destructive">
+            <AlertTriangle className="size-4 shrink-0" aria-hidden />
+            {data.ditutup} dapur sedang ditutup sementara oleh otoritas untuk peninjauan higienitas.
+          </p>
+        )}
       </div>
     </KartuGrafik>
   );
@@ -188,7 +200,7 @@ async function IsiWilayah({ params }: { params: PageProps<"/data/wilayah/[id]">[
               <li key={s.id}>
                 <Link href={`/data/sppg/${s.id}`} className="flex h-full flex-col gap-2 rounded-2xl border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
                   <span className="flex items-start justify-between gap-2">
-                    <span className="font-semibold">{s.nama.replace("SPPG Contoh ", "")}</span>
+                    <span className="font-semibold">{s.nama}</span>
                     <BadgeRisiko skor={s.indeks} />
                   </span>
                   <span className="flex flex-wrap gap-x-3 text-xs text-muted-foreground">
@@ -201,7 +213,7 @@ async function IsiWilayah({ params }: { params: PageProps<"/data/wilayah/[id]">[
         </section>
       )}
 
-      {!kecamatanMode && <Suspense fallback={<Skeleton className="h-72 rounded-3xl" />}><KartuHarga wilayahId={w.id} /></Suspense>}
+      {!kecamatanMode && <Suspense fallback={<Skeleton className="h-72 rounded-3xl" />}><KartuKepatuhanDapur wilayahId={w.id} /></Suspense>}
 
       {!kecamatanMode && kecamatan.length === 0 && (
         <p className={cn("flex items-center gap-2 rounded-2xl bg-muted/60 p-4 text-sm text-muted-foreground")}>

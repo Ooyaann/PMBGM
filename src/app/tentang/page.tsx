@@ -10,7 +10,7 @@ import { FAKTA_NASIONAL, PLATFORM_LAIN } from "@/lib/konteks";
 
 export const metadata: Metadata = {
   title: "Tentang",
-  description: "PantauGizi: platform pengawasan partisipatif program Makan Bergizi Gratis di Jawa Tengah, dari laporan warga sampai tindak lanjut instansi.",
+  description: "PMBGM: platform pengawasan partisipatif program Makan Bergizi Gratis di Jawa Tengah, dari laporan warga sampai tindak lanjut instansi.",
 };
 
 const MODUL = [
@@ -29,8 +29,8 @@ const PRINSIP = [
 
 export default function HalamanTentang() {
   return (
-    <HalamanInfo judul="Tentang PantauGizi"
-      pengantar="Program sebesar Makan Bergizi Gratis butuh mata sebanyak mungkin. PantauGizi menghubungkan laporan warga dengan instansi yang berwenang, secara terbuka.">
+    <HalamanInfo judul="Tentang PMBGM"
+      pengantar="Program sebesar Makan Bergizi Gratis butuh mata sebanyak mungkin. PMBGM menghubungkan laporan warga dengan instansi yang berwenang, secara terbuka.">
       <BagianInfo judul="Mengapa" ikon={Target}>
         <ul className="grid gap-3 sm:grid-cols-2">
           {FAKTA_NASIONAL.map((f) => (

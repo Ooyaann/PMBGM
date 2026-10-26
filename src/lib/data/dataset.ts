@@ -10,7 +10,7 @@ export interface Dataset {
   nama: string;
   ringkas: string;
   sumber: SumberData;
-  ikon: "map" | "utensils" | "school" | "wallet" | "folder" | "heart" | "radar" | "scale" | "basket";
+  ikon: "map" | "utensils" | "school" | "wallet" | "folder" | "heart" | "radar" | "scale";
   tabel: string;
   kolom: string;
   urut: string;
@@ -33,8 +33,6 @@ export const DATASET: Dataset[] = [
     tabel: "indeks_risiko", kolom: "sppg_id,wilayah_id,periode_awal,periode_akhir,porsi,jumlah_laporan,jumlah_keracunan,l,k,s,t,p,indeks,kategori_risiko,dihitung_pada", urut: "indeks" },
   { kunci: "akuntabilitas", nama: "Akuntabilitas SPPG", ringkas: "Selesai, tanggap, terlambat", sumber: "laporan_warga_terverifikasi", ikon: "scale",
     tabel: "v_akuntabilitas_sppg", kolom: "sppg_id,nama,wilayah_id,jumlah_kasus,kasus_selesai,persen_selesai,rata_jam_respons,persen_terlambat,kasus_tidak_ditanggapi,kepuasan,jumlah_rating", urut: "nama" },
-  { kunci: "harga-pangan", nama: "Harga pangan", ringkas: "Lima bahan pokok per kab/kota", sumber: "simulasi", ikon: "basket",
-    tabel: "harga_pangan", kolom: "wilayah_id,bulan,komoditas,satuan,harga,sumber", urut: "bulan" },
 ];
 
 export const LISENSI = "CC BY 4.0";

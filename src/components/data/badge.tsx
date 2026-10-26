@@ -1,4 +1,5 @@
 import { AlertTriangle, CheckCircle2, Circle, CircleDot, Clock, RotateCcw, Send, ShieldCheck, XCircle } from "lucide-react";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { kategoriRisiko, PRIORITAS, RISIKO, STATUS, type StatusAlur, type TingkatPrioritas } from "@/lib/label";
 import { cn } from "@/lib/utils";
 
@@ -8,22 +9,24 @@ const WARNA_RISIKO = {
   tinggi: "bg-risiko-tinggi-lembut text-risiko-tinggi ring-risiko-tinggi/25",
 } as const;
 
-/** Skor Indeks Risiko dengan warna dan teks kategori (warna tidak menjadi satu-satunya penanda). */
+/** Skor Indeks Risiko dengan warna, teks kategori, dan penjelasan ramah awam saat disorot/hover. */
 export function BadgeRisiko({ skor, besar = false, className }: { skor: number | null; besar?: boolean; className?: string }) {
   const kategori = kategoriRisiko(skor);
   return (
-    <span
-      className={cn(
-        "angka inline-flex items-center gap-1.5 rounded-full font-semibold ring-1 ring-inset",
-        besar ? "h-8 px-3 text-sm" : "h-6 px-2 text-xs",
-        WARNA_RISIKO[kategori],
-        className,
-      )}
-    >
-      <span className={cn("rounded-full bg-current", besar ? "size-2" : "size-1.5")} aria-hidden />
-      {skor == null ? "–" : skor.toLocaleString("id-ID", { maximumFractionDigits: 0 })}
-      <span className="font-medium opacity-90">· {RISIKO[kategori].label}</span>
-    </span>
+    <InfoMetrik jenis="risiko">
+      <span
+        className={cn(
+          "angka inline-flex items-center gap-1.5 rounded-full font-semibold ring-1 ring-inset transition-opacity hover:opacity-90",
+          besar ? "h-8 px-3 text-sm" : "h-6 px-2 text-xs",
+          WARNA_RISIKO[kategori],
+          className,
+        )}
+      >
+        <span className={cn("rounded-full bg-current", besar ? "size-2" : "size-1.5")} aria-hidden />
+        {skor == null ? "–" : skor.toLocaleString("id-ID", { maximumFractionDigits: 0 })}
+        <span className="font-medium opacity-90">· {RISIKO[kategori].label}</span>
+      </span>
+    </InfoMetrik>
   );
 }
 

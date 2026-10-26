@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   return new Response(new Uint8Array(pdf), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="pantaugizi-insight-${dibuat.slice(0, 10)}.pdf"`,
+      "Content-Disposition": `attachment; filename="pmbgm-insight-${dibuat.slice(0, 10)}.pdf"`,
       "Cache-Control": "no-store",
     },
   });

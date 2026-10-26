@@ -55,7 +55,7 @@ async function PrioritasTeratas() {
           <li key={s.id} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-3">
             <span className="angka w-5 text-sm font-bold text-muted-foreground">{i + 1}</span>
             <Link href={`/data/sppg/${s.id}`} className="min-w-0 flex-1 hover:underline">
-              <span className="block truncate font-semibold">{s.nama.replace("SPPG Contoh ", "SPPG ")}</span>
+              <span className="block truncate font-semibold">{s.nama}</span>
               <span className="block text-xs text-muted-foreground">{s.kecamatan}</span>
             </Link>
             <BadgeRisiko skor={s.indeks} />
@@ -87,7 +87,7 @@ async function PeringatanTerkini() {
               <Siren className="size-4" aria-hidden />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold">{p.sppg.replace("SPPG Contoh ", "SPPG ")}</span>
+              <span className="block truncate text-sm font-semibold">{p.sppg}</span>
               <span className="block text-xs text-muted-foreground">{p.aktif ? "Aktif" : "Selesai"} · <Waktu iso={p.dibuatPada} /></span>
             </span>
             <span className="angka text-lg font-extrabold">×{p.rasio.toLocaleString("id-ID", { maximumFractionDigits: 1 })}</span>

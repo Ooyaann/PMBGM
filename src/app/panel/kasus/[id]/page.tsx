@@ -88,7 +88,7 @@ async function Isi({ params }: { params: PageProps<"/panel/kasus/[id]">["params"
             <dl className="grid gap-3 text-sm sm:grid-cols-2">
               {k.sppg_nama && (
                 <div className="flex items-center gap-2"><Utensils className="size-4 text-muted-foreground" aria-hidden /><dt className="sr-only">SPPG</dt>
-                  <dd><Link href={`/data/sppg/${k.sppg_id}`} className="font-semibold hover:underline">{k.sppg_nama.replace("SPPG Contoh ", "SPPG ")}</Link></dd></div>
+                  <dd><Link href={`/data/sppg/${k.sppg_id}`} className="font-semibold hover:underline">{k.sppg_nama}</Link></dd></div>
               )}
               <div className="flex items-center gap-2"><Building2 className="size-4 text-muted-foreground" aria-hidden /><dt className="sr-only">Instansi</dt>
                 <dd>{k.instansi_nama ?? "Belum diteruskan"}</dd></div>

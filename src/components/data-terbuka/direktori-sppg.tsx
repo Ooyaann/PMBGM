@@ -68,7 +68,7 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
               className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
               <span className="flex items-start justify-between gap-2">
                 <span className="min-w-0">
-                  <span className="block truncate font-semibold">{s.nama.replace("SPPG Contoh ", "")}</span>
+                  <span className="block truncate font-semibold">{s.nama}</span>
                   <span className="text-xs text-muted-foreground">{s.kecamatan}</span>
                 </span>
                 <BadgeRisiko skor={s.indeks} />

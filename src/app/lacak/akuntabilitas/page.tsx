@@ -6,6 +6,7 @@ import { LabelSumber } from "@/components/data/label-sumber";
 import { HitungMundur } from "@/components/lacak/hitung-mundur";
 import { NavLacak } from "@/components/lacak/nav-lacak";
 import { TabelAkuntabilitas, type BarisAkuntabilitas } from "@/components/lacak/tabel-akuntabilitas";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { ambilAkuntabilitas } from "@/lib/data/lacak";
 import { angka, durasiJam, persen } from "@/lib/format";
 import type { Kategori } from "@/lib/label";
@@ -22,7 +23,7 @@ export default async function HalamanAkuntabilitas() {
 
   const barisSppg: BarisAkuntabilitas[] = sppg.map((s) => ({
     id: s.sppg_id!,
-    nama: s.nama!.replace("SPPG Contoh ", ""),
+    nama: s.nama!,
     sub: s.kecamatan_nama,
     href: `/data/sppg/${s.sppg_id}`,
     kasus: s.jumlah_kasus ?? 0,
@@ -56,10 +57,10 @@ export default async function HalamanAkuntabilitas() {
   };
 
   const RINGKASAN = [
-    { ikon: FolderOpen, label: "Kasus", nilai: angka(total) },
-    { ikon: CircleCheck, label: "Selesai", nilai: persen(berbobot((b) => b.selesai)) },
-    { ikon: Clock, label: "Rata tanggap", nilai: durasiJam(berbobot((b) => b.jamRespons)) },
-    { ikon: TriangleAlert, label: "Belum ditanggapi", nilai: angka(belumDitanggapi.length), awas: belumDitanggapi.length > 0 },
+    { jenis: undefined, ikon: FolderOpen, label: "Kasus", nilai: angka(total) },
+    { jenis: "selesai" as const, ikon: CircleCheck, label: "Selesai", nilai: persen(berbobot((b) => b.selesai)) },
+    { jenis: "tanggap" as const, ikon: Clock, label: "Rata tanggap", nilai: durasiJam(berbobot((b) => b.jamRespons)) },
+    { jenis: "terlambat" as const, ikon: TriangleAlert, label: "Belum ditanggapi", nilai: angka(belumDitanggapi.length), awas: belumDitanggapi.length > 0 },
   ];
 
   return (
@@ -76,7 +77,17 @@ export default async function HalamanAkuntabilitas() {
         {RINGKASAN.map((r) => (
           <div key={r.label} className={r.awas ? "rounded-2xl border border-risiko-tinggi/25 bg-risiko-tinggi-lembut p-4" : "rounded-2xl border bg-card p-4"}>
             <dt className={r.awas ? "flex items-center gap-1.5 text-sm text-risiko-tinggi" : "flex items-center gap-1.5 text-sm text-muted-foreground"}>
-              <r.ikon className="size-4" aria-hidden /> {r.label}
+              {r.jenis ? (
+                <InfoMetrik jenis={r.jenis}>
+                  <span className="inline-flex items-center gap-1.5 underline decoration-dotted underline-offset-2 cursor-help">
+                    <r.ikon className="size-4" aria-hidden /> {r.label}
+                  </span>
+                </InfoMetrik>
+              ) : (
+                <span className="flex items-center gap-1.5">
+                  <r.ikon className="size-4" aria-hidden /> {r.label}
+                </span>
+              )}
             </dt>
             <dd className="angka mt-1 text-2xl font-extrabold sm:text-3xl">{r.nilai}</dd>
           </div>

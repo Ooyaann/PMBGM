@@ -63,7 +63,7 @@ function terbaik(m: MetrikBanding): Set<number> {
 }
 
 const huruf = (i: number) => String.fromCharCode(65 + i);
-const singkat = (nama: string) => nama.replace("SPPG Contoh ", "SPPG ").replace(/^Kabupaten /, "Kab. ");
+const singkat = (nama: string) => nama.replace(/^Kabupaten /, "Kab. ");
 
 function Penanda({ i }: { i: number }) {
   return (

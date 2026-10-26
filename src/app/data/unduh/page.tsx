@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  Braces, FileSpreadsheet, FolderOpen, HeartPulse, KeyRound, Map, Radar, Scale, School, ShieldCheck, ShoppingBasket, Utensils, Wallet,
+  Braces, FileSpreadsheet, FolderOpen, HeartPulse, KeyRound, Map, Radar, Scale, School, ShieldCheck, Utensils, Wallet,
 } from "lucide-react";
 import { LabelSumber } from "@/components/data/label-sumber";
 import { SalinTeks } from "@/components/data-terbuka/salin-teks";
@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Unduh data & API",
-  description: "Unduh data terbuka PantauGizi dalam CSV atau JSON, atau akses lewat API publik tanpa kunci.",
+  description: "Unduh data terbuka PMBGM dalam CSV atau JSON, atau akses lewat API publik tanpa kunci.",
 };
 
 const IKON: Record<Dataset["ikon"], typeof Map> = {
   map: Map, utensils: Utensils, school: School, wallet: Wallet, folder: FolderOpen, heart: HeartPulse, radar: Radar,
-  scale: Scale, basket: ShoppingBasket,
+  scale: Scale,
 };
 
 const JAMINAN = [

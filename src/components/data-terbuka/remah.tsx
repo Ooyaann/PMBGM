@@ -25,7 +25,7 @@ export function Remah({ butir }: { butir: { label: string; href?: string }[] }) 
 export function Tile({ label, nilai, sub, ikon: Ikon }: {
   label: string;
   nilai: string;
-  sub?: string;
+  sub?: React.ReactNode;
   ikon?: React.ComponentType<{ className?: string }>;
 }) {
   return (

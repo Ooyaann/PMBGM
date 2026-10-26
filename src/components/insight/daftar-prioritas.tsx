@@ -76,7 +76,7 @@ export function DaftarPrioritas({ daftar }: { daftar: SppgIndeks[] }) {
               <span className="min-w-0">
                 {/* Tautan meregang menutupi baris; chip alasan di atasnya tetap bisa disorot. */}
                 <Link href={`/data/sppg/${s.id}`} className="block leading-snug font-semibold outline-none sm:truncate after:absolute after:inset-0 after:rounded-[inherit] group-hover:underline focus-visible:after:ring-3 focus-visible:after:ring-ring/50">
-                  {s.nama.replace("SPPG Contoh ", "SPPG ")}
+                  {s.nama}
                 </Link>
                 <span className="block truncate text-xs text-muted-foreground">{s.kecamatan}</span>
               </span>

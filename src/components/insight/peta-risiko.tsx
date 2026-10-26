@@ -228,7 +228,7 @@ export function PetaRisikoDasar({ data, lapis, onLapis }: {
                 style={{ left: Math.min(Math.max(sorot.x, 90), sorot.lebar - 90), top: sorot.y + 14 }}>
                 {sorot.jenis === "titik" ? (
                   <>
-                    <p className="font-semibold">{sorot.titik.nama.replace("SPPG Contoh ", "SPPG ")}</p>
+                    <p className="font-semibold">{sorot.titik.nama}</p>
                     <p className="mb-1.5 text-muted-foreground">{sorot.titik.kecamatan}</p>
                     <BadgeRisiko skor={sorot.titik.indeks} />
                   </>
@@ -350,7 +350,7 @@ function PanelWilayah({ w, aturan, titik, onKecamatan }: {
                 <li key={t.id}>
                   <Link href={`/data/sppg/${t.id}`} className="flex items-center gap-2 rounded-lg px-1.5 py-1 text-sm hover:bg-muted">
                     <span aria-hidden className="size-2.5 shrink-0 rounded-full" style={{ background: TITIK_RISIKO[t.kategori].css }} />
-                    <span className="min-w-0 flex-1 truncate">{t.nama.replace("SPPG Contoh ", "")}</span>
+                    <span className="min-w-0 flex-1 truncate">{t.nama}</span>
                     <span className="angka text-xs font-semibold">{fmt(t.indeks, LAPIS.tertinggi)}</span>
                   </Link>
                 </li>

@@ -1,8 +1,8 @@
-# PantauGizi
+# PMBGM (Pemantau MBG Masyarakat)
 
 Platform pengawasan partisipatif Program Makan Bergizi Gratis (MBG): warga melapor masalah MBG, memantau tindak lanjutnya secara terbuka, dan melihat data program serta indeks risiko dapur (SPPG) di satu tempat. Karya tim **Ctrl Win Enter** untuk lomba Web In Action (WIA) MIA 2026.
 
-> Nama kerja. Semua nama SPPG dan sekolah dalam data simulasi adalah **fiktif**; nama wilayah asli.
+> Semua nama SPPG dan sekolah dalam data simulasi adalah **fiktif**; nama wilayah administratif asli.
 
 ## Tech stack
 
@@ -18,7 +18,7 @@ Pengolahan data utama berjalan di database:
 
 - **Lapor**: tautan otomatis sekolah → SPPG → wilayah, kode tiket, deteksi laporan serupa (≤ 24 jam), skor kredibilitas.
 - **Lacak**: riwayat status yang hanya bisa ditambah, SLA per kategori dan tahap, eskalasi otomatis tiap 15 menit.
-- **Data Terbuka**: agregasi anggaran, penerima, dan kasus per wilayah dan bulan.
+- **Data Terbuka**: agregasi kepatuhan dapur (SLHS), anggaran, penerima, dan kasus per wilayah dan bulan.
 - **Insight**: Indeks Risiko SPPG 0–100 dengan rumus terbuka, prioritas inspeksi, dan peringatan dini lonjakan.
 
 ## Cara menjalankan
@@ -65,13 +65,13 @@ Seed membuat satu akun untuk setiap peran. Kata sandinya adalah nilai `DEMO_PASS
 
 | Peran | Email | Persona |
 |---|---|---|
-| Pelapor | `rina@pantaugizi.test` | Ibu Rina, orang tua siswa SD di Tembalang |
-| Pelapor terverifikasi | `budi@pantaugizi.test` | Pak Budi, guru penanggung jawab MBG |
-| Verifikator | `sari@pantaugizi.test` | Mbak Sari, tim verifikasi |
-| Instansi | `hendra@pantaugizi.test` | Pak Hendra, Dinas Kesehatan Kota Semarang |
-| Instansi | `sppg@pantaugizi.test` | Pengelola SPPG Contoh Tembalang 03 |
-| Instansi | `korwil@pantaugizi.test` | Korwil BGN Kota Semarang |
-| Admin | `admin@pantaugizi.test` | Pengelola sistem |
+| Pelapor (Warga) | `rina@pmbgm.test` / `rina@pantaugizi.test` | Ibu Rina, orang tua siswa SD di Tembalang |
+| Pelapor terverifikasi (Guru) | `budi@pmbgm.test` / `budi@pantaugizi.test` | Pak Budi, guru penanggung jawab MBG |
+| Verifikator wilayah | `sari@pmbgm.test` / `sari@pantaugizi.test` | Mbak Sari, tim verifikasi independen |
+| Instansi (Dinkes) | `hendra@pmbgm.test` / `hendra@pantaugizi.test` | Pak Hendra, Dinas Kesehatan Kota Semarang |
+| Instansi (SPPG) | `sppg@pmbgm.test` / `sppg@pantaugizi.test` | Pengelola SPPG Tembalang 03 |
+| Instansi (Korwil BGN) | `korwil@pmbgm.test` / `korwil@pantaugizi.test` | Korwil BGN Kota Semarang |
+| Admin sistem | `admin@pmbgm.test` / `admin@pantaugizi.test` | Pengelola sistem & data master |
 
 ### Data simulasi
 

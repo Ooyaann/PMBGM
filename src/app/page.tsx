@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight, BarChart3, Check, ClipboardList, Clock, ExternalLink, HeartPulse, Megaphone, Phone, Radar,
-  School, Search, ShieldCheck, Star, ThumbsUp,
+  School, Search, Send, ShieldCheck, Star, ThumbsUp,
 } from "lucide-react";
 import { FormCekTiket } from "@/components/beranda/form-cek-tiket";
 import { KartuLacak } from "@/components/beranda/kartu-lacak";
@@ -18,11 +18,11 @@ import { angka, durasiJam, persen } from "@/lib/format";
 import { FAKTA_NASIONAL } from "@/lib/konteks";
 import { cn } from "@/lib/utils";
 
-const MODUL = [
-  { ikon: Megaphone, judul: "Lapor", teks: "Foto, kirim, dapat tiket", href: "/lapor" },
-  { ikon: ClipboardList, judul: "Lacak", teks: "Pantau setiap tahap", href: "/lacak" },
-  { ikon: BarChart3, judul: "Data", teks: "Angka program terbuka", href: "/data" },
-  { ikon: Radar, judul: "Insight", teks: "Prioritas inspeksi", href: "/insight" },
+const LANGKAH_ALUR = [
+  { ikon: Megaphone, judul: "Lapor Mudah", teks: "Kirim foto dan catatan kejadian secara aman", href: "/lapor" },
+  { ikon: ShieldCheck, judul: "Verifikasi Cepat", teks: "Validasi bukti laporan oleh tim independen", href: "/lacak" },
+  { ikon: Send, judul: "Tindak Lanjut", teks: "Otomatis diteruskan ke dapur dan dinas terkait", href: "/lacak/akuntabilitas" },
+  { ikon: Radar, judul: "Pantauan Publik", teks: "Linimasa status dan batas waktu terbuka bagi semua", href: "/data" },
 ];
 
 export default async function Beranda() {
@@ -99,11 +99,14 @@ export default async function Beranda() {
         </div>
       </section>
 
-      {/* Empat modul + alur transparan */}
-      <section aria-labelledby="judul-modul" className="kontainer py-16">
-        <h2 id="judul-modul" className="text-2xl font-bold sm:text-3xl">Satu laporan, empat lensa</h2>
+      {/* Alur Pengawasan Terbuka 4 Langkah */}
+      <section aria-labelledby="judul-alur" className="kontainer py-16">
+        <div className="flex flex-col gap-1">
+          <h2 id="judul-alur" className="text-2xl font-bold sm:text-3xl">Alur Pengawasan Terbuka</h2>
+          <p className="text-sm text-muted-foreground">Empat langkah terpadu dari aduan warga hingga penyelesaian tuntas.</p>
+        </div>
         <ol className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {MODUL.map((m, i) => (
+          {LANGKAH_ALUR.map((m, i) => (
             <li key={m.judul} className="relative">
               <Link href={m.href}
                 className="group flex h-full flex-col gap-4 rounded-2xl border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
@@ -111,14 +114,14 @@ export default async function Beranda() {
                   <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
                     <m.ikon className="size-6" aria-hidden />
                   </span>
-                  <span className="angka text-xs font-semibold text-muted-foreground">0{i + 1}</span>
+                  <span className="angka text-xs font-semibold text-muted-foreground">Langkah 0{i + 1}</span>
                 </span>
                 <span>
                   <span className="block text-lg font-bold">{m.judul}</span>
                   <span className="block text-sm text-muted-foreground">{m.teks}</span>
                 </span>
               </Link>
-              {i < MODUL.length - 1 && (
+              {i < LANGKAH_ALUR.length - 1 && (
                 <ArrowRight aria-hidden className="absolute top-1/2 -right-3 z-10 hidden size-5 -translate-y-1/2 rounded-full bg-background text-muted-foreground lg:block" />
               )}
             </li>
@@ -175,7 +178,7 @@ export default async function Beranda() {
                 <div className="flex items-center gap-3">
                   <span className="angka w-4 text-sm font-bold text-muted-foreground">{i + 1}</span>
                   <Link href={`/data/sppg/${s.sppgId}`} className="min-w-0 flex-1 truncate font-semibold hover:text-primary">
-                    {s.nama.replace("SPPG Contoh ", "")}
+                    {s.nama}
                   </Link>
                   <BadgeRisiko skor={s.indeks} />
                 </div>

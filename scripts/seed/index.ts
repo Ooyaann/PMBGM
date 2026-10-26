@@ -109,7 +109,7 @@ async function main() {
           public.anggaran_bulanan, public.ringkasan_kasus_bulanan, public.harga_pangan,
           public.sekolah, public.instansi, public.sppg, public.wilayah
         restart identity cascade`;
-      await tx`delete from auth.users where email like '%@pantaugizi.test'`;
+      await tx`delete from auth.users where email like '%@pantaugizi.test' or email like '%@pmbgm.test'`;
       // Akun non-seed yang sudah ada tetap punya profil.
       await tx`
         insert into public.profil_pengguna (id, nama_tampilan)

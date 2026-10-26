@@ -9,16 +9,16 @@ const lolos = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "
 function isiEmail(judul: string, isi: string | null, kode: string | null) {
   const tautan = kode ? `${SITUS}/lacak?tiket=${encodeURIComponent(kode)}` : `${SITUS}/akun`;
   const teks = [judul, isi ?? "", kode ? `Kode tiket: ${kode}` : "", `Lihat perkembangan: ${tautan}`, "",
-    "Email ini dikirim otomatis oleh PantauGizi. Identitas Anda tidak dibagikan kepada instansi."].filter(Boolean).join("\n");
+    "Email ini dikirim otomatis oleh PMBGM. Identitas Anda tidak dibagikan kepada instansi."].filter(Boolean).join("\n");
   const html = `<!doctype html><html lang="id"><body style="margin:0;background:#f6f5f1;font-family:Arial,sans-serif;color:#1f1e1b">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="100%" style="max-width:520px;background:#ffffff;border-radius:16px;border:1px solid #e4e2db">
 <tr><td style="padding:24px">
-<p style="margin:0 0 16px;font-weight:800;font-size:18px;color:#0f6b57">PantauGizi</p>
+<p style="margin:0 0 16px;font-weight:800;font-size:18px;color:#0d9488">PMBGM</p>
 <p style="margin:0 0 8px;font-weight:700;font-size:16px">${lolos(judul)}</p>
 ${isi ? `<p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:#4a4943">${lolos(isi)}</p>` : ""}
 ${kode ? `<p style="margin:0 0 16px;font-size:13px;color:#6b6a63">Kode tiket <strong style="font-family:monospace;color:#1f1e1b">${lolos(kode)}</strong></p>` : ""}
-<a href="${tautan}" style="display:inline-block;background:#0f6b57;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:10px 18px;border-radius:10px">Lihat perkembangan</a>
+<a href="${tautan}" style="display:inline-block;background:#0d9488;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:10px 18px;border-radius:10px">Lihat perkembangan</a>
 <p style="margin:24px 0 0;font-size:12px;color:#8a8982">Email otomatis. Identitas Anda tidak dibagikan kepada instansi.</p>
 </td></tr></table></td></tr></table></body></html>`;
   return { teks, html };
@@ -60,7 +60,7 @@ export async function kirimNotifikasiTertunda(batas = 50): Promise<number> {
     const ke = email.get(n.pengguna_id);
     if (!ke) continue;
     const { teks, html } = isiEmail(n.judul, n.isi, n.laporan?.kode_tiket ?? null);
-    if (await kirimEmail({ ke, subjek: `PantauGizi · ${n.judul}`, teks, html })) terkirim++;
+    if (await kirimEmail({ ke, subjek: `PMBGM · ${n.judul}`, teks, html })) terkirim++;
   }
   return terkirim;
 }

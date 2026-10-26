@@ -42,12 +42,12 @@ export function PemilihBanding({ jenis, ids, mode, pilihan }: {
               ganti(baru);
             }}>
             <SelectTrigger aria-label={`Pilihan ${String.fromCharCode(65 + i)}`} className="h-10 min-w-0 flex-1 border-0 bg-transparent px-1 font-semibold">
-              <SelectValue placeholder="Pilih…">{id ? nama.get(id)?.replace("SPPG Contoh ", "SPPG ") : undefined}</SelectValue>
+              <SelectValue placeholder="Pilih…">{id ? nama.get(id) : undefined}</SelectValue>
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false} className="max-h-80">
               {pilihan.filter((p) => p.id === id || !ids.includes(p.id)).map((p) => (
                 <SelectItem key={p.id} value={p.id}>
-                  <span className="truncate">{p.nama.replace("SPPG Contoh ", "SPPG ")}</span>
+                  <span className="truncate">{p.nama}</span>
                   <span className="text-xs text-muted-foreground">{p.sub}</span>
                 </SelectItem>
               ))}

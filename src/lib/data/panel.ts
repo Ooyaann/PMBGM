@@ -191,7 +191,14 @@ export async function ambilDaftarKasus(opsi: { instansiId?: string | null; seles
     .from("v_kasus_publik")
     .select("id, kode_kasus, judul, kategori, status, status_sejak, tenggat_tahap, terlambat, tidak_ditanggapi, prioritas, jumlah_laporan, total_terdampak, sppg_nama, kecamatan_nama, instansi_nama, instansi_id, waktu_kejadian, selesai_pada")
     .or(`status.neq.selesai,selesai_pada.gte.${sejak}`);
-  if (opsi.instansiId) q = q.eq("instansi_id", opsi.instansiId);
+  if (opsi.instansiId) {
+    const { data: inst } = await supabase.from("instansi").select("sppg_id").eq("id", opsi.instansiId).single();
+    if (inst?.sppg_id) {
+      q = q.or(`instansi_id.eq.${opsi.instansiId},sppg_id.eq.${inst.sppg_id}`);
+    } else {
+      q = q.eq("instansi_id", opsi.instansiId);
+    }
+  }
   const { data } = await q.order("status_sejak", { ascending: false }).limit(300);
   return (data ?? []).map((k) => ({
     id: k.id!,
@@ -286,8 +293,18 @@ export async function ambilKasusPanel(id: string) {
 export async function ambilRingkasanPanel(instansiId: string | null) {
   const supabase = await buatKlienServer();
   const hitung = (q: PromiseLike<{ count: number | null }>) => q.then((r) => r.count ?? 0);
+
+  let sppgId: string | null = null;
+  if (instansiId) {
+    const { data: inst } = await supabase.from("instansi").select("sppg_id").eq("id", instansiId).single();
+    sppgId = inst?.sppg_id ?? null;
+  }
+
   const kasus = () => {
     const q = supabase.from("kasus").select("id", { count: "exact", head: true });
+    if (instansiId && sppgId) {
+      return q.or(`instansi_id.eq.${instansiId},sppg_id.eq.${sppgId}`);
+    }
     return instansiId ? q.eq("instansi_id", instansiId) : q;
   };
   const [antrean, antreanTerlambat, perluDiteruskan, menungguInstansi, tidakDitanggapi, ditindaklanjuti] = await Promise.all([

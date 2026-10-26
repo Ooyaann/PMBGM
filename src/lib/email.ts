@@ -7,11 +7,11 @@ export interface Email {
   html: string;
 }
 
-const PENGIRIM = process.env.EMAIL_PENGIRIM ?? "PantauGizi <notifikasi@pantaugizi.test>";
+const PENGIRIM = process.env.EMAIL_PENGIRIM ?? "PMBGM <notifikasi@pmbgm.test>";
 
 function pisahPengirim(s: string) {
   const m = s.match(/^(.*)<(.+)>$/);
-  return m ? { Name: m[1].trim(), Email: m[2].trim() } : { Name: "PantauGizi", Email: s.trim() };
+  return m ? { Name: m[1].trim(), Email: m[2].trim() } : { Name: "PMBGM", Email: s.trim() };
 }
 
 /**

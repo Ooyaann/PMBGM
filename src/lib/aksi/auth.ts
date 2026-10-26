@@ -81,13 +81,19 @@ export async function masukDemo(kunci: KunciDemo): Promise<HasilAksi> {
   }
   if (!AKUN_DEMO.includes(kunci)) return { ok: false, pesan: "Akun demo tidak dikenal." };
 
-  const kataSandi = process.env.DEMO_PASSWORD || "DemoPantauGizi-2026!";
+  const kataSandiUtama = process.env.DEMO_PASSWORD || "DemoPMBGM-2026!";
   const supabase = await buatKlienServer();
-  const { error } = await supabase.auth.signInWithPassword({
-    email: `${kunci}@pantaugizi.test`,
-    password: kataSandi,
+  let res = await supabase.auth.signInWithPassword({
+    email: `${kunci}@pmbgm.test`,
+    password: kataSandiUtama,
   });
-  if (error) return { ok: false, pesan: "Akun demo belum tersedia. Jalankan `npm run seed`." };
+  if (res.error && kataSandiUtama !== "DemoPantauGizi-2026!") {
+    res = await supabase.auth.signInWithPassword({
+      email: `${kunci}@pmbgm.test`,
+      password: "DemoPantauGizi-2026!",
+    });
+  }
+  if (res.error) return { ok: false, pesan: "Akun demo belum tersedia. Jalankan `npm run seed`." };
   return { ok: true };
 }
 

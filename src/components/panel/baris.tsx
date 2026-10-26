@@ -83,7 +83,7 @@ export function BarisKasus({ k }: { k: ButirKasus }) {
           <span className="block truncate font-semibold group-hover:underline">{k.judul}</span>
           <span className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className="font-mono">{k.kode}</span>
-            {k.sppg && <span>{k.sppg.replace("SPPG Contoh ", "SPPG ")}</span>}
+            {k.sppg && <span>{k.sppg}</span>}
             {k.instansi && <span className="flex items-center gap-1"><ShieldCheck className="size-3.5" aria-hidden />{k.instansi}</span>}
             <span className="flex items-center gap-1"><Files className="size-3.5" aria-hidden />{k.jumlahLaporan}</span>
           </span>

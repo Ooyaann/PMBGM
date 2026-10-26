@@ -46,7 +46,7 @@ interface Draf {
 }
 
 const DRAF_KOSONG: Draf = { kategori: null, sekolah: null, waktu: "", jumlah: "", deskripsi: "", lokasi: null, mode: "rahasia" };
-const KUNCI_DRAF = "pantaugizi:draf-laporan:v1";
+const KUNCI_DRAF = "pmbgm:draf-laporan:v1";
 
 // Draf tersimpan di perangkat (LP-10). Dibaca lewat useSyncExternalStore agar aman saat hydration.
 const tanpaLangganan = () => () => {};

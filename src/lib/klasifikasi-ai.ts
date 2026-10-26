@@ -31,7 +31,7 @@ const AMBANG_YAKIN = 0.7;
 const BATAS_KECIL_MS = 20_000;
 const BATAS_UTAMA_MS = 90_000;
 
-const SISTEM = `Anda membantu verifikator PantauGizi memilah laporan warga tentang program Makan Bergizi Gratis (MBG) di sekolah.
+const SISTEM = `Anda membantu verifikator PMBGM memilah laporan warga tentang program Makan Bergizi Gratis (MBG) di sekolah.
 Pilih satu kategori:
 ${KATEGORI_KUNCI.map((k) => `- ${k}: ${KATEGORI[k].ringkas}`).join("\n")}
 Urgensi:

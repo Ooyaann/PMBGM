@@ -182,7 +182,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
     const kec = kecamatanById.get(rencana.kecamatanId)!;
     const id = a.uuid();
     const nomor = String(rencana.nomor).padStart(2, "0");
-    const nama = `SPPG Contoh ${kec.nama} ${nomor}`;
+    const nama = `SPPG ${kec.nama} ${nomor}`;
     const kapasitas = a.int(48, 68) * 50;
     let statusSlhs = "berlaku";
     let slhsSampai: string | null = tanggalWib(acuan + a.int(60, 330) * HARI);
@@ -218,9 +218,9 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
     sppgGen.push(g);
     sppg.push({
       id, kode: g.kode, nama, wilayah_id: kec.id,
-      alamat: `Jl. Contoh ${a.pilih(NAMA_JALAN)} No. ${a.int(1, 120)}, ${kec.nama}`,
+      alamat: `Jl. ${a.pilih(NAMA_JALAN)} No. ${a.int(1, 120)}, ${kec.nama}`,
       lat: g.lat, lng: g.lng,
-      pengelola: `Yayasan Contoh ${a.pilih(NAMA_YAYASAN)} ${kec.nama}`,
+      pengelola: `Yayasan ${a.pilih(NAMA_YAYASAN)} ${kec.nama}`,
       kapasitas_porsi_harian: kapasitas,
       status_operasional: statusOperasional,
       status_slhs: statusSlhs,
@@ -258,7 +258,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
       penghitungNama.set(kunciNama, urut);
       const siswa = a.int(ref.siswa[0], ref.siswa[1]);
       const g: SekolahGen = {
-        id: a.uuid(), nama: `${ref.awalan} Contoh ${s.kecamatan} ${urut}`, jenjang, siswa,
+        id: a.uuid(), nama: `${ref.awalan} ${s.kecamatan} ${urut}`, jenjang, siswa,
         wilayahId: s.wilayahId, sppg: s,
         lat: s.lat + a.antara(-0.018, 0.018), lng: s.lng + a.antara(-0.018, 0.018),
       };
@@ -268,7 +268,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
       sekolah.push({
         id: g.id, npsn: `99${String(npsn++).padStart(6, "0")}`, nama: g.nama, jenjang, jumlah_siswa: siswa,
         wilayah_id: s.wilayahId, sppg_id: s.id,
-        alamat: `Jl. Contoh ${a.pilih(NAMA_JALAN)} No. ${a.int(1, 150)}, ${s.kecamatan}`,
+        alamat: `Jl. ${a.pilih(NAMA_JALAN)} No. ${a.int(1, 150)}, ${s.kecamatan}`,
         lat: g.lat, lng: g.lng, sumber: "simulasi",
       });
     }
@@ -290,7 +290,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
   const pengguna: PenggunaGen[] = [];
   const akunDemo = (kunci: string, nama: string, peran: PenggunaGen["peran"], ekstra: Partial<PenggunaGen> = {}) => {
     const p: PenggunaGen = {
-      id: a.uuid(), email: `${kunci}@pantaugizi.test`, nama, peran, jenisPelapor: null, terverifikasi: false,
+      id: a.uuid(), email: `${kunci}@pmbgm.test`, nama, peran, jenisPelapor: null, terverifikasi: false,
       instansiId: null, sekolahId: null, demo: kunci, ...ekstra,
     };
     pengguna.push(p);
@@ -302,7 +302,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
   const hendra = akunDemo("hendra", "Pak Hendra", "instansi", { instansiId: instansiDinkes });
   const akunSppg = akunDemo("sppg", `Pengelola ${sppgDemo.nama}`, "instansi", { instansiId: sppgDemo.instansiId });
   const korwil = akunDemo("korwil", "Korwil BGN Kota Semarang", "instansi", { instansiId: instansiKorwil });
-  akunDemo("admin", "Admin PantauGizi", "admin");
+  akunDemo("admin", "Admin PMBGM", "admin");
 
   const pelakuInstansi = new Map<string, string>([
     [instansiDinkes, hendra.id], [sppgDemo.instansiId, akunSppg.id], [instansiKorwil, korwil.id],
@@ -315,7 +315,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
       ? a.berbobot({ guru: 0.45, komite_sekolah: 0.3, kader_posyandu: 0.15, sekolah: 0.1 })
       : a.berbobot({ orang_tua: 0.62, warga: 0.24, siswa: 0.14 });
     const p: PenggunaGen = {
-      id: a.uuid(), email: `pelapor${String(i).padStart(3, "0")}@pantaugizi.test`,
+      id: a.uuid(), email: `pelapor${String(i).padStart(3, "0")}@pmbgm.test`,
       nama: `${a.pilih(NAMA_DEPAN)} ${a.pilih(NAMA_BELAKANG)}`, peran: "pelapor", jenisPelapor: jenis,
       terverifikasi, instansiId: null, sekolahId: terverifikasi ? a.pilih(sekolahGen).id : null, demo: null,
     };
@@ -513,7 +513,7 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
     if ((baris.dibuat_pada as number) <= acuan) {
       statusLog.push({
         laporan_id: null, kasus_id: null, peristiwa: "perubahan_status", dari: null, ke: null,
-        jenis_tindakan: null, pelaku_id: null, pelaku_peran: "sistem", pelaku_label: "Sistem PantauGizi",
+        jenis_tindakan: null, pelaku_id: null, pelaku_peran: "sistem", pelaku_label: "Sistem PMBGM",
         catatan: null, bukti_paths: [], publik: true, ...baris,
       });
     }

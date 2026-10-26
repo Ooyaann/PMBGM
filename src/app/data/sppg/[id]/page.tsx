@@ -13,6 +13,7 @@ import { Remah, Tile } from "@/components/data-terbuka/remah";
 import { BilahKomponen, GrafikGaris } from "@/components/grafik/grafik";
 import { KartuGrafik } from "@/components/grafik/kartu-grafik";
 import { Skeleton } from "@/components/ui/skeleton";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { ambilProfilSppg } from "@/lib/data/data-terbuka";
 import { komponenIndeks } from "@/lib/indeks";
 import { angka, durasiJam, persen, tanggal } from "@/lib/format";
@@ -45,7 +46,7 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
           { label: "Jawa Tengah", href: "/data/wilayah" },
           { label: "Kota Semarang", href: "/data/wilayah/33.74" },
           { label: s.wilayah?.nama ?? "", href: `/data/wilayah/${s.wilayah?.id}` },
-          { label: s.nama.replace("SPPG Contoh ", "") },
+          { label: s.nama },
         ]} />
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -69,13 +70,14 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
               {s.status_operasional === "ditutup_sementara" ? "Ditutup sementara" : s.status_operasional}
             </span>
           )}
-          <span className={slhsBerlaku
-            ? "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2 text-xs font-semibold text-risiko-rendah"
-            : "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang"}
-            title="Sertifikat Laik Higiene Sanitasi">
-            {slhsBerlaku ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
-            {slhsBerlaku ? `SLHS s.d. ${s.slhs_berlaku_sampai ? tanggal(s.slhs_berlaku_sampai) : "–"}` : s.status_slhs === "proses" ? "SLHS diproses" : s.status_slhs === "kedaluwarsa" ? "SLHS kedaluwarsa" : "Tanpa SLHS"}
-          </span>
+          <InfoMetrik jenis="slhs">
+            <span className={slhsBerlaku
+              ? "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2 text-xs font-semibold text-risiko-rendah"
+              : "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang"}>
+              {slhsBerlaku ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
+              {slhsBerlaku ? `SLHS s.d. ${s.slhs_berlaku_sampai ? tanggal(s.slhs_berlaku_sampai) : "–"}` : s.status_slhs === "proses" ? "SLHS diproses" : s.status_slhs === "kedaluwarsa" ? "SLHS kedaluwarsa" : "Tanpa SLHS"}
+            </span>
+          </InfoMetrik>
           <LabelSumber jenis="simulasi" />
         </div>
       </header>
@@ -84,7 +86,12 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
         <Tile ikon={Utensils} label="Porsi/hari" nilai={angka(s.kapasitas_porsi_harian)} />
         <Tile ikon={School} label="Sekolah" nilai={angka(sekolah.length)} />
         <Tile ikon={Users} label="Penerima" nilai={angka(penerima)} />
-        <Tile ikon={FolderOpen} label="Kasus" nilai={angka(kasus.length)} sub={a?.persen_selesai != null ? `${persen(Number(a.persen_selesai))} selesai` : undefined} />
+        <Tile
+          ikon={FolderOpen}
+          label="Kasus"
+          nilai={angka(kasus.length)}
+          sub={a?.persen_selesai != null ? <InfoMetrik jenis="selesai">{persen(Number(a.persen_selesai))} selesai</InfoMetrik> : undefined}
+        />
       </dl>
 
       {i && skor != null && (
@@ -128,15 +135,21 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
       {a && (
         <dl className="grid grid-cols-2 gap-3 rounded-3xl border bg-card p-4 sm:grid-cols-4" aria-label="Kinerja tindak lanjut">
           {[
-            { ikon: CircleCheck, label: "Selesai", nilai: persen(a.persen_selesai == null ? null : Number(a.persen_selesai)) },
-            { ikon: Clock, label: "Tanggap", nilai: durasiJam(a.rata_jam_respons == null ? null : Number(a.rata_jam_respons)) },
-            { ikon: TriangleAlert, label: "Terlambat", nilai: persen(a.persen_terlambat == null ? null : Number(a.persen_terlambat)) },
-            { ikon: Star, label: "Kepuasan", nilai: a.kepuasan != null ? `${Number(a.kepuasan).toLocaleString("id-ID")}/5` : "–" },
+            { jenis: "selesai" as const, ikon: CircleCheck, label: "Selesai", nilai: persen(a.persen_selesai == null ? null : Number(a.persen_selesai)) },
+            { jenis: "tanggap" as const, ikon: Clock, label: "Tanggap", nilai: durasiJam(a.rata_jam_respons == null ? null : Number(a.rata_jam_respons)) },
+            { jenis: "terlambat" as const, ikon: TriangleAlert, label: "Terlambat", nilai: persen(a.persen_terlambat == null ? null : Number(a.persen_terlambat)) },
+            { jenis: "kepuasan" as const, ikon: Star, label: "Kepuasan", nilai: a.kepuasan != null ? `${Number(a.kepuasan).toLocaleString("id-ID")}/5` : "–" },
           ].map((m) => (
             <div key={m.label} className="flex items-center gap-3 rounded-2xl bg-muted/50 p-3">
               <m.ikon className="size-5 shrink-0 text-primary" aria-hidden />
               <div>
-                <dt className="text-xs text-muted-foreground">{m.label}</dt>
+                <dt className="text-xs text-muted-foreground">
+                  <InfoMetrik jenis={m.jenis}>
+                    <span className="inline-flex items-center gap-1 underline decoration-dotted underline-offset-2 cursor-help">
+                      {m.label}
+                    </span>
+                  </InfoMetrik>
+                </dt>
                 <dd className="angka font-bold">{m.nilai}</dd>
               </div>
             </div>

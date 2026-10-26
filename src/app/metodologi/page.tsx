@@ -14,7 +14,7 @@ import { KATEGORI, RISIKO, SUMBER, type Kategori, type SumberData } from "@/lib/
 
 export const metadata: Metadata = {
   title: "Metodologi",
-  description: "Cara PantauGizi menghitung Indeks Risiko SPPG, skor kredibilitas dan prioritas laporan, batas waktu, peringatan dini, serta sumber datanya.",
+  description: "Cara PMBGM menghitung Indeks Risiko SPPG, skor kredibilitas dan prioritas laporan, batas waktu, peringatan dini, serta sumber datanya.",
 };
 
 const ISI = [
@@ -93,7 +93,7 @@ async function TabelSla() {
 export default function HalamanMetodologi() {
   return (
     <HalamanInfo judul="Metodologi" isi={ISI}
-      pengantar="Semua angka di PantauGizi dihitung dengan aturan terbuka di bawah ini, hanya dari laporan yang sudah diverifikasi.">
+      pengantar="Semua angka di PMBGM dihitung dengan aturan terbuka di bawah ini, hanya dari laporan yang sudah diverifikasi.">
       <BagianInfo id="indeks" judul="Indeks Risiko SPPG" ikon={Gauge}>
         <p>Skor 0–100 untuk setiap dapur SPPG, dihitung ulang tiap jam dan setiap ada verifikasi.</p>
         <Rumus hasil="Indeks" suku={KOMPONEN.map((k) => ({

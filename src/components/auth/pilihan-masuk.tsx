@@ -14,7 +14,7 @@ const PERSONA: { kunci: KunciDemo; nama: string; peran: string; ikon: typeof Use
   { kunci: "budi", nama: "Pak Budi", peran: "Guru", ikon: GraduationCap, keterangan: "Pelapor terverifikasi, penanggung jawab MBG di SMP" },
   { kunci: "sari", nama: "Mbak Sari", peran: "Verifikator", ikon: ClipboardCheck, keterangan: "Memeriksa bukti, memvalidasi & menggabungkan laporan" },
   { kunci: "hendra", nama: "Pak Hendra", peran: "Dinkes", ikon: Building2, keterangan: "Staf Dinas Kesehatan Kota Semarang (tindak lanjut kasus)" },
-  { kunci: "sppg", nama: "Pengelola", peran: "SPPG", ikon: Utensils, keterangan: "Pengelola Dapur SPPG Contoh Tembalang 03" },
+  { kunci: "sppg", nama: "Pengelola", peran: "SPPG", ikon: Utensils, keterangan: "Pengelola Dapur SPPG Tembalang 03" },
   { kunci: "korwil", nama: "Korwil", peran: "BGN", ikon: Users, keterangan: "Koordinator Wilayah Badan Gizi Nasional Kota Semarang" },
   { kunci: "admin", nama: "Admin", peran: "Sistem", ikon: Settings, keterangan: "Administrator sistem, data master, dan aturan SLA" },
 ];

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 50" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Bayangan halus agar kontur putih terlihat tegas dan kontras di background putih maupun gelap -->
+    <filter id="pmbgm-contour-shadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.2" />
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0d9488" flood-opacity="0.14" />
+    </filter>
+    <linearGradient id="pmbgm-gagang-grad" x1="28" y1="28" x2="41" y2="41" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="pmbgm-ring-grad" x1="5" y1="5" x2="33" y2="33" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#0d9488" />
+    </linearGradient>
+  </defs>
+
+  <!-- Simbol Logo Kaca Pembesar & Ompreng dengan Kontur Putih Mengelilingi Siluet Persis -->
+  <g transform="translate(1, 1)">
+    <!-- KONTUR BOLD PUTIH (Mengikuti Lekukan Siluet Kaca Pembesar Persis, Bukan Bulat / Kotak) -->
+    <g filter="url(#pmbgm-contour-shadow)">
+      <path d="M28 28 L40.5 40.5" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+      <circle cx="19" cy="19" r="16.5" fill="#ffffff" stroke="#ffffff" stroke-width="2"/>
+    </g>
+
+    <!-- Gagang Lensa Teal Segar -->
+    <path d="M28.5 28.5 L40.5 40.5" stroke="#0f766e" stroke-width="5.2" stroke-linecap="round"/>
+    <path d="M28.5 28.5 L39.5 39.5" stroke="url(#pmbgm-gagang-grad)" stroke-width="4.2" stroke-linecap="round"/>
+    <path d="M29.5 29.5 L38 38" stroke="#5eead4" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="40.5" cy="40.5" r="2.2" fill="#042f2e"/>
+
+    <!-- Ring Lensa Kaca Pembesar -->
+    <circle cx="19" cy="19" r="14.5" stroke="url(#pmbgm-ring-grad)" stroke-width="3"/>
+    <circle cx="19" cy="19" r="13" stroke="#0f766e" stroke-width="0.6" fill="#f8fafc"/>
+
+    <!-- Baki Ompreng Stainless Steel -->
+    <rect x="9.5" y="10" width="19" height="18" rx="3.5" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+    <rect x="10.5" y="11" width="17" height="16" rx="2.8" fill="#ffffff"/>
+
+    <!-- Kompartemen Makanan Ceria Berwarna -->
+    <rect x="11.5" y="12" width="7" height="6.5" rx="1.8" fill="#f97316"/>
+    <circle cx="15" cy="15.2" r="1.8" fill="#fdba74"/>
+    <path d="M14.5 15.2 L16.8 16.5" stroke="#fff7ed" stroke-width="0.8" stroke-linecap="round"/>
+
+    <rect x="19.5" y="12" width="7" height="6.5" rx="1.8" fill="#10b981"/>
+    <circle cx="22.2" cy="15" r="1.3" fill="#6ee7b7"/>
+    <circle cx="23.8" cy="15" r="1.3" fill="#6ee7b7"/>
+
+    <rect x="11.5" y="19.5" width="4.8" height="6.5" rx="1.5" fill="#ef4444"/>
+    <circle cx="13.9" cy="22.7" r="1.2" fill="#fca5a5"/>
+
+    <rect x="17.3" y="19.5" width="9.2" height="6.5" rx="1.5" fill="#f59e0b"/>
+    <rect x="18" y="20.2" width="7.8" height="5.1" rx="1.2" fill="#ffffff"/>
+    <circle cx="21.9" cy="22.7" r="1" fill="#fef08a"/>
+  </g>
+
+  <!-- Tipografi Identitas PMBGM: P (Teal), MBG (Slate Gelap), M (Emerald Hijau) -->
+  <text x="56" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="23" font-weight="900" letter-spacing="-0.8">
+    <tspan fill="#0d9488">P</tspan><tspan fill="#0f172a">MBG</tspan><tspan fill="#059669">M</tspan>
+  </text>
+  <!-- Keterangan Lengkap: PEMANTAU MBG MASYARAKAT -->
+  <text x="56" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="700" letter-spacing="0.8" fill="#64748b">
+    PEMANTAU MBG MASYARAKAT
+  </text>
+</svg>

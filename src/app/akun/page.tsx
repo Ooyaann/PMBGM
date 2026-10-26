@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ambilLaporanSaya, ambilNotifikasi, ambilProfil } from "@/lib/data/akun";
 import { KATEGORI } from "@/lib/label";
 import { ambilPengguna, LABEL_PERAN } from "@/lib/sesi";
+import { buatKlienServer } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Laporan saya", robots: { index: false, follow: false } };
@@ -22,6 +23,24 @@ async function Isi() {
   if (!p) redirect("/masuk?lanjut=/akun");
   const [laporan, notif, profil] = await Promise.all([ambilLaporanSaya(p.id), ambilNotifikasi(p.id), ambilProfil(p.id)]);
   const aktif = laporan.filter((l) => !["selesai", "ditolak"].includes(l.status)).length;
+
+  let infoSekolah: { nama: string; npsn: string | null; sppgNama: string | null; sppgId: string | null } | null = null;
+  if (p.sekolahId) {
+    const supabase = await buatKlienServer();
+    const { data: sek } = await supabase
+      .from("sekolah")
+      .select("nama, npsn, sppg:sppg_id (id, nama)")
+      .eq("id", p.sekolahId)
+      .maybeSingle();
+    if (sek) {
+      infoSekolah = {
+        nama: sek.nama,
+        npsn: sek.npsn,
+        sppgNama: (sek.sppg as { nama: string } | null)?.nama ?? null,
+        sppgId: (sek.sppg as { id: string } | null)?.id ?? null,
+      };
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -43,6 +62,45 @@ async function Isi() {
           <FormProfil nama={profil?.nama_tampilan ?? p.nama} jenis={profil?.jenis_pelapor ?? null} />
         </div>
       </header>
+
+      {infoSekolah && (
+        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <School className="size-6" />
+              </span>
+              <div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary uppercase">
+                  Sekolah yang Didampingi (Akun Guru)
+                </span>
+                <h3 className="font-extrabold text-lg">{infoSekolah.nama}</h3>
+                {infoSekolah.sppgNama && (
+                  <p className="text-xs text-muted-foreground">
+                    Dapur Mitra MBG: <span className="font-semibold text-foreground">{infoSekolah.sppgNama}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {infoSekolah.sppgId && (
+                <Link
+                  href={`/data/sppg/${infoSekolah.sppgId}`}
+                  className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold hover:border-primary/40 transition"
+                >
+                  Rapor Dapur Mitra
+                </Link>
+              )}
+              <Link
+                href={`/lapor?sekolahId=${p.sekolahId}`}
+                className="rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition"
+              >
+                Lapor untuk Sekolah
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section aria-labelledby="judul-laporan" className="space-y-3">

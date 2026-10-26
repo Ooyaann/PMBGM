@@ -227,47 +227,35 @@ export async function ambilKasusSemarang() {
 }
 
 // ---------------------------------------------------------------------------
-// DT-08: harga pangan daerah dibandingkan anggaran bahan per porsi (tanpa vonis)
+// DT-08: Kepatuhan dan Keamanan Dapur SPPG Wilayah (SLHS & Operasional)
 // ---------------------------------------------------------------------------
-
-/** Takaran bahan inti satu porsi (asumsi simulasi, dijelaskan di halaman Metodologi). */
-export const TAKARAN_PORSI: Record<string, { gram: number; label: string }> = {
-  "Beras medium": { gram: 100, label: "100 g" },
-  "Telur ayam ras": { gram: 30, label: "½ butir" },
-  "Daging ayam ras": { gram: 40, label: "40 g" },
-  "Minyak goreng": { gram: 10, label: "10 ml" },
-  "Bawang merah": { gram: 8, label: "8 g" },
-};
-/** Asumsi anggaran bahan baku per porsi (simulasi). */
-export const ANGGARAN_BAHAN_PORSI = 10_000;
-
-export async function ambilHargaPangan(wilayahId: string) {
+export async function ambilKepatuhanWilayah(wilayahId: string) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAG_DATA_PUBLIK);
-  const { data } = await buatKlienPublik()
-    .from("harga_pangan")
-    .select("bulan, komoditas, satuan, harga")
-    .eq("wilayah_id", wilayahId)
-    .order("bulan", { ascending: false });
-  if (!data?.length) return null;
-  const bulanTerakhir = data[0].bulan;
-  const bulanSebelum = data.find((d) => d.bulan !== bulanTerakhir)?.bulan;
-  const komoditas = data
-    .filter((d) => d.bulan === bulanTerakhir)
-    .map((d) => {
-      const lalu = data.find((x) => x.bulan === bulanSebelum && x.komoditas === d.komoditas);
-      const harga = Number(d.harga);
-      const takaran = TAKARAN_PORSI[d.komoditas];
-      return {
-        komoditas: d.komoditas,
-        satuan: d.satuan,
-        harga,
-        perubahan: lalu ? (100 * (harga - Number(lalu.harga))) / Number(lalu.harga) : null,
-        takaran: takaran?.label ?? null,
-        biayaPorsi: takaran ? (harga * takaran.gram) / 1000 : 0,
-      };
-    })
-    .sort((a, b) => a.komoditas.localeCompare(b.komoditas));
-  return { bulan: bulanTerakhir, komoditas, biayaPorsi: komoditas.reduce((s, k) => s + k.biayaPorsi, 0) };
+  const daftar = await ambilDaftarSppg();
+  const sppgWilayah = wilayahId === "33.74"
+    ? daftar
+    : daftar.filter((s) => s.wilayahId === wilayahId);
+
+  if (!sppgWilayah.length) return null;
+
+  const total = sppgWilayah.length;
+  const slhsBerlaku = sppgWilayah.filter((s) => s.statusSlhs === "berlaku").length;
+  const slhsProses = sppgWilayah.filter((s) => s.statusSlhs === "proses").length;
+  const slhsTanpa = sppgWilayah.filter((s) => s.statusSlhs === "tidak_ada" || s.statusSlhs === "kedaluwarsa").length;
+  const beroperasi = sppgWilayah.filter((s) => s.statusOperasional === "beroperasi").length;
+  const ditutup = sppgWilayah.filter((s) => s.statusOperasional === "ditutup_sementara").length;
+
+  return {
+    total,
+    slhsBerlaku,
+    slhsProses,
+    slhsTanpa,
+    persenSlhs: total ? Math.round((100 * slhsBerlaku) / total) : 0,
+    beroperasi,
+    ditutup,
+    daftar: sppgWilayah.slice(0, 6),
+  };
 }
+

@@ -65,7 +65,7 @@ async function Hasil({ searchParams }: { searchParams: PageProps<"/cari-sekolah"
           {s.sppg ? (
             <Link href={`/data/sppg/${s.sppg.id}`} className="flex flex-wrap items-center gap-2 rounded-2xl bg-muted/50 p-3 hover:bg-muted">
               <Utensils className="size-4 text-muted-foreground" aria-hidden />
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{s.sppg.nama.replace("SPPG Contoh ", "SPPG ")}</span>
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{s.sppg.nama}</span>
               {s.sppg.slhs === "berlaku"
                 ? <ShieldCheck className="size-4 text-risiko-rendah" aria-label="SLHS berlaku" />
                 : <ShieldOff className="size-4 text-risiko-sedang" aria-label="SLHS belum berlaku" />}
