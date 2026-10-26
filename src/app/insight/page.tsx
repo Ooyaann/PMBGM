@@ -58,7 +58,7 @@ async function PrioritasTeratas() {
               <span className="block truncate font-semibold">{s.nama}</span>
               <span className="block text-xs text-muted-foreground">{s.kecamatan}</span>
             </Link>
-            <BadgeRisiko skor={s.indeks} />
+            <BadgeRisiko skor={s.indeks} className="shrink-0" />
             <span className="flex w-full flex-wrap gap-1 pl-8">
               {s.alasan.slice(0, 3).map((a) => <ChipAlasan key={a.jenis} alasan={a} />)}
             </span>

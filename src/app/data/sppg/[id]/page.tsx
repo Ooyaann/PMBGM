@@ -18,6 +18,7 @@ import { ambilProfilSppg } from "@/lib/data/data-terbuka";
 import { komponenIndeks } from "@/lib/indeks";
 import { angka, durasiJam, persen, tanggal } from "@/lib/format";
 import { kategoriRisiko, RISIKO, type Kategori, type StatusAlur } from "@/lib/label";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Profil SPPG" };
 
@@ -56,31 +57,34 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
             </p>
           </div>
           {skor != null && (
-            <div className="flex flex-col items-start gap-1 sm:items-end">
-              <BadgeRisiko skor={skor} besar />
+            <div className="flex flex-col items-start gap-1 sm:items-end shrink-0">
+              <BadgeRisiko skor={skor} besar className="shrink-0" />
               {arah != null && Math.abs(arah) >= 1 && (
-                <span className="text-xs text-muted-foreground">{arah > 0 ? "▲" : "▼"} {Math.abs(arah).toFixed(0)} poin dalam 12 minggu</span>
+                <span className="text-xs text-muted-foreground whitespace-nowrap">{arah > 0 ? "▲" : "▼"} {Math.abs(arah).toFixed(0)} poin dalam 12 minggu</span>
               )}
             </div>
           )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {s.status_operasional !== "beroperasi" && (
-            <InfoMetrik jenis="status_operasional">
-              <span className="inline-flex h-6 items-center rounded-full bg-risiko-tinggi-lembut px-2 text-xs font-semibold text-risiko-tinggi cursor-help">
+            <InfoMetrik jenis="status_operasional" className="shrink-0">
+              <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-risiko-tinggi-lembut px-2.5 text-xs font-semibold text-risiko-tinggi whitespace-nowrap cursor-help">
                 {s.status_operasional === "ditutup_sementara" ? "Ditutup sementara" : s.status_operasional}
               </span>
             </InfoMetrik>
           )}
-          <InfoMetrik jenis="slhs">
-            <span className={slhsBerlaku
-              ? "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2 text-xs font-semibold text-risiko-rendah cursor-help"
-              : "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang cursor-help"}>
-              {slhsBerlaku ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
+          <InfoMetrik jenis="slhs" className="shrink-0">
+            <span className={cn(
+              "inline-flex h-6 shrink-0 items-center gap-1 rounded-full px-2.5 text-xs font-semibold whitespace-nowrap cursor-help",
+              slhsBerlaku
+                ? "bg-risiko-rendah-lembut text-risiko-rendah"
+                : "bg-risiko-sedang-lembut text-risiko-sedang"
+            )}>
+              {slhsBerlaku ? <ShieldCheck className="size-3.5 shrink-0" aria-hidden /> : <ShieldOff className="size-3.5 shrink-0" aria-hidden />}
               {slhsBerlaku ? `SLHS s.d. ${s.slhs_berlaku_sampai ? tanggal(s.slhs_berlaku_sampai) : "–"}` : s.status_slhs === "proses" ? "SLHS diproses" : s.status_slhs === "kedaluwarsa" ? "SLHS kedaluwarsa" : "Tanpa SLHS"}
             </span>
           </InfoMetrik>
-          <LabelSumber jenis="simulasi" />
+          <LabelSumber jenis="simulasi" className="shrink-0" />
         </div>
       </header>
 

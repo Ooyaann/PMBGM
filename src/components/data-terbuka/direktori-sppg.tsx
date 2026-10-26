@@ -67,27 +67,27 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
           <li key={s.id}>
             <Link href={`/data/sppg/${s.id}`}
               className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
-              <span className="flex items-start justify-between gap-2">
-                <span className="min-w-0">
-                  <span className="block truncate font-semibold">{s.nama}</span>
-                  <span className="text-xs text-muted-foreground">{s.kecamatan}</span>
+              <span className="flex items-start justify-between gap-3">
+                <span className="min-w-0 flex-1 pr-1">
+                  <span className="block truncate font-semibold text-foreground">{s.nama}</span>
+                  <span className="block text-xs text-muted-foreground">{s.kecamatan}</span>
                 </span>
-                <BadgeRisiko skor={s.indeks} />
+                <BadgeRisiko skor={s.indeks} className="shrink-0" />
               </span>
-              <span className="flex flex-wrap gap-x-3.5 gap-y-1.5 text-xs text-muted-foreground font-medium">
-                <span className="flex items-center gap-1"><School className="size-3.5 text-primary" aria-hidden />{s.jumlahSekolah} Sekolah</span>
-                <span className="flex items-center gap-1"><Users className="size-3.5 text-primary" aria-hidden />{angka(s.penerima)} Siswa</span>
-                <span className="flex items-center gap-1"><FolderOpen className="size-3.5 text-primary" aria-hidden />{s.kasus} Kasus</span>
-                <InfoMetrik jenis="slhs">
-                  <span className={cn("inline-flex items-center gap-1 font-semibold rounded-md px-1.5 py-0.5", s.statusSlhs === "berlaku" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:text-amber-400")}>
-                    {s.statusSlhs === "berlaku" ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
+              <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-xs text-muted-foreground font-medium">
+                <span className="inline-flex shrink-0 items-center gap-1"><School className="size-3.5 text-primary" aria-hidden />{s.jumlahSekolah} Sekolah</span>
+                <span className="inline-flex shrink-0 items-center gap-1"><Users className="size-3.5 text-primary" aria-hidden />{angka(s.penerima)} Siswa</span>
+                <span className="inline-flex shrink-0 items-center gap-1"><FolderOpen className="size-3.5 text-primary" aria-hidden />{s.kasus} Kasus</span>
+                <InfoMetrik jenis="slhs" className="shrink-0">
+                  <span className={cn("inline-flex shrink-0 items-center gap-1 font-semibold rounded-md px-1.5 py-0.5 whitespace-nowrap", s.statusSlhs === "berlaku" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:text-amber-400")}>
+                    {s.statusSlhs === "berlaku" ? <ShieldCheck className="size-3.5 shrink-0" aria-hidden /> : <ShieldOff className="size-3.5 shrink-0" aria-hidden />}
                     {s.statusSlhs === "berlaku" ? "SLHS Aktif" : "Tanpa SLHS"}
                   </span>
                 </InfoMetrik>
               </span>
               {s.statusOperasional !== "beroperasi" && (
-                <InfoMetrik jenis="status_operasional">
-                  <span className="w-fit rounded-lg bg-rose-500/15 px-2.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
+                <InfoMetrik jenis="status_operasional" className="shrink-0">
+                  <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-lg bg-rose-500/15 px-2.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
                     {s.statusOperasional === "ditutup_sementara" ? "Ditutup Sementara" : s.statusOperasional}
                   </span>
                 </InfoMetrik>

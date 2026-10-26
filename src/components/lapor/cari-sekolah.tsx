@@ -111,7 +111,7 @@ export function CariSekolah({ nilai, onPilih }: { nilai: SekolahPilihan | null; 
             <Utensils className="size-4 text-muted-foreground" aria-hidden />
             <span><span className="sr-only">Dapur yang melayani: </span>{nilai.sppgNama ?? "Belum tercatat"}</span>
           </span>
-          {nilai.indeks != null && <BadgeRisiko skor={nilai.indeks} />}
+          {nilai.indeks != null && <BadgeRisiko skor={nilai.indeks} className="shrink-0" />}
         </div>
       </div>
     );

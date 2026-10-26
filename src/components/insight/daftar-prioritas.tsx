@@ -86,9 +86,9 @@ export function DaftarPrioritas({ daftar }: { daftar: SppgIndeks[] }) {
                   {s.alasan.map((a) => <ChipAlasan key={a.jenis} alasan={a} />)}
                 </span>
               </span>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 shrink-0">
                 <Tren selisih={s.selisih7Hari} />
-                <BadgeRisiko skor={s.indeks} />
+                <BadgeRisiko skor={s.indeks} className="shrink-0" />
                 <ChevronRight className="hidden size-4 text-muted-foreground sm:block" aria-hidden />
               </span>
             </div>

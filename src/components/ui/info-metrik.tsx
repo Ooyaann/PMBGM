@@ -173,7 +173,7 @@ export function InfoMetrik({
                 e.stopPropagation();
               }}
               className={cn(
-                "group inline-flex items-center gap-1 cursor-help outline-none transition-all hover:opacity-90",
+                "group inline-flex shrink-0 items-center gap-1 cursor-help outline-none transition-all hover:opacity-90",
                 className
               )}
               aria-label={`Keterangan ${info.judul}`}

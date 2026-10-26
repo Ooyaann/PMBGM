@@ -100,7 +100,7 @@ function ModeWarga({ h }: { h: HasilBanding }) {
               </div>
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              {b.skor != null && <BadgeRisiko skor={b.skor} />}
+              {b.skor != null && <BadgeRisiko skor={b.skor} className="shrink-0" />}
               <span className={cn("inline-flex h-6 items-center gap-1 rounded-full px-2 text-xs font-semibold",
                 menang[i] === Math.max(...menang) && menang[i] > 0 ? "bg-risiko-rendah-lembut text-risiko-rendah" : "bg-muted text-muted-foreground")}>
                 <Trophy className="size-3.5" aria-hidden /> Unggul {menang[i]}/{berarah}

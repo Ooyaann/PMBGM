@@ -230,7 +230,7 @@ export function PetaRisikoDasar({ data, lapis, onLapis }: {
                   <>
                     <p className="font-semibold">{sorot.titik.nama}</p>
                     <p className="mb-1.5 text-muted-foreground">{sorot.titik.kecamatan}</p>
-                    <BadgeRisiko skor={sorot.titik.indeks} />
+                    <BadgeRisiko skor={sorot.titik.indeks} className="shrink-0" />
                   </>
                 ) : tersorot && (
                   <IsiTooltip w={tersorot} aturan={aturan} />
@@ -318,7 +318,7 @@ function IsiTooltip({ w, aturan }: { w: Wilayah; aturan: AturanLapis }) {
   return (
     <>
       <p className="mb-1.5 font-semibold">{w.nama}</p>
-      {v == null ? <p className="text-muted-foreground">Belum ada SPPG terpantau</p> : <BadgeRisiko skor={v} />}
+      {v == null ? <p className="text-muted-foreground">Belum ada SPPG terpantau</p> : <BadgeRisiko skor={v} className="shrink-0" />}
       {w.jumlahSppg > 0 && <p className="mt-1.5 text-muted-foreground">{w.jumlahSppg} SPPG</p>}
     </>
   );
@@ -343,7 +343,7 @@ function PanelWilayah({ w, aturan, titik, onKecamatan }: {
         </dl>
       ) : (
         <div className="mt-2 space-y-3">
-          {v == null ? <p className="text-sm text-muted-foreground">Belum ada SPPG terpantau</p> : <BadgeRisiko skor={v} besar />}
+          {v == null ? <p className="text-sm text-muted-foreground">Belum ada SPPG terpantau</p> : <BadgeRisiko skor={v} besar className="shrink-0" />}
           {titik.length > 0 && (
             <ul className="space-y-1">
               {[...titik].sort((a, b) => (b.indeks ?? 0) - (a.indeks ?? 0)).map((t) => (

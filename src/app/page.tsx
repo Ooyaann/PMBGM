@@ -179,7 +179,7 @@ export default async function Beranda() {
                   <Link href={`/data/sppg/${s.sppgId}`} className="min-w-0 flex-1 truncate font-semibold hover:text-primary">
                     {s.nama}
                   </Link>
-                  <BadgeRisiko skor={s.indeks} />
+                  <BadgeRisiko skor={s.indeks} className="shrink-0" />
                 </div>
                 <ul className="mt-2 ml-7 flex flex-wrap gap-1.5">
                   {s.alasan.map((a) => <li key={a.jenis}><ChipAlasan alasan={a} /></li>)}

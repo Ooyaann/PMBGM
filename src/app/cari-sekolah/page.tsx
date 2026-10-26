@@ -70,16 +70,16 @@ async function Hasil({ searchParams }: { searchParams: PageProps<"/cari-sekolah"
                 <span className="truncate text-sm font-semibold">{s.sppg.nama}</span>
               </Link>
               <div className="flex items-center gap-2 shrink-0">
-                <InfoMetrik jenis="slhs" side="top">
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md bg-background border shadow-2xs">
+                <InfoMetrik jenis="slhs" side="top" className="shrink-0">
+                  <span className="inline-flex shrink-0 whitespace-nowrap items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md bg-background border shadow-2xs">
                     {s.sppg.slhs === "berlaku" ? (
-                      <><ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" /> SLHS Aktif</>
+                      <><ShieldCheck className="size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> SLHS Aktif</>
                     ) : (
-                      <><ShieldOff className="size-3.5 text-amber-600 dark:text-amber-400" /> Tanpa SLHS</>
+                      <><ShieldOff className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" /> Tanpa SLHS</>
                     )}
                   </span>
                 </InfoMetrik>
-                <BadgeRisiko skor={s.sppg.indeks} />
+                <BadgeRisiko skor={s.sppg.indeks} className="shrink-0" />
               </div>
             </div>
           ) : <p className="rounded-2xl bg-muted/40 p-3 text-sm text-muted-foreground">Belum terhubung ke SPPG</p>}

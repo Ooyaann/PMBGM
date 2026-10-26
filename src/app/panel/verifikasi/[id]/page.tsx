@@ -117,7 +117,7 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
                 <div className="flex items-start gap-2"><Utensils className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
                   <div><dt className="sr-only">SPPG</dt>
                     <dd><Link href={`/data/sppg/${l.sppg.id}`} className="font-semibold hover:underline">{l.sppg.nama}</Link></dd>
-                    {indeksSppg != null && <dd className="mt-1"><BadgeRisiko skor={indeksSppg} /></dd>}</div></div>
+                    {indeksSppg != null && <dd className="mt-1"><BadgeRisiko skor={indeksSppg} className="shrink-0" /></dd>}</div></div>
               )}
               <div className="flex items-center gap-2"><CalendarClock className="size-4 shrink-0 text-muted-foreground" aria-hidden />
                 <dt className="sr-only">Waktu kejadian</dt><dd>{tanggalJam(l.waktu_kejadian)}</dd></div>

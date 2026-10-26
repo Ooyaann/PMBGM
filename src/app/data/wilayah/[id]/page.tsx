@@ -177,9 +177,9 @@ async function IsiWilayah({ params }: { params: PageProps<"/data/wilayah/[id]">[
               <li key={k.id}>
                 <Link href={`/data/wilayah/${k.id}`}
                   className="flex h-full flex-col gap-2 rounded-2xl border p-4 transition hover:border-primary/40 hover:bg-muted/30">
-                  <span className="flex items-start justify-between gap-2">
-                    <span className="font-semibold">{k.nama}</span>
-                    {k.risikoTertinggi != null && <BadgeRisiko skor={k.risikoTertinggi} />}
+                  <span className="flex items-start justify-between gap-3">
+                    <span className="font-semibold min-w-0 flex-1 truncate">{k.nama}</span>
+                    {k.risikoTertinggi != null && <BadgeRisiko skor={k.risikoTertinggi} className="shrink-0" />}
                   </span>
                   <span className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1"><Utensils className="size-3.5" aria-hidden />{k.sppg} SPPG</span>
@@ -199,9 +199,9 @@ async function IsiWilayah({ params }: { params: PageProps<"/data/wilayah/[id]">[
             {sppg.map((s) => (
               <li key={s.id}>
                 <Link href={`/data/sppg/${s.id}`} className="flex h-full flex-col gap-2 rounded-2xl border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
-                  <span className="flex items-start justify-between gap-2">
-                    <span className="font-semibold">{s.nama}</span>
-                    <BadgeRisiko skor={s.indeks} />
+                  <span className="flex items-start justify-between gap-3">
+                    <span className="font-semibold min-w-0 flex-1 truncate">{s.nama}</span>
+                    <BadgeRisiko skor={s.indeks} className="shrink-0" />
                   </span>
                   <span className="flex flex-wrap gap-x-3 text-xs text-muted-foreground">
                     <span>{s.jumlahSekolah} sekolah</span><span>{angka(s.penerima)} penerima</span><span>{s.kasus} kasus</span>
