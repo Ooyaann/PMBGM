@@ -57,7 +57,7 @@ function ambilMenuPeran(peran: Peran, instansi: InfoInstansiPanel | null): ItemM
     const menu: ItemMenu[] = [
       { href: "/panel", label: "Dasbor Dapur", ikon: LayoutDashboard },
       { href: "/panel/kasus", label: "Aduan Dapur Saya", ikon: FolderKanban },
-      { href: "/lacak/akuntabilitas", label: "Papan Akuntabilitas", ikon: Scale },
+      { href: "/panel/akuntabilitas", label: "Papan Akuntabilitas", ikon: Scale },
     ];
     if (instansi.sppgId) {
       menu.push({ href: `/data/sppg/${instansi.sppgId}`, label: "Profil & SLHS", ikon: Utensils });
@@ -70,8 +70,8 @@ function ambilMenuPeran(peran: Peran, instansi: InfoInstansiPanel | null): ItemM
     return [
       { href: "/panel", label: "Dasbor Wilayah", ikon: LayoutDashboard },
       { href: "/panel/kasus", label: "Kasus & Keracunan", ikon: ShieldAlert },
-      { href: "/insight/peringatan", label: "Peringatan Dini", ikon: Siren },
-      { href: "/insight/prioritas", label: "Prioritas Inspeksi", ikon: Radar },
+      { href: "/panel/peringatan", label: "Peringatan Dini", ikon: Siren },
+      { href: "/panel/prioritas", label: "Prioritas Inspeksi", ikon: Radar },
     ];
   }
 
@@ -80,8 +80,8 @@ function ambilMenuPeran(peran: Peran, instansi: InfoInstansiPanel | null): ItemM
     return [
       { href: "/panel", label: "Dasbor Pengawasan", ikon: LayoutDashboard },
       { href: "/panel/kasus", label: "Kasus Wilayah", ikon: FolderKanban },
-      { href: "/insight/peringatan", label: "Peringatan Dini", ikon: Siren },
-      { href: "/lacak/akuntabilitas", label: "Papan Akuntabilitas", ikon: Scale },
+      { href: "/panel/peringatan", label: "Peringatan Dini", ikon: Siren },
+      { href: "/panel/akuntabilitas", label: "Papan Akuntabilitas", ikon: Scale },
     ];
   }
 

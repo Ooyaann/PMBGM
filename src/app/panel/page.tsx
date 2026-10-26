@@ -150,8 +150,8 @@ async function Isi() {
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Ubin href="/panel/kasus" ikon={ShieldAlert} label="Kasus kesehatan aktif" nilai={r.menungguInstansi} />
           <Ubin href="/panel/kasus" ikon={CircleAlert} label="Belum ditanggapi" nilai={r.tidakDitanggapi} awas />
-          <Ubin href="/insight/peringatan" ikon={Siren} label="Sinyal lonjakan 24 jam" nilai={r.ditindaklanjuti} />
-          <Ubin href="/insight/prioritas" ikon={Radar} label="Prioritas inspeksi" nilai={r.perluDiteruskan} />
+          <Ubin href="/panel/peringatan" ikon={Siren} label="Sinyal lonjakan 24 jam" nilai={r.ditindaklanjuti} />
+          <Ubin href="/panel/prioritas" ikon={Radar} label="Prioritas inspeksi" nilai={r.perluDiteruskan} />
         </div>
 
         <section className="space-y-3">
@@ -194,7 +194,7 @@ async function Isi() {
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           <Ubin href="/panel/kasus" ikon={FolderKanban} label="Total kasus wilayah" nilai={r.menungguInstansi} />
           <Ubin href="/panel/kasus?status=menunggu" ikon={CircleAlert} label="Lewat batas (SLA)" nilai={r.tidakDitanggapi} awas />
-          <Ubin href="/lacak/akuntabilitas" ikon={Scale} label="Papan akuntabilitas" nilai={r.ditindaklanjuti} />
+          <Ubin href="/panel/akuntabilitas" ikon={Scale} label="Papan akuntabilitas" nilai={r.ditindaklanjuti} />
         </div>
 
         <section className="space-y-3">

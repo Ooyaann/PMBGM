@@ -139,9 +139,9 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
                 </span>
                 {ai.urgensi && ai.urgensi !== "normal" && <span className="text-muted-foreground">· urgensi {ai.urgensi}</span>}
                 {ai.alasan && <span className="w-full text-muted-foreground">{ai.alasan}</span>}
-                {ai.metode === "ai" && ai.model && (
-                  <span className="w-full text-[11px] text-muted-foreground" title="Model kecil memeriksa semua laporan; model utama memeriksa ulang bila ragu atau darurat">
-                    {ai.model}{ai.yakin != null ? ` · yakin ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diperiksa ulang" : ""}
+                {ai.metode === "ai" && (
+                  <span className="w-full text-[11px] text-muted-foreground" title="Analisis klasifikasi teks laporan menggunakan kecerdasan buatan terpadu PantauGizi">
+                    AI PantauGizi{ai.yakin != null ? ` · Tingkat keyakinan ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diverifikasi ganda" : ""}
                   </span>
                 )}
               </p>

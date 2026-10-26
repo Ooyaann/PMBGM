@@ -65,10 +65,15 @@ export function AksiVerifikasi({ laporanId, judulAwal, serupa, kasusTerbuka }: {
   }
 
   function tolak() {
+    const bersih = alasan.trim();
+    if (bersih.length < 10) {
+      toast.error("Silakan pilih salah satu alasan cepat di atas atau ketik minimal 10 karakter agar pelapor memahami penyebab laporan ditolak.");
+      return;
+    }
     mulai(async () => {
-      const r = await tolakLaporan({ laporanId, alasan, checklist });
+      const r = await tolakLaporan({ laporanId, alasan: bersih, checklist });
       if (!r.ok) { toast.error(r.pesan); return; }
-      toast.success("Laporan ditolak, alasan dikirim ke pelapor");
+      toast.success("Laporan berhasil ditolak dan alasan telah disampaikan ke pelapor");
       router.push("/panel/verifikasi");
     });
   }
@@ -86,22 +91,69 @@ export function AksiVerifikasi({ laporanId, judulAwal, serupa, kasusTerbuka }: {
       </fieldset>
 
       {modeTolak ? (
-        <div className="space-y-3">
-          <p className="text-sm font-bold">Alasan penolakan</p>
-          <div className="flex flex-wrap gap-1.5">
-            {ALASAN_CEPAT.map((a) => (
-              <button key={a} type="button" onClick={() => setAlasan(a)}
-                className={cn("rounded-full border px-2.5 py-1 text-xs transition hover:bg-muted", alasan === a && "border-primary bg-secondary")}>
-                {a}
-              </button>
-            ))}
+        <div className="space-y-3 rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-bold text-rose-700 dark:text-rose-300">Alasan Penolakan</p>
+            <span className="text-[11px] text-muted-foreground">Wajib dibaca pelapor</span>
           </div>
-          <Textarea value={alasan} onChange={(e) => setAlasan(e.target.value)} rows={3} maxLength={500}
-            placeholder="Alasan ini dibaca pelapor" aria-label="Alasan penolakan" />
-          <div className="flex gap-2">
-            <Button variant="ghost" size="xl" onClick={() => setModeTolak(false)} disabled={sibuk}>Batal</Button>
-            <Button variant="destructive" size="xl" className="flex-1" onClick={tolak} disabled={sibuk || alasan.trim().length < 10}>
-              {sibuk ? <Loader2 className="animate-spin" aria-hidden /> : <XCircle aria-hidden />} Tolak laporan
+
+          <div className="space-y-1.5">
+            <p className="text-xs text-muted-foreground">Klik alasan cepat berikut:</p>
+            <div className="flex flex-wrap gap-1.5">
+              {ALASAN_CEPAT.map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setAlasan(a)}
+                  className={cn(
+                    "cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium transition",
+                    alasan === a
+                      ? "border-rose-500 bg-rose-100/80 text-rose-800 dark:border-rose-400 dark:bg-rose-950/60 dark:text-rose-200 shadow-xs"
+                      : "border-border/80 bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <Textarea
+              value={alasan}
+              onChange={(e) => setAlasan(e.target.value)}
+              rows={3}
+              maxLength={500}
+              placeholder="Tuliskan alasan penolakan secara jelas dan santun..."
+              aria-label="Alasan penolakan"
+              className="bg-background"
+            />
+            <div className="flex items-center justify-between text-[11px] pt-0.5">
+              {alasan.trim().length < 10 ? (
+                <span className="text-amber-700 dark:text-amber-400 font-medium">
+                  ⚠️ Pilih opsi di atas atau ketik min. 10 karakter ({alasan.trim().length}/10)
+                </span>
+              ) : (
+                <span className="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1">
+                  <Check className="size-3" /> Alasan penolakan siap dikirim ({alasan.trim().length} karakter)
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-1">
+            <Button variant="ghost" size="xl" onClick={() => setModeTolak(false)} disabled={sibuk}>
+              Batal
+            </Button>
+            <Button
+              variant="destructive"
+              size="xl"
+              className={cn("flex-1 cursor-pointer font-bold", alasan.trim().length < 10 && "opacity-80 hover:opacity-100")}
+              onClick={tolak}
+              disabled={sibuk}
+            >
+              {sibuk ? <Loader2 className="animate-spin" aria-hidden /> : <XCircle aria-hidden />}
+              Tolak Laporan
             </Button>
           </div>
         </div>
