@@ -42,22 +42,35 @@ export function MasukPassword({ onBerhasil }: { onBerhasil: () => void }) {
         kirim();
       }}
     >
-      {/* Toggle masuk / daftar */}
-      <div className="flex gap-1 rounded-xl bg-muted p-1">
-        <button
-          type="button"
-          onClick={() => { setMode("masuk"); setGalat(null); }}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "masuk" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-        >
-          Masuk
-        </button>
-        <button
-          type="button"
-          onClick={() => { setMode("daftar"); setGalat(null); }}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "daftar" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-        >
-          Daftar Baru
-        </button>
+      {/* Toggle masuk / daftar yang rapi dan tidak bertumpuk */}
+      <div className="flex items-center justify-between border-b border-border/80 pb-2 mb-2">
+        <div className="flex gap-4">
+          <button
+            type="button"
+            onClick={() => { setMode("masuk"); setGalat(null); }}
+            className={`text-sm font-bold pb-2 -mb-2 border-b-2 transition-all outline-none ${
+              mode === "masuk"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Masuk Akun
+          </button>
+          <button
+            type="button"
+            onClick={() => { setMode("daftar"); setGalat(null); }}
+            className={`text-sm font-bold pb-2 -mb-2 border-b-2 transition-all outline-none ${
+              mode === "daftar"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Daftar Akun Baru
+          </button>
+        </div>
+        <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">
+          {mode === "masuk" ? "Email & kata sandi" : "Warga / sekolah"}
+        </span>
       </div>
 
       {mode === "daftar" && (

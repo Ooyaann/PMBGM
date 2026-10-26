@@ -138,12 +138,20 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
 
   return (
     <Tabs defaultValue="demo" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 rounded-2xl p-1 bg-muted/80">
-        <TabsTrigger value="demo" className="rounded-xl text-xs sm:text-sm font-bold py-2.5">
-          <Sparkles className="size-4 mr-1.5 text-primary" aria-hidden /> Mode Uji Coba Demo
+      <TabsList className="grid w-full grid-cols-2 rounded-2xl p-1.5 bg-muted/70 border border-border/60">
+        <TabsTrigger
+          value="demo"
+          className="rounded-xl text-xs sm:text-sm font-bold py-2.5 transition-all data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-sm"
+        >
+          <Sparkles className="size-4 mr-1.5 text-amber-500 shrink-0" aria-hidden />
+          <span>Uji Coba Demo (Juri)</span>
         </TabsTrigger>
-        <TabsTrigger value="password" className="rounded-xl text-xs sm:text-sm font-bold py-2.5">
-          <KeyRound className="size-4 mr-1.5" aria-hidden /> Masuk / Daftar Akun
+        <TabsTrigger
+          value="password"
+          className="rounded-xl text-xs sm:text-sm font-bold py-2.5 transition-all data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+        >
+          <KeyRound className="size-4 mr-1.5 text-muted-foreground shrink-0" aria-hidden />
+          <span>Akun Terdaftar</span>
         </TabsTrigger>
       </TabsList>
 
