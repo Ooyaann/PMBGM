@@ -23,10 +23,10 @@ async function Ringkasan() {
   const jumlah = (k: string) => daftar.filter((d) => d.kategori === k).length;
   return (
     <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-      <Tile ikon={ShieldAlert} label="Risiko tinggi" nilai={angka(jumlah("tinggi"))} sub="SPPG" />
-      <Tile ikon={TriangleAlert} label="Risiko sedang" nilai={angka(jumlah("sedang"))} sub="SPPG" />
-      <Tile ikon={Siren} label="Peringatan aktif" nilai={angka(aktif)} sub={ditinjau ? `${ditinjau} sinyal ditinjau` : "Terverifikasi"} />
-      <Tile ikon={Utensils} label="SPPG terpantau" nilai={angka(daftar.length)} sub="Kota Semarang" />
+      <Tile ikon={ShieldAlert} label="Risiko tinggi" nilai={angka(jumlah("tinggi"))} sub="SPPG" infoKey="risiko" />
+      <Tile ikon={TriangleAlert} label="Risiko sedang" nilai={angka(jumlah("sedang"))} sub="SPPG" infoKey="risiko" />
+      <Tile ikon={Siren} label="Peringatan aktif" nilai={angka(aktif)} sub={ditinjau ? `${ditinjau} sinyal ditinjau` : "Terverifikasi"} infoKey="sinyal" />
+      <Tile ikon={Utensils} label="SPPG terpantau" nilai={angka(daftar.length)} sub="Kota Semarang" infoKey="sppg" />
     </dl>
   );
 }

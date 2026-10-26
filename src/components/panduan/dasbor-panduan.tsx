@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   BarChart3,
@@ -65,6 +66,9 @@ const KATEGORI = [
 ] as const;
 
 export function DasborPanduan() {
+  const searchParams = useSearchParams();
+  const bukaParam = searchParams.get("buka") || searchParams.get("topik");
+
   const [kueri, setKueri] = useState("");
   const [kategoriAktif, setKategoriAktif] = useState<string>("semua");
   const [kartuTerpilih, setKartuTerpilih] = useState<ItemPanduan | null>(null);
@@ -552,6 +556,21 @@ export function DasborPanduan() {
       ),
     },
   ];
+
+  // Buka otomatis kartu panduan jika diakses lewat tautan eksternal (misal dari /lapor)
+  useEffect(() => {
+    if (bukaParam) {
+      const target = DAFTAR_KARTU.find(
+        (k) =>
+          k.id === bukaParam ||
+          (bukaParam === "lapor-masalah" && k.id === "cara-melapor") ||
+          (bukaParam === "alur_lapor" && k.id === "cara-melapor")
+      );
+      if (target) {
+        setKartuTerpilih(target);
+      }
+    }
+  }, [bukaParam]);
 
   const hasilFilter = useMemo(() => {
     const q = kueri.trim().toLowerCase();

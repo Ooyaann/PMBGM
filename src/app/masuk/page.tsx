@@ -50,60 +50,60 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
 
         {/* CONTAINER SPLIT HERO DUA KOLOM */}
         <div className="overflow-hidden rounded-3xl border border-border/80 bg-card shadow-2xl shadow-primary/5 grid grid-cols-1 lg:grid-cols-12">
-          {/* KOLOM KIRI: SHOWCASE MISI & TRUST BADGE (5 Kolom) */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
+          {/* KOLOM KIRI: SHOWCASE MISI CERIA & TRUST BADGE (5 Kolom) */}
+          <div className="lg:col-span-5 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-emerald-100/50 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-slate-950 p-8 sm:p-10 text-foreground flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-border/80">
             {/* Ambient Decorative Glow */}
-            <div className="absolute -top-24 -left-24 size-72 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -right-24 size-72 rounded-full bg-teal-500/15 blur-3xl pointer-events-none" />
+            <div className="absolute -top-20 -left-20 size-64 rounded-full bg-emerald-400/20 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -right-20 size-64 rounded-full bg-teal-400/20 blur-3xl pointer-events-none" />
 
             <div className="relative space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-300">
-                <Sparkles className="size-3.5" aria-hidden /> Portal Resmi PMBGM
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-600/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                <Sparkles className="size-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden /> Portal Resmi PMBGM
               </div>
 
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
-                  Transparansi Menjaga Makanan Bergizi Anak Bangsa
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-100 leading-tight">
+                  Pengawasan Makanan Bergizi Bersama Warga
                 </h1>
-                <p className="mt-2.5 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Platform partisipatif terintegrasi untuk mengawasi kualitas makanan, keamanan dapur SPPG, dan kepatuhan standar pelayanan MBG.
+                <p className="mt-2 text-xs sm:text-sm text-emerald-900/70 dark:text-slate-300 leading-relaxed">
+                  Layanan terpadu menjaga porsi, kebersihan, dan keselamatan pangan anak sekolah di Kota Semarang.
                 </p>
               </div>
 
-              {/* 3 Keunggulan Utama */}
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start gap-3.5">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-400/20">
+              {/* 3 Kartu Keunggulan Ceria & Ringkas */}
+              <div className="space-y-3 pt-1">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/80 dark:bg-card/80 p-3 border border-emerald-200/60 dark:border-emerald-800/40 shadow-2xs">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                     <ShieldCheck className="size-5" />
                   </span>
                   <div>
-                    <h4 className="text-sm font-bold text-white">Verifikasi Objektif Independen</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed mt-0.5">
-                      Laporan disaring dan divalidasi oleh tim independen sebelum diteruskan ke dapur.
+                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Verifikasi Independen</h4>
+                    <p className="text-xs text-muted-foreground leading-tight">
+                      Laporan divalidasi tim independen sebelum ke dapur.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3.5">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-500/20 text-teal-400 border border-teal-400/20">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/80 dark:bg-card/80 p-3 border border-emerald-200/60 dark:border-emerald-800/40 shadow-2xs">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-500/15 text-teal-600 dark:text-teal-400">
                     <Clock className="size-5" />
                   </span>
                   <div>
-                    <h4 className="text-sm font-bold text-white">Standar Waktu Tanggap (SLA)</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed mt-0.5">
-                      Setiap tahapan penanganan terikat batas waktu resmi dengan eskalasi otomatis.
+                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Waktu Tanggap Terukur</h4>
+                    <p className="text-xs text-muted-foreground leading-tight">
+                      Batas waktu tindak lanjut transparan terikat SLA resmi.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3.5">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-400/20">
-                    <Radar className="size-5" />
+                <div className="flex items-center gap-3 rounded-2xl bg-white/80 dark:bg-card/80 p-3 border border-emerald-200/60 dark:border-emerald-800/40 shadow-2xs">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                    <CheckCircle2 className="size-5" />
                   </span>
                   <div>
-                    <h4 className="text-sm font-bold text-white">Jaminan Anti-Manipulasi</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed mt-0.5">
-                      Penyelesaian wajib melampirkan foto fisik dengan masa sanggah 3 hari bagi pelapor.
+                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Bukti Nyata Perbaikan</h4>
+                    <p className="text-xs text-muted-foreground leading-tight">
+                      Penyelesaian wajib melampirkan foto fisik hasil perbaikan.
                     </p>
                   </div>
                 </div>
@@ -111,9 +111,9 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
             </div>
 
             {/* Footer Kolom Kiri */}
-            <div className="relative pt-8 mt-8 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
-              <span>Web In Action · MIA 2026</span>
-              <span className="font-semibold text-emerald-300">Tim Ctrl Win Enter</span>
+            <div className="relative pt-6 mt-6 border-t border-emerald-200/60 dark:border-white/10 flex items-center justify-between text-xs text-emerald-900/60 dark:text-slate-400">
+              <span>Web In Action 2026</span>
+              <span className="font-semibold text-emerald-700 dark:text-emerald-400">Tim Ctrl Win Enter · UNNES</span>
             </div>
           </div>
 

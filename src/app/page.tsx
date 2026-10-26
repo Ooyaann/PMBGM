@@ -53,14 +53,14 @@ export default async function Beranda() {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
-              Laporkan masalah porsi atau kebersihan makanan, pantau tindak lanjut perbaikan dapur secara terbuka, dan periksa rapor kesehatan dapur sekolah anak Anda.
+              Layanan pengawasan makanan bergizi anak sekolah. Laporkan porsi atau mutu makanan dan pantau perbaikannya secara terbuka.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "rounded-2xl font-bold shadow-md shadow-primary/15 h-12 px-6")}>
-                <Megaphone aria-hidden /> Lapor Masalah Sekarang
+                <Megaphone aria-hidden /> Lapor Masalah
               </Link>
               <Link href="/cari-sekolah" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "rounded-2xl font-bold bg-card h-12 px-6 shadow-xs")}>
-                <School aria-hidden /> Cek Dapur Sekolah Anak
+                <School aria-hidden /> Cari Sekolah Anak
               </Link>
             </div>
             <FormCekTiket className="pt-2 max-w-md" />
@@ -230,15 +230,18 @@ export default async function Beranda() {
       </section>
 
       {/* Ajakan akhir */}
-      <section className="kontainer py-16">
-        <div className="flex flex-col items-start gap-6 rounded-3xl bg-foreground p-8 text-background sm:flex-row sm:items-center sm:justify-between sm:p-10">
-          <h2 className="text-2xl font-bold sm:text-3xl">Lihat masalah di MBG?</h2>
+      <section className="kontainer py-14">
+        <div className="flex flex-col items-start gap-6 rounded-3xl bg-foreground p-8 text-background sm:flex-row sm:items-center sm:justify-between sm:p-10 shadow-lg">
+          <div>
+            <h2 className="text-2xl font-bold sm:text-3xl">Temukan masalah makanan bergizi?</h2>
+            <p className="mt-1 text-sm text-background/80">Laporan Anda langsung diverifikasi dan diteruskan ke dapur penanggung jawab.</p>
+          </div>
           <div className="flex w-full gap-3 sm:w-auto">
-            <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "flex-1 bg-background text-foreground hover:bg-background/90 sm:flex-none")}>
-              <Megaphone aria-hidden /> Lapor
+            <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "flex-1 bg-background text-foreground hover:bg-background/90 font-bold sm:flex-none")}>
+              <Megaphone aria-hidden /> Buat Laporan
             </Link>
-            <a href="tel:119" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "border-background/30 bg-transparent text-background hover:bg-background/10 hover:text-background")}>
-              <Phone aria-hidden /> 119
+            <a href="tel:119" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "border-background/30 bg-transparent text-background hover:bg-background/10 font-bold hover:text-background")}>
+              <Phone aria-hidden /> Darurat 119
             </a>
           </div>
         </div>

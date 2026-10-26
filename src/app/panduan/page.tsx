@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, Megaphone, ShieldCheck, Sparkles } from "lucide-react";
@@ -36,8 +37,10 @@ export default function HalamanPanduan() {
         </div>
       </div>
 
-      {/* Dasbor Kotakan Menu Panduan */}
-      <DasborPanduan />
+      {/* Dasbor Kotakan Menu Panduan dengan Suspense untuk useSearchParams */}
+      <Suspense fallback={<div className="h-96 rounded-3xl bg-muted/40 animate-pulse" />}>
+        <DasborPanduan />
+      </Suspense>
     </div>
   );
 }

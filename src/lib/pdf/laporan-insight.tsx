@@ -1,12 +1,14 @@
 import "server-only";
 import path from "node:path";
-import { Circle, Document, Font, Link, Page, Path, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
+import { Circle, Document, Font, Image, Link, Page, Path, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 import type { Peringatan, DataPeta, SppgIndeks } from "@/lib/data/insight";
 import type { StatistikPublik } from "@/lib/data/publik";
 import { SUMBER_BATAS } from "@/lib/geo/peta";
 import { durasiJam, persen } from "@/lib/format";
 import { kategoriRisiko, RISIKO, type KategoriRisiko } from "@/lib/label";
 import { ambangKuantil, ISI_KOSONG, ISI_RISIKO, kelasNilai, langkahRamp, RAMP_SEQ, TITIK_RISIKO } from "@/lib/peta-skala";
+
+const LOGO_PATH = path.join(process.cwd(), "public", "logo-pmbgm.png");
 
 // Plus Jakarta Sans (SIL OFL 1.1, lisensi di folder font) agar PDF sama dengan tampilan web.
 const FONT = path.join(process.cwd(), "src/lib/pdf/font");
@@ -197,13 +199,12 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
       <Page size="A4" style={s.halaman}>
         <Kaki dibuat={d.dibuat} />
         <View style={s.kepala}>
-          <View>
-            <Text style={s.merek}>PMBGM</Text>
-            <Text style={s.sub}>Pengawasan partisipatif Makan Bergizi Gratis · Jawa Tengah</Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Image src={LOGO_PATH} style={{ width: 135, height: 28, objectFit: "contain" }} />
           </View>
           <View>
             <Text style={s.judul}>Laporan Ringkas Insight</Text>
-            <Text style={[s.sub, { textAlign: "right" }]}>Per {tglJam(d.dibuat)} WIB</Text>
+            <Text style={[s.sub, { textAlign: "right" }]}>Per {tglJam(d.dibuat)} WIB · Jawa Tengah</Text>
           </View>
         </View>
         <Text style={s.chip}>Prototipe · seluruh angka adalah data simulasi untuk demonstrasi</Text>
@@ -224,9 +225,9 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
         </View>
 
         <View style={[s.baris, s.bagian]}>
-          <View style={{ width: 240, marginRight: 18 }}>
+          <View style={{ width: 230, marginRight: 16 }}>
             <Text style={s.h2}>Peta risiko · Kota Semarang</Text>
-            <PetaSemarang peta={d.peta.semarang} lebar={240} />
+            <PetaSemarang peta={d.peta.semarang} lebar={230} />
             <Text style={[s.sub, { fontSize: 6.5, marginTop: 2 }]}>Warna kecamatan = skor SPPG tertinggi di kecamatan itu.</Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -241,11 +242,11 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
         </View>
 
         <View style={s.bagian}>
-          <Text style={s.h2}>Prioritas inspeksi · 10 teratas</Text>
+          <Text style={s.h2}>Prioritas inspeksi · 7 teratas</Text>
           <Tabel
             kolom={["#", "SPPG", "Kecamatan", "Indeks", "7 hari", "Alasan"]}
-            lebar={[16, 120, 80, 72, 34]}
-            baris={d.indeks.slice(0, 10).map((i, k) => [
+            lebar={[20, 145, 80, 75, 45, 140]}
+            baris={d.indeks.slice(0, 7).map((i, k) => [
               String(k + 1),
               singkat(i.nama),
               i.kecamatan,
@@ -295,7 +296,7 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
           {d.peringatan.length ? (
             <Tabel
               kolom={["SPPG", "Kecamatan", "Status", "Waktu", "24 jam", "Rata-rata/hari", "Rasio"]}
-              lebar={[110, 80, 50, 100, 45, 60]}
+              lebar={[105, 80, 45, 95, 45, 65, 45]}
               baris={d.peringatan.map((p) => [
                 singkat(p.sppg), p.kecamatan, p.aktif ? "Aktif" : "Selesai", tglJam(p.dibuatPada),
                 angkaId(p.jumlah24Jam), angkaId(p.rataHarian, 1), `×${angkaId(p.rasio, 1)}`,
@@ -308,7 +309,7 @@ export function LaporanInsight({ d }: { d: DataLaporan }) {
           <Text style={s.h2}>Akuntabilitas per kecamatan · Kota Semarang</Text>
           <Tabel
             kolom={["Kecamatan", "Kasus", "Selesai", "Waktu tanggap", "Lewat batas", "Kepuasan"]}
-            lebar={[120, 60, 70, 90, 80]}
+            lebar={[125, 55, 65, 85, 75, 65]}
             baris={d.kecamatan.filter((k) => (k.jumlah_kasus ?? 0) > 0).map((k) => [
               k.nama ?? "", angkaId(k.jumlah_kasus), persen(k.persen_selesai), durasiJam(k.rata_jam_respons),
               persen(k.persen_terlambat), k.kepuasan == null ? "–" : `${angkaId(k.kepuasan, 1)}/5`,

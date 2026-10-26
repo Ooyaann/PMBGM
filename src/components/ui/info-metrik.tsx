@@ -29,9 +29,9 @@ export const KAMUS_METRIK: Record<
     deskripsi:
       "Skor kepatuhan dapur MBG. Makin rendah nilainya, makin aman. Dihitung otomatis dari 5 aspek: jumlah aduan warga, kasus keracunan, izin sanitasi resmi Dinkes, ketepatan waktu perbaikan, dan kepuasan orang tua.",
     panduan: [
-      { label: "0–39: Rendah (Aman)", kelas: "text-emerald-400 font-semibold" },
-      { label: "40–69: Sedang (Waspada)", kelas: "text-amber-400 font-semibold" },
-      { label: "70+: Tinggi (Prioritas Evaluasi)", kelas: "text-rose-400 font-semibold" },
+      { label: "0–39: Rendah (Aman)", kelas: "text-emerald-700 dark:text-emerald-400 font-semibold" },
+      { label: "40–69: Sedang (Waspada)", kelas: "text-amber-700 dark:text-amber-400 font-semibold" },
+      { label: "70+: Tinggi (Prioritas Evaluasi)", kelas: "text-rose-700 dark:text-rose-400 font-semibold" },
     ],
   },
   slhs: {
@@ -40,8 +40,8 @@ export const KAMUS_METRIK: Record<
     deskripsi:
       "Sertifikat resmi dari Dinas Kesehatan yang membuktikan sumber air, tempat masak, dan peralatan dapur telah lolos uji laboratorium dan memenuhi standar kebersihan pangan.",
     panduan: [
-      { label: "Berlaku: Memenuhi standar Dinkes", kelas: "text-emerald-400 font-semibold" },
-      { label: "Tanpa SLHS: Dikenakan sanksi & risiko tinggi", kelas: "text-rose-400 font-semibold" },
+      { label: "Berlaku: Memenuhi standar Dinkes", kelas: "text-emerald-700 dark:text-emerald-400 font-semibold" },
+      { label: "Tanpa SLHS: Dikenakan sanksi & risiko tinggi", kelas: "text-rose-700 dark:text-rose-400 font-semibold" },
     ],
   },
   tanggap: {
@@ -193,23 +193,23 @@ export function InfoMetrik({
         <TooltipContent
           side={side}
           sideOffset={8}
-          className="z-50 w-72 sm:w-80 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-4 text-slate-100 shadow-2xl backdrop-blur-md"
+          className="z-50 w-72 sm:w-80 rounded-2xl border-2 border-emerald-200/90 dark:border-emerald-800/80 bg-card p-4 text-card-foreground shadow-xl shadow-emerald-950/10 dark:shadow-black/40 backdrop-blur-md"
         >
           <div className="space-y-2 text-left">
-            <div className="flex items-start gap-2 border-b border-slate-800 pb-2">
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-teal-500/20 text-teal-400 mt-0.5">
-                <Info className="size-3.5" aria-hidden />
+            <div className="flex items-start gap-2.5 border-b border-border/80 pb-2.5">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <Info className="size-4" aria-hidden />
               </span>
-              <div>
-                <h4 className="text-xs font-bold leading-tight text-white">{info.judul}</h4>
-                <p className="text-[11px] text-slate-400">{info.subjudul}</p>
+              <div className="min-w-0">
+                <h4 className="text-xs sm:text-sm font-bold leading-tight text-foreground">{info.judul}</h4>
+                <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400">{info.subjudul}</p>
               </div>
             </div>
 
-            <p className="text-xs leading-relaxed text-slate-300">{info.deskripsi}</p>
+            <p className="text-xs leading-relaxed text-muted-foreground">{info.deskripsi}</p>
 
             {info.panduan && info.panduan.length > 0 && (
-              <div className="space-y-1 rounded-xl bg-slate-800/60 p-2 text-[11px]">
+              <div className="space-y-1.5 rounded-xl bg-muted/60 p-2.5 text-[11px]">
                 {info.panduan.map((p) => (
                   <div key={p.label} className={p.kelas}>
                     • {p.label}

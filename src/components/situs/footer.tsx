@@ -1,39 +1,122 @@
 import Link from "next/link";
-import { FlaskConical } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { FlaskConical, PhoneCall, ShieldAlert } from "lucide-react";
 import { Logo } from "./logo";
-import { NAV_UTAMA } from "./navigasi";
-
-const TAUTAN_INFO = [
-  { href: "/metodologi", label: "Metodologi" },
-  { href: "/tentang", label: "Tentang" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/privasi", label: "Privasi" },
-];
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t bg-muted/40">
-      <div className="kontainer flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-wrap items-center gap-3">
-          <Logo />
-          <Tooltip>
-            <TooltipTrigger className="inline-flex h-7 items-center gap-1.5 rounded-full bg-background px-2.5 text-xs font-medium text-muted-foreground ring-1 ring-border">
-              <FlaskConical className="size-3.5" aria-hidden /> Prototipe · data simulasi
-            </TooltipTrigger>
-            <TooltipContent className="max-w-72">
-              Prototipe lomba Web In Action MIA 2026. Data SPPG, sekolah, dan laporan adalah simulasi dengan nama fiktif;
-              angka nasional mengutip sumber yang disebutkan.
-            </TooltipContent>
-          </Tooltip>
+    <footer className="mt-auto border-t bg-card/60 backdrop-blur-xs text-foreground">
+      <div className="kontainer py-12">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          {/* Kolom 1 & 2: Identitas & Visi */}
+          <div className="space-y-4 lg:col-span-2">
+            <Logo />
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm">
+              Platform pengawasan partisipatif masyarakat untuk menjaga porsi, kebersihan, dan keselamatan pangan Program Makan Bergizi Gratis di Jawa Tengah.
+            </p>
+            <div className="flex items-center gap-2 pt-1">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+                <FlaskConical className="size-3.5 text-emerald-600" aria-hidden /> Data Simulasi · MIA 2026
+              </span>
+            </div>
+          </div>
+
+          {/* Kolom 3: Layanan Warga */}
+          <div className="space-y-3">
+            <h4 className="text-xs sm:text-sm font-bold text-foreground tracking-wide uppercase">
+              Layanan Warga
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              <li>
+                <Link href="/lapor" className="text-muted-foreground hover:text-primary transition-colors">
+                  Lapor Masalah Makanan
+                </Link>
+              </li>
+              <li>
+                <Link href="/lacak" className="text-muted-foreground hover:text-primary transition-colors">
+                  Lacak Kode Tiket
+                </Link>
+              </li>
+              <li>
+                <Link href="/cari-sekolah" className="text-muted-foreground hover:text-primary transition-colors">
+                  Cari Dapur Sekolah
+                </Link>
+              </li>
+              <li>
+                <Link href="/panduan" className="text-muted-foreground hover:text-primary transition-colors">
+                  Panduan Alur Pengawasan
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Kolom 4: Transparansi & Analisis */}
+          <div className="space-y-3">
+            <h4 className="text-xs sm:text-sm font-bold text-foreground tracking-wide uppercase">
+              Transparansi Data
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              <li>
+                <Link href="/data" className="text-muted-foreground hover:text-primary transition-colors">
+                  Data Terbuka MBG
+                </Link>
+              </li>
+              <li>
+                <Link href="/insight" className="text-muted-foreground hover:text-primary transition-colors">
+                  Peta Risiko & Peringatan
+                </Link>
+              </li>
+              <li>
+                <Link href="/metodologi" className="text-muted-foreground hover:text-primary transition-colors">
+                  Rumus Indeks Risiko
+                </Link>
+              </li>
+              <li>
+                <Link href="/data/unduh" className="text-muted-foreground hover:text-primary transition-colors">
+                  Unduh Dataset Terbuka
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Kolom 5: Bantuan & Legal */}
+          <div className="space-y-3">
+            <h4 className="text-xs sm:text-sm font-bold text-foreground tracking-wide uppercase">
+              Bantuan & Regulasi
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm">
+              <li>
+                <Link href="/faq" className="text-muted-foreground hover:text-primary transition-colors">
+                  Tanya Jawab (FAQ)
+                </Link>
+              </li>
+              <li>
+                <Link href="/privasi" className="text-muted-foreground hover:text-primary transition-colors">
+                  Kebijakan Privasi
+                </Link>
+              </li>
+              <li>
+                <Link href="/tentang" className="text-muted-foreground hover:text-primary transition-colors">
+                  Tentang Inisiatif
+                </Link>
+              </li>
+              <li className="pt-1">
+                <a
+                  href="tel:119"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline"
+                >
+                  <PhoneCall className="size-3.5" /> Darurat Ambulans: 119
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <nav aria-label="Tautan bawah" className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          {[...NAV_UTAMA, ...TAUTAN_INFO].map((t) => (
-            <Link key={t.href} href={t.href} className="text-muted-foreground hover:text-foreground">{t.label}</Link>
-          ))}
-        </nav>
+
+        {/* Baris Bawah Copyright */}
+        <div className="mt-12 border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
+          <p>© 2026 PMBGM · Tim Ctrl Win Enter · Universitas Negeri Semarang (UNNES)</p>
+          <p className="font-medium">Dibuat untuk Web In Action (MIA) 2026</p>
+        </div>
       </div>
-      <p className="kontainer border-t py-4 text-xs text-muted-foreground">© 2026 Tim Ctrl Win Enter · UNNES</p>
     </footer>
   );
 }

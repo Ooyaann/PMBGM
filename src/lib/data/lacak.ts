@@ -142,15 +142,38 @@ export async function ambilKasus(id: string) {
   };
 }
 
-export async function ambilKasusTerbaru(batas = 8) {
-  "use cache";
-  cacheLife("minutes");
-  cacheTag(TAG_DATA_PUBLIK);
-  const { data } = await buatKlienPublik()
+export async function ambilKasusTerbaru(opsi?: {
+  batas?: number;
+  rentangHari?: number | null;
+  status?: string | null;
+  kategori?: string | null;
+}) {
+  const batas = opsi?.batas ?? 12;
+  let kueri = buatKlienPublik()
     .from("v_kasus_publik")
     .select("id, kode_kasus, judul, kategori, status, terlambat, tidak_ditanggapi, kecamatan_nama, sppg_nama, diverifikasi_pada, jumlah_laporan")
-    .order("diverifikasi_pada", { ascending: false })
-    .limit(batas);
+    .order("diverifikasi_pada", { ascending: false });
+
+  if (opsi?.status && opsi.status !== "semua") {
+    if (opsi.status === "diproses") {
+      kueri = kueri.neq("status", "selesai");
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      kueri = kueri.eq("status", opsi.status as any);
+    }
+  }
+
+  if (opsi?.kategori && opsi.kategori !== "semua") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    kueri = kueri.eq("kategori", opsi.kategori as any);
+  }
+
+  if (opsi?.rentangHari && opsi.rentangHari > 0) {
+    const batasTgl = new Date(Date.now() - opsi.rentangHari * 24 * 60 * 60 * 1000).toISOString();
+    kueri = kueri.gte("diverifikasi_pada", batasTgl);
+  }
+
+  const { data } = await kueri.limit(batas);
   return data ?? [];
 }
 
