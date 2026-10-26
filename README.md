@@ -1,8 +1,8 @@
 <div align="center">
 
 # 🥗 PMBGM
-### **Pemantau Makan Bergizi Gratis Masyarakat**
-**Platform Pengawasan Partisipatif & Akuntabilitas Publik Program MBG Kota Semarang**
+### **Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
+*Inovasi Pengawasan Partisipatif & Akuntabilitas Publik Program MBG Kota Semarang*
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
@@ -21,7 +21,11 @@
 
 ## 📌 1. Judul Project & Deskripsi Singkat
 
-> **PMBGM (Pemantau MBG Masyarakat)** adalah platform pengawasan publik partisipatif berbasis web yang memberdayakan orang tua murid, guru, dan warga untuk mengawal kualitas Program Makan Bergizi Gratis (MBG) secara transparan, akuntabel, dan *real-time*. Melalui pelaporan masalah terlindungi, pelacakan SLA terbuka, dan pemantauan Indeks Risiko Dapur Satuan Pelayanan (SPPG), PMBGM mencegah risiko keracunan pangan dan memastikan hak nutrisi terbaik bagi generasi penerus bangsa.
+**Judul Project**:
+> ### **PMBGM: Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
+
+**Deskripsi Singkat (1–2 Kalimat)**:
+> **PMBGM** adalah platform pengawasan publik partisipatif berbasis web yang memberdayakan orang tua murid, guru, dan warga untuk mengawal kualitas Program Makan Bergizi Gratis (MBG) secara transparan, akuntabel, dan *real-time*. Melalui pelaporan masalah terlindungi, pelacakan SLA terbuka, dan pemantauan Indeks Risiko Dapur Satuan Pelayanan (SPPG), PMBGM mencegah risiko keracunan pangan dan memastikan hak nutrisi terbaik bagi generasi penerus bangsa.
 
 ---
 
