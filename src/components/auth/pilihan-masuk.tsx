@@ -170,16 +170,9 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
       </div>
 
       {tabAktif === "demo" ? (
-        <div className="space-y-3.5">
-          <div>
-            <h3 className="text-xs sm:text-sm font-bold text-foreground">Pilih Akun Peran Pengujian</h3>
-            <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">
-              Disediakan khusus bagi dewan juri untuk menjelajahi sudut pandang setiap peran:
-            </p>
-          </div>
-
-          {/* GRID KARTU PERSONA RINGKAS AGAR TIDAK OVERFLOW */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[215px] sm:max-h-[225px] overflow-y-auto pr-1">
+        <div className="space-y-3">
+          {/* GRID KARTU PERSONA BERSIH & COMPACT */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[250px] overflow-y-auto pr-1">
             {DAFTAR_PERSONA.map((p) => {
               const terpilih = kunciPilihan === p.kunci;
               const Ikon = p.ikon;
@@ -190,7 +183,7 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
                   onClick={() => setKunciPilihan(p.kunci)}
                   disabled={sibuk}
                   className={cn(
-                    "flex items-start gap-2.5 rounded-xl border p-2 text-left transition-all duration-150 outline-none",
+                    "flex items-center gap-2.5 rounded-xl border p-2.5 text-left transition-all duration-150 outline-none",
                     terpilih
                       ? "border-primary bg-primary/5 ring-2 ring-primary/25 shadow-2xs"
                       : "border-border/70 bg-card hover:border-primary/40 hover:bg-muted/40"
@@ -198,7 +191,7 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
                 >
                   <span
                     className={cn(
-                      "flex size-8 shrink-0 items-center justify-center rounded-lg border mt-0.5",
+                      "flex size-8 shrink-0 items-center justify-center rounded-lg border",
                       p.warnaBg
                     )}
                   >
@@ -214,9 +207,6 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
                     <span className="text-[11px] font-semibold text-primary block leading-tight truncate">
                       {p.peran}
                     </span>
-                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                      {p.keterangan}
-                    </p>
                   </div>
                 </button>
               );
@@ -224,7 +214,7 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
           </div>
 
           {/* TOMBOL AKSI MASUK */}
-          <div className="space-y-1.5 pt-2 border-t">
+          <div className="pt-2 border-t">
             <Button
               type="button"
               size="lg"
@@ -235,7 +225,7 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
               {sibuk ? (
                 <>
                   <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-                  Mempersiapkan Sesi {personaTerpilih.nama}...
+                  Mempersiapkan Sesi...
                 </>
               ) : (
                 <>
@@ -245,9 +235,6 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
                 </>
               )}
             </Button>
-            <p className="text-center text-[11px] text-muted-foreground">
-              Akses langsung tanpa perlu mengetik kata sandi manual.
-            </p>
           </div>
         </div>
       ) : (

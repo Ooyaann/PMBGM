@@ -63,49 +63,34 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
 
               <div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-100 leading-tight">
-                  Pengawasan Makanan Bergizi Bersama Warga
+                  Kawal Kualitas MBG Kota Semarang
                 </h1>
-                <p className="mt-2 text-xs sm:text-sm text-emerald-900/75 dark:text-slate-300 leading-relaxed font-normal">
-                  Layanan terpadu menjaga porsi, kebersihan, dan keselamatan pangan anak sekolah di Kota Semarang.
+                <p className="mt-1.5 text-xs sm:text-sm text-emerald-900/70 dark:text-slate-300 font-normal">
+                  Transparansi dan keselamatan pangan untuk generasi penerus.
                 </p>
               </div>
 
-              {/* 3 Kartu Keunggulan Bersih & Ceria */}
-              <div className="space-y-2.5 pt-1">
-                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 p-3 border border-emerald-200/80 dark:border-emerald-800/50 shadow-2xs">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
-                    <ShieldCheck className="size-5" />
+              {/* 3 Poin Keunggulan Ringkas & Bersih (Tanpa Teks Menumpuk) */}
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 px-3.5 py-2.5 border border-emerald-200/80 dark:border-emerald-800/50 shadow-2xs">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
+                    <ShieldCheck className="size-4.5" />
                   </span>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Verifikasi Independen</h4>
-                    <p className="text-xs text-muted-foreground leading-tight mt-0.5">
-                      Laporan divalidasi tim independen sebelum ke dapur.
-                    </p>
-                  </div>
+                  <span className="text-xs sm:text-sm font-bold text-foreground">Verifikasi Independen</span>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 p-3 border border-teal-200/80 dark:border-teal-800/50 shadow-2xs">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-500/15 text-teal-700 dark:text-teal-300">
-                    <Clock className="size-5" />
+                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 px-3.5 py-2.5 border border-teal-200/80 dark:border-teal-800/50 shadow-2xs">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-300">
+                    <Clock className="size-4.5" />
                   </span>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Waktu Tanggap Terukur</h4>
-                    <p className="text-xs text-muted-foreground leading-tight mt-0.5">
-                      Batas waktu tindak lanjut transparan terikat SLA resmi.
-                    </p>
-                  </div>
+                  <span className="text-xs sm:text-sm font-bold text-foreground">Waktu Tanggap Terukur (SLA)</span>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 p-3 border border-amber-200/80 dark:border-amber-800/50 shadow-2xs">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300">
-                    <CheckCircle2 className="size-5" />
+                <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-card/90 px-3.5 py-2.5 border border-amber-200/80 dark:border-amber-800/50 shadow-2xs">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                    <CheckCircle2 className="size-4.5" />
                   </span>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground">Bukti Nyata Perbaikan</h4>
-                    <p className="text-xs text-muted-foreground leading-tight mt-0.5">
-                      Penyelesaian wajib melampirkan foto fisik hasil perbaikan.
-                    </p>
-                  </div>
+                  <span className="text-xs sm:text-sm font-bold text-foreground">Bukti Nyata Perbaikan</span>
                 </div>
               </div>
             </div>
@@ -126,9 +111,6 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
                 <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
                   Masuk ke Portal
                 </h2>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                  Pilih mode uji coba cepat untuk evaluasi fitur atau masuk dengan akun terdaftar.
-                </p>
               </div>
 
               <Suspense fallback={<Skeleton className="h-72 w-full rounded-2xl" />}>
@@ -138,7 +120,7 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
 
             <div className="mt-5 pt-3 border-t flex items-center justify-between text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5 font-medium">
-                <Lock className="size-3.5 text-primary" /> Keamanan sesi terlindungi enkripsi
+                <Lock className="size-3.5 text-primary" /> Keamanan sesi terlindungi
               </span>
               <Link href="/panduan" className="text-primary hover:underline font-semibold">
                 Bantuan & Panduan
