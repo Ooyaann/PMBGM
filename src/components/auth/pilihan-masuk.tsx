@@ -111,6 +111,7 @@ const DAFTAR_PERSONA: PersonaDemo[] = [
 export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: boolean }) {
   const router = useRouter();
   const [sibuk, mulai] = useTransition();
+  const [tabAktif, setTabAktif] = useState<"demo" | "password">("demo");
   const [kunciPilihan, setKunciPilihan] = useState<KunciDemo>("rina");
 
   const selesai = () => {
@@ -137,100 +138,123 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
   if (!modeDemo) return formPassword;
 
   return (
-    <Tabs defaultValue="demo" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 rounded-2xl p-1 bg-muted/80">
-        <TabsTrigger value="demo" className="rounded-xl text-xs sm:text-sm font-bold py-2">
-          <Sparkles className="size-4 mr-1.5 text-primary" aria-hidden /> Mode Uji Coba Demo
-        </TabsTrigger>
-        <TabsTrigger value="password" className="rounded-xl text-xs sm:text-sm font-bold py-2">
-          <KeyRound className="size-4 mr-1.5 text-muted-foreground" aria-hidden /> Masuk / Daftar Akun
-        </TabsTrigger>
-      </TabsList>
+    <div className="w-full space-y-4">
+      {/* Tab Switcher Utama Lapang & Sempurna (Tidak Terpotong) */}
+      <div className="grid w-full grid-cols-2 rounded-2xl bg-muted/80 p-1.5 border border-border/60">
+        <button
+          type="button"
+          onClick={() => setTabAktif("demo")}
+          className={cn(
+            "flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs sm:text-sm font-bold transition-all outline-none",
+            tabAktif === "demo"
+              ? "bg-card text-primary shadow-xs ring-1 ring-border/50"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Sparkles className="size-4 text-primary shrink-0" aria-hidden />
+          <span>Mode Uji Coba Demo</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setTabAktif("password")}
+          className={cn(
+            "flex items-center justify-center gap-2 rounded-xl py-2 px-3 text-xs sm:text-sm font-bold transition-all outline-none",
+            tabAktif === "password"
+              ? "bg-card text-foreground shadow-xs ring-1 ring-border/50"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <KeyRound className="size-4 text-muted-foreground shrink-0" aria-hidden />
+          <span>Masuk / Daftar Akun</span>
+        </button>
+      </div>
 
-      <TabsContent value="demo" className="mt-3.5 space-y-3.5">
-        <div>
-          <h3 className="text-xs sm:text-sm font-bold text-foreground">Pilih Akun Peran Pengujian</h3>
-          <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">
-            Disediakan khusus bagi dewan juri untuk menjelajahi sudut pandang setiap peran:
-          </p>
-        </div>
+      {tabAktif === "demo" ? (
+        <div className="space-y-3.5">
+          <div>
+            <h3 className="text-xs sm:text-sm font-bold text-foreground">Pilih Akun Peran Pengujian</h3>
+            <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">
+              Disediakan khusus bagi dewan juri untuk menjelajahi sudut pandang setiap peran:
+            </p>
+          </div>
 
-        {/* GRID KARTU PERSONA RINGKAS AGAR TIDAK OVERFLOW */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[215px] sm:max-h-[225px] overflow-y-auto pr-1">
-          {DAFTAR_PERSONA.map((p) => {
-            const terpilih = kunciPilihan === p.kunci;
-            const Ikon = p.ikon;
-            return (
-              <button
-                key={p.kunci}
-                type="button"
-                onClick={() => setKunciPilihan(p.kunci)}
-                disabled={sibuk}
-                className={cn(
-                  "flex items-start gap-2.5 rounded-xl border p-2 text-left transition-all duration-150 outline-none",
-                  terpilih
-                    ? "border-primary bg-primary/5 ring-2 ring-primary/25 shadow-2xs"
-                    : "border-border/70 bg-card hover:border-primary/40 hover:bg-muted/40"
-                )}
-              >
-                <span
+          {/* GRID KARTU PERSONA RINGKAS AGAR TIDAK OVERFLOW */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[215px] sm:max-h-[225px] overflow-y-auto pr-1">
+            {DAFTAR_PERSONA.map((p) => {
+              const terpilih = kunciPilihan === p.kunci;
+              const Ikon = p.ikon;
+              return (
+                <button
+                  key={p.kunci}
+                  type="button"
+                  onClick={() => setKunciPilihan(p.kunci)}
+                  disabled={sibuk}
                   className={cn(
-                    "flex size-8 shrink-0 items-center justify-center rounded-lg border mt-0.5",
-                    p.warnaBg
+                    "flex items-start gap-2.5 rounded-xl border p-2 text-left transition-all duration-150 outline-none",
+                    terpilih
+                      ? "border-primary bg-primary/5 ring-2 ring-primary/25 shadow-2xs"
+                      : "border-border/70 bg-card hover:border-primary/40 hover:bg-muted/40"
                   )}
                 >
-                  <Ikon className={cn("size-4", p.warnaAksen)} aria-hidden />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="text-xs sm:text-sm font-bold text-foreground truncate">{p.nama}</span>
-                    {terpilih && (
-                      <CheckCircle2 className="size-3.5 text-primary shrink-0" aria-hidden />
+                  <span
+                    className={cn(
+                      "flex size-8 shrink-0 items-center justify-center rounded-lg border mt-0.5",
+                      p.warnaBg
                     )}
-                  </div>
-                  <span className="text-[11px] font-semibold text-primary block leading-tight truncate">
-                    {p.peran}
+                  >
+                    <Ikon className={cn("size-4", p.warnaAksen)} aria-hidden />
                   </span>
-                  <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                    {p.keterangan}
-                  </p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-xs sm:text-sm font-bold text-foreground truncate">{p.nama}</span>
+                      {terpilih && (
+                        <CheckCircle2 className="size-3.5 text-primary shrink-0" aria-hidden />
+                      )}
+                    </div>
+                    <span className="text-[11px] font-semibold text-primary block leading-tight truncate">
+                      {p.peran}
+                    </span>
+                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+                      {p.keterangan}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
-        {/* TOMBOL AKSI MASUK */}
-        <div className="space-y-1.5 pt-2 border-t">
-          <Button
-            type="button"
-            size="lg"
-            disabled={sibuk}
-            onClick={handleMasukDemo}
-            className="w-full rounded-xl font-bold shadow-sm shadow-primary/10 text-xs sm:text-sm h-11"
-          >
-            {sibuk ? (
-              <>
-                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-                Mempersiapkan Sesi {personaTerpilih.nama}...
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-2 size-4" aria-hidden />
-                Masuk sebagai {personaTerpilih.nama} ({personaTerpilih.peran})
-                <ArrowRight className="ml-2 size-4" />
-              </>
-            )}
-          </Button>
-          <p className="text-center text-[11px] text-muted-foreground">
-            Akses langsung tanpa perlu mengetik kata sandi manual.
-          </p>
+          {/* TOMBOL AKSI MASUK */}
+          <div className="space-y-1.5 pt-2 border-t">
+            <Button
+              type="button"
+              size="lg"
+              disabled={sibuk}
+              onClick={handleMasukDemo}
+              className="w-full rounded-xl font-bold shadow-sm shadow-primary/10 text-xs sm:text-sm h-11"
+            >
+              {sibuk ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
+                  Mempersiapkan Sesi {personaTerpilih.nama}...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 size-4" aria-hidden />
+                  Masuk sebagai {personaTerpilih.nama} ({personaTerpilih.peran})
+                  <ArrowRight className="ml-2 size-4" />
+                </>
+              )}
+            </Button>
+            <p className="text-center text-[11px] text-muted-foreground">
+              Akses langsung tanpa perlu mengetik kata sandi manual.
+            </p>
+          </div>
         </div>
-      </TabsContent>
-
-      <TabsContent value="password" className="mt-3.5">
-        {formPassword}
-      </TabsContent>
-    </Tabs>
+      ) : (
+        <div className="pt-0.5">
+          {formPassword}
+        </div>
+      )}
+    </div>
   );
 }
