@@ -1,9 +1,11 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { after } from "next/server";
 import { klasifikasiKataKunci } from "@/lib/klasifikasi";
 import { gabungKlasifikasi, klasifikasiDenganAi } from "@/lib/klasifikasi-ai";
 import { buatKlienAdmin } from "@/lib/supabase/admin";
+import { TAG_DATA_PUBLIK } from "@/lib/supabase/publik";
 import { buatKlienServer } from "@/lib/supabase/server";
 import { skemaLaporan, type InputLaporan } from "@/lib/validasi/laporan";
 
@@ -55,5 +57,6 @@ export async function kirimLaporan(input: InputLaporan): Promise<HasilKirim> {
     if (!ai || !admin) return;
     await admin.from("laporan").update({ klasifikasi_otomatis: { ...gabungKlasifikasi(d.deskripsi, d.jumlahTerdampak, ai) } }).eq("id", data.id);
   });
+  updateTag(TAG_DATA_PUBLIK);
   return { ok: true, id: data.id, kodeTiket: data.kode_tiket, pelaporId };
 }

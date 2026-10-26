@@ -115,7 +115,7 @@ export async function ambilKecamatanResponsif() {
   return data;
 }
 
-/** Kasus contoh untuk kartu pelacakan di hero: kasus terbaru yang sedang ditindaklanjuti. */
+/** Kasus terkini untuk kartu pelacakan di hero: selalu memuat kasus paling mutakhir yang ada pembaruan di database. */
 export async function ambilKasusSorotan() {
   "use cache";
   cacheLife("minutes");
@@ -123,9 +123,7 @@ export async function ambilKasusSorotan() {
   const supabase = buatKlienPublik();
   const { data: kasus } = await supabase
     .from("v_kasus_publik")
-    .select("id, kode_kasus, judul, kategori, status, sppg_nama, kecamatan_nama, instansi_nama, jumlah_laporan, terlambat, tidak_ditanggapi, tenggat_tahap")
-    .eq("status", "ditindaklanjuti")
-    .eq("terlambat", false)
+    .select("id, kode_kasus, judul, kategori, status, sppg_nama, kecamatan_nama, instansi_nama, jumlah_laporan, terlambat, tidak_ditanggapi, tenggat_tahap, status_sejak")
     .order("status_sejak", { ascending: false })
     .limit(1)
     .maybeSingle();
