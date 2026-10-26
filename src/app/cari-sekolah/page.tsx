@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FolderOpen, Megaphone, School, Search, ShieldCheck, ShieldOff, Users, Utensils } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
 import { LabelSumber } from "@/components/data/label-sumber";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cariSekolah } from "@/lib/data/sekolah";
@@ -63,15 +64,25 @@ async function Hasil({ searchParams }: { searchParams: PageProps<"/cari-sekolah"
             </div>
           </div>
           {s.sppg ? (
-            <Link href={`/data/sppg/${s.sppg.id}`} className="flex flex-wrap items-center gap-2 rounded-2xl bg-muted/50 p-3 hover:bg-muted">
-              <Utensils className="size-4 text-muted-foreground" aria-hidden />
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{s.sppg.nama}</span>
-              {s.sppg.slhs === "berlaku"
-                ? <ShieldCheck className="size-4 text-risiko-rendah" aria-label="SLHS berlaku" />
-                : <ShieldOff className="size-4 text-risiko-sedang" aria-label="SLHS belum berlaku" />}
-              <BadgeRisiko skor={s.sppg.indeks} />
-            </Link>
-          ) : <p className="rounded-2xl bg-muted/50 p-3 text-sm text-muted-foreground">Belum terhubung ke SPPG</p>}
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-muted/40 p-3 hover:bg-muted/70 transition-colors">
+              <Link href={`/data/sppg/${s.sppg.id}`} className="flex items-center gap-2 min-w-0 flex-1 truncate hover:text-primary">
+                <Utensils className="size-4 text-muted-foreground shrink-0" aria-hidden />
+                <span className="truncate text-sm font-semibold">{s.sppg.nama}</span>
+              </Link>
+              <div className="flex items-center gap-2 shrink-0">
+                <InfoMetrik jenis="slhs" side="top">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md bg-background border shadow-2xs">
+                    {s.sppg.slhs === "berlaku" ? (
+                      <><ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" /> SLHS Aktif</>
+                    ) : (
+                      <><ShieldOff className="size-3.5 text-amber-600 dark:text-amber-400" /> Tanpa SLHS</>
+                    )}
+                  </span>
+                </InfoMetrik>
+                <BadgeRisiko skor={s.sppg.indeks} />
+              </div>
+            </div>
+          ) : <p className="rounded-2xl bg-muted/40 p-3 text-sm text-muted-foreground">Belum terhubung ke SPPG</p>}
           <div className="mt-auto flex flex-wrap items-center gap-2">
             <span className={cn("inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-xs font-semibold",
               s.kasusTerbuka ? "bg-risiko-sedang-lembut text-risiko-sedang" : "bg-muted text-muted-foreground")}>

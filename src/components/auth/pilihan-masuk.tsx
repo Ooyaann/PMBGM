@@ -2,21 +2,110 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Building2, ChevronDown, ClipboardCheck, GraduationCap, KeyRound, Loader2, Settings, Sparkles, UserRound, Users, Utensils } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  GraduationCap,
+  KeyRound,
+  Loader2,
+  Settings,
+  Sparkles,
+  UserRound,
+  Users,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { masukDemo, type KunciDemo } from "@/lib/aksi/auth";
+import { cn } from "@/lib/utils";
 import { MasukPassword } from "./masuk-password";
 
-const PERSONA: { kunci: KunciDemo; nama: string; peran: string; ikon: typeof UserRound; keterangan: string }[] = [
-  { kunci: "rina", nama: "Ibu Rina", peran: "Pelapor", ikon: UserRound, keterangan: "Orang tua siswa SD di Tembalang (pelapor warga umum)" },
-  { kunci: "budi", nama: "Pak Budi", peran: "Guru", ikon: GraduationCap, keterangan: "Pelapor terverifikasi, penanggung jawab MBG di SMP" },
-  { kunci: "sari", nama: "Mbak Sari", peran: "Verifikator", ikon: ClipboardCheck, keterangan: "Memeriksa bukti, memvalidasi & menggabungkan laporan" },
-  { kunci: "hendra", nama: "Pak Hendra", peran: "Dinkes", ikon: Building2, keterangan: "Staf Dinas Kesehatan Kota Semarang (tindak lanjut kasus)" },
-  { kunci: "sppg", nama: "Pengelola", peran: "SPPG", ikon: Utensils, keterangan: "Pengelola Dapur SPPG Tembalang 03" },
-  { kunci: "korwil", nama: "Korwil", peran: "BGN", ikon: Users, keterangan: "Koordinator Wilayah Badan Gizi Nasional Kota Semarang" },
-  { kunci: "admin", nama: "Admin", peran: "Sistem", ikon: Settings, keterangan: "Administrator sistem, data master, dan aturan SLA" },
+interface PersonaDemo {
+  kunci: KunciDemo;
+  nama: string;
+  peran: string;
+  instansi: string;
+  keterangan: string;
+  ikon: LucideIcon;
+  warnaAksen: string;
+  warnaBg: string;
+}
+
+const DAFTAR_PERSONA: PersonaDemo[] = [
+  {
+    kunci: "rina",
+    nama: "Ibu Rina",
+    peran: "Warga / Orang Tua",
+    instansi: "SD di Tembalang",
+    keterangan: "Melaporkan masalah porsi makan anak & pantau status tiket.",
+    ikon: UserRound,
+    warnaAksen: "text-emerald-600 dark:text-emerald-400",
+    warnaBg: "bg-emerald-500/10 border-emerald-500/20",
+  },
+  {
+    kunci: "budi",
+    nama: "Pak Budi",
+    peran: "Guru Terverifikasi",
+    instansi: "SMP Negeri Tembalang",
+    keterangan: "Memantau distribusi MBG di sekolah & rapor dapur mitra.",
+    ikon: GraduationCap,
+    warnaAksen: "text-blue-600 dark:text-blue-400",
+    warnaBg: "bg-blue-500/10 border-blue-500/20",
+  },
+  {
+    kunci: "sari",
+    nama: "Mbak Sari",
+    peran: "Verifikator Wilayah",
+    instansi: "Tim Independen Semarang",
+    keterangan: "Memeriksa keabsahan foto bukti & gabung laporan serupa.",
+    ikon: ClipboardCheck,
+    warnaAksen: "text-teal-600 dark:text-teal-400",
+    warnaBg: "bg-teal-500/10 border-teal-500/20",
+  },
+  {
+    kunci: "sppg",
+    nama: "Pengelola Dapur",
+    peran: "Dapur SPPG",
+    instansi: "SPPG Tembalang 03",
+    keterangan: "Menerima aduan dapur, unggah foto perbaikan fisik.",
+    ikon: Utensils,
+    warnaAksen: "text-amber-600 dark:text-amber-400",
+    warnaBg: "bg-amber-500/10 border-amber-500/20",
+  },
+  {
+    kunci: "hendra",
+    nama: "Pak Hendra",
+    peran: "Dinas Kesehatan",
+    instansi: "Dinkes Kota Semarang",
+    keterangan: "Investigasi medis keracunan & evaluasi sertifikat SLHS.",
+    ikon: Building2,
+    warnaAksen: "text-rose-600 dark:text-rose-400",
+    warnaBg: "bg-rose-500/10 border-rose-500/20",
+  },
+  {
+    kunci: "korwil",
+    nama: "Korwil BGN",
+    peran: "Pengawas Kota",
+    instansi: "BGN Kota Semarang",
+    keterangan: "Memantau kepatuhan batas waktu SLA antar-dapur se-kota.",
+    ikon: Users,
+    warnaAksen: "text-indigo-600 dark:text-indigo-400",
+    warnaBg: "bg-indigo-500/10 border-indigo-500/20",
+  },
+  {
+    kunci: "admin",
+    nama: "Admin Sistem",
+    peran: "Administrator",
+    instansi: "Pusat Data PMBGM",
+    keterangan: "Kelola akun pengguna, data master, dan aturan SLA.",
+    ikon: Settings,
+    warnaAksen: "text-purple-600 dark:text-purple-400",
+    warnaBg: "bg-purple-500/10 border-purple-500/20",
+  },
 ];
 
 export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: boolean }) {
@@ -29,14 +118,13 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
     router.refresh();
   };
 
-  const personaTerpilih = PERSONA.find((p) => p.kunci === kunciPilihan) ?? PERSONA[0];
-  const PersonaIkon = personaTerpilih.ikon;
+  const personaTerpilih = DAFTAR_PERSONA.find((p) => p.kunci === kunciPilihan) ?? DAFTAR_PERSONA[0];
 
   const handleMasukDemo = () => {
     mulai(async () => {
       const hasil = await masukDemo(kunciPilihan);
       if (hasil.ok) {
-        toast.success(`Masuk sebagai ${personaTerpilih.nama} (${personaTerpilih.peran})`);
+        toast.success(`Berhasil masuk sebagai ${personaTerpilih.nama} (${personaTerpilih.peran})`);
         selesai();
       } else {
         toast.error(hasil.pesan);
@@ -46,75 +134,98 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
 
   const formPassword = <MasukPassword onBerhasil={selesai} />;
 
-  // Kalau bukan mode demo, langsung tampilkan form email + password
   if (!modeDemo) return formPassword;
 
   return (
-    <Tabs defaultValue="demo">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="demo"><Sparkles aria-hidden /> Akun Demo</TabsTrigger>
-        <TabsTrigger value="password"><KeyRound aria-hidden /> Daftar / Masuk</TabsTrigger>
+    <Tabs defaultValue="demo" className="w-full">
+      <TabsList className="grid w-full grid-cols-2 rounded-2xl p-1 bg-muted/80">
+        <TabsTrigger value="demo" className="rounded-xl text-xs sm:text-sm font-bold py-2.5">
+          <Sparkles className="size-4 mr-1.5 text-primary" aria-hidden /> Mode Uji Coba Demo
+        </TabsTrigger>
+        <TabsTrigger value="password" className="rounded-xl text-xs sm:text-sm font-bold py-2.5">
+          <KeyRound className="size-4 mr-1.5" aria-hidden /> Masuk / Daftar Akun
+        </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="demo" className="mt-5 space-y-4">
-        <div className="space-y-1.5">
-          <label htmlFor="pilih-persona" className="text-xs font-semibold text-muted-foreground">
-            Pilih Peran Demo untuk Pengujian:
-          </label>
-          <div className="relative">
-            <select
-              id="pilih-persona"
-              value={kunciPilihan}
-              disabled={sibuk}
-              onChange={(e) => setKunciPilihan(e.target.value as KunciDemo)}
-              className="flex h-11 w-full appearance-none items-center rounded-xl border border-input bg-background px-3.5 pr-10 text-sm font-medium shadow-xs transition focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {PERSONA.map((p) => (
-                <option key={p.kunci} value={p.kunci}>
-                  {p.nama} — {p.peran}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-          </div>
+      <TabsContent value="demo" className="mt-5 space-y-5">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Pilih Akun Peran Pengujian</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Disediakan khusus bagi dewan juri untuk menjelajahi sudut pandang setiap peran secara instan:
+          </p>
         </div>
 
-        {/* Kartu detail peran terpilih */}
-        <div className="flex items-start gap-3 rounded-2xl border bg-muted/30 p-3.5 transition">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
-            <PersonaIkon className="size-5" aria-hidden />
-          </span>
-          <div className="min-w-0 flex-1 space-y-0.5">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold">{personaTerpilih.nama}</span>
-              <span className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground">
-                {personaTerpilih.peran}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {personaTerpilih.keterangan}
-            </p>
-          </div>
+        {/* GRID KARTU PERSONA INTERAKTIF */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[360px] overflow-y-auto pr-1">
+          {DAFTAR_PERSONA.map((p) => {
+            const terpilih = kunciPilihan === p.kunci;
+            const Ikon = p.ikon;
+            return (
+              <button
+                key={p.kunci}
+                type="button"
+                onClick={() => setKunciPilihan(p.kunci)}
+                disabled={sibuk}
+                className={cn(
+                  "flex items-start gap-3 rounded-2xl border p-3 text-left transition-all duration-150 outline-none",
+                  terpilih
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/30 shadow-xs"
+                    : "border-border/70 bg-card hover:border-primary/40 hover:bg-muted/40"
+                )}
+              >
+                <span
+                  className={cn(
+                    "flex size-9 shrink-0 items-center justify-center rounded-xl border mt-0.5",
+                    p.warnaBg
+                  )}
+                >
+                  <Ikon className={cn("size-4.5", p.warnaAksen)} aria-hidden />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-sm font-bold text-foreground truncate">{p.nama}</span>
+                    {terpilih && (
+                      <CheckCircle2 className="size-4 text-primary shrink-0" aria-hidden />
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold text-primary block leading-tight">
+                    {p.peran}
+                  </span>
+                  <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                    {p.keterangan}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
         </div>
 
-        <Button
-          type="button"
-          disabled={sibuk}
-          onClick={handleMasukDemo}
-          className="h-11 w-full rounded-xl text-sm font-semibold"
-        >
-          {sibuk ? (
-            <>
-              <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-              Menghubungkan sesi...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 size-4" aria-hidden />
-              Masuk sebagai {personaTerpilih.nama}
-            </>
-          )}
-        </Button>
+        {/* TOMBOL AKSI MASUK */}
+        <div className="space-y-2 pt-2 border-t">
+          <Button
+            type="button"
+            size="xl"
+            disabled={sibuk}
+            onClick={handleMasukDemo}
+            className="w-full rounded-2xl font-bold shadow-md shadow-primary/10 text-sm h-12"
+          >
+            {sibuk ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
+                Mempersiapkan Sesi {personaTerpilih.nama}...
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2 size-4" aria-hidden />
+                Masuk sebagai {personaTerpilih.nama} ({personaTerpilih.peran})
+                <ArrowRight className="ml-2 size-4" />
+              </>
+            )}
+          </Button>
+          <p className="text-center text-[11px] text-muted-foreground">
+            Akses langsung tanpa perlu mengetik kata sandi manual.
+          </p>
+        </div>
       </TabsContent>
 
       <TabsContent value="password" className="mt-5">

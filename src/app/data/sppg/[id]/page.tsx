@@ -66,14 +66,16 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {s.status_operasional !== "beroperasi" && (
-            <span className="inline-flex h-6 items-center rounded-full bg-risiko-tinggi-lembut px-2 text-xs font-semibold text-risiko-tinggi">
-              {s.status_operasional === "ditutup_sementara" ? "Ditutup sementara" : s.status_operasional}
-            </span>
+            <InfoMetrik jenis="status_operasional">
+              <span className="inline-flex h-6 items-center rounded-full bg-risiko-tinggi-lembut px-2 text-xs font-semibold text-risiko-tinggi cursor-help">
+                {s.status_operasional === "ditutup_sementara" ? "Ditutup sementara" : s.status_operasional}
+              </span>
+            </InfoMetrik>
           )}
           <InfoMetrik jenis="slhs">
             <span className={slhsBerlaku
-              ? "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2 text-xs font-semibold text-risiko-rendah"
-              : "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang"}>
+              ? "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2 text-xs font-semibold text-risiko-rendah cursor-help"
+              : "inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang cursor-help"}>
               {slhsBerlaku ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
               {slhsBerlaku ? `SLHS s.d. ${s.slhs_berlaku_sampai ? tanggal(s.slhs_berlaku_sampai) : "–"}` : s.status_slhs === "proses" ? "SLHS diproses" : s.status_slhs === "kedaluwarsa" ? "SLHS kedaluwarsa" : "Tanpa SLHS"}
             </span>
@@ -83,9 +85,9 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
       </header>
 
       <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Tile ikon={Utensils} label="Porsi/hari" nilai={angka(s.kapasitas_porsi_harian)} />
+        <Tile ikon={Utensils} label="Porsi/hari" nilai={angka(s.kapasitas_porsi_harian)} infoKey="porsi" />
         <Tile ikon={School} label="Sekolah" nilai={angka(sekolah.length)} />
-        <Tile ikon={Users} label="Penerima" nilai={angka(penerima)} />
+        <Tile ikon={Users} label="Penerima" nilai={angka(penerima)} infoKey="penerima" />
         <Tile
           ikon={FolderOpen}
           label="Kasus"

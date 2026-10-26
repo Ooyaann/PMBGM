@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/situs/footer";
 import { SidebarGlobalSlot } from "@/components/situs/sidebar-global-slot";
+import { WidgetDarurat } from "@/components/situs/widget-darurat";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -41,7 +42,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className={`${jakarta.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+      <body className="min-h-full bg-slate-50/60 dark:bg-slate-950 text-foreground antialiased selection:bg-primary/20 selection:text-primary">
         <a
           href="#konten"
           className="sr-only z-50 rounded-lg bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Footer />
             </div>
           </div>
+          <WidgetDarurat />
           <Toaster position="top-center" richColors />
         </TooltipProvider>
       </body>

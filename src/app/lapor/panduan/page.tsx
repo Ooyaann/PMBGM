@@ -74,11 +74,6 @@ export default function HalamanPanduan() {
         </p>
       </div>
 
-      <section id="darurat" aria-labelledby="judul-darurat" className="scroll-mt-24 space-y-4">
-        <Judul id="judul-darurat">Darurat keracunan</Judul>
-        <PanelDarurat />
-      </section>
-
       <section aria-labelledby="judul-tata-kelola" className="space-y-4">
         <Judul id="judul-tata-kelola">Siapa yang memproses laporan Anda?</Judul>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -149,6 +144,11 @@ export default function HalamanPanduan() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section id="darurat" aria-labelledby="judul-darurat" className="scroll-mt-24 space-y-4">
+        <Judul id="judul-darurat">Kontak Darurat Keracunan Medis</Judul>
+        <PanelDarurat ringkas />
       </section>
 
       <div className="pt-2">

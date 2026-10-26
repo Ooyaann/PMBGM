@@ -11,6 +11,7 @@ import { ChipAlasan } from "@/components/data/chip-alasan";
 import { LabelSumber } from "@/components/data/label-sumber";
 import { Bertip } from "@/components/ui/bertip";
 import { buttonVariants } from "@/components/ui/button";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import {
   ambilKasusSorotan, ambilKecamatanResponsif, ambilPrioritasInspeksi, ambilStatistik,
 } from "@/lib/data/publik";
@@ -38,42 +39,34 @@ export default async function Beranda() {
 
   return (
     <>
-      {/* Darurat (LP-06): satu baris, satu tindakan */}
-      <div className="border-b border-darurat/15 bg-darurat-lembut">
-        <div className="kontainer flex h-11 items-center justify-between gap-3 text-sm text-darurat">
-          <span className="flex items-center gap-2 font-semibold">
-            <HeartPulse className="size-4" aria-hidden /> Darurat keracunan?
-          </span>
-          <span className="flex items-center gap-3">
-            <Link href="/lapor/panduan#darurat" className="hidden font-medium underline-offset-2 hover:underline sm:inline">Pertolongan pertama</Link>
-            <a href="tel:119" className="inline-flex h-8 items-center gap-1.5 rounded-full bg-darurat px-3 font-bold text-white hover:bg-darurat/90">
-              <Phone className="size-3.5" aria-hidden /> 119
-            </a>
-          </span>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <section className="kontainer grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:py-20">
-        <div>
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-            <ShieldCheck className="size-3.5" aria-hidden /> Pengawasan MBG oleh warga
-          </p>
-          <h1 className="mt-5 text-4xl leading-[1.05] font-extrabold sm:text-5xl lg:text-[3.5rem]">
-            Makanan anak kita,<br /><span className="text-primary">kita jaga bersama.</span>
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">Lapor masalah, pantau tindak lanjut, cek dapur sekolah.</p>
-          <div className="mt-8 grid gap-3 sm:flex">
-            <Link href="/lapor" className={buttonVariants({ size: "xl" })}>
-              <Megaphone aria-hidden /> Lapor
-            </Link>
-            <Link href="/cari-sekolah" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "bg-card")}>
-              <School aria-hidden /> Cek dapur sekolah
-            </Link>
+      {/* Hero dengan Ambient Gradient yang Menawan & Nyaman di Mata */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/40 via-background to-background dark:from-emerald-950/20 py-12 sm:py-16 lg:py-20 border-b">
+        <div className="kontainer grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs sm:text-sm font-bold text-primary shadow-xs">
+              <ShieldCheck className="size-4" aria-hidden /> Pengawasan Partisipatif MBG oleh Masyarakat
+            </div>
+            <h1 className="text-4xl leading-[1.1] font-extrabold sm:text-5xl lg:text-[3.25rem] tracking-tight">
+              Makanan anak kita,<br />
+              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                kita jaga bersama.
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
+              Laporkan masalah porsi atau kebersihan makanan, pantau tindak lanjut perbaikan dapur secara terbuka, dan periksa rapor kesehatan dapur sekolah anak Anda.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "rounded-2xl font-bold shadow-md shadow-primary/15 h-12 px-6")}>
+                <Megaphone aria-hidden /> Lapor Masalah Sekarang
+              </Link>
+              <Link href="/cari-sekolah" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "rounded-2xl font-bold bg-card h-12 px-6 shadow-xs")}>
+                <School aria-hidden /> Cek Dapur Sekolah Anak
+              </Link>
+            </div>
+            <FormCekTiket className="pt-2 max-w-md" />
           </div>
-          <FormCekTiket className="mt-4 max-w-md" />
+          {sorotan && <KartuLacak kasus={sorotan.kasus} timeline={sorotan.timeline} />}
         </div>
-        {sorotan && <KartuLacak kasus={sorotan.kasus} timeline={sorotan.timeline} />}
       </section>
 
       {/* Konteks nasional */}
@@ -147,14 +140,20 @@ export default async function Beranda() {
             </div>
             <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-3 lg:grid-cols-5">
               {[
-                { label: "Laporan", nilai: angka(statistik.laporan_masuk) },
-                { label: "Terverifikasi", nilai: persen(persenTerverifikasi) },
-                { label: "Kasus selesai", nilai: persen(persenSelesai) },
-                { label: "Waktu tanggap", nilai: durasiJam(statistik.rata_jam_respons) },
-                { label: "Kepuasan", nilai: statistik.kepuasan ? `${statistik.kepuasan.toLocaleString("id-ID")}/5` : "–" },
+                { jenis: "laporan_masuk" as const, label: "Laporan Masuk", nilai: angka(statistik.laporan_masuk) },
+                { jenis: "terverifikasi" as const, label: "Terverifikasi", nilai: persen(persenTerverifikasi) },
+                { jenis: "selesai" as const, label: "Kasus Selesai", nilai: persen(persenSelesai) },
+                { jenis: "tanggap" as const, label: "Waktu Tanggap", nilai: durasiJam(statistik.rata_jam_respons) },
+                { jenis: "kepuasan" as const, label: "Kepuasan Pelapor", nilai: statistik.kepuasan ? `${statistik.kepuasan.toLocaleString("id-ID")}/5` : "–" },
               ].map((s) => (
                 <div key={s.label}>
-                  <dt className="text-sm text-primary-foreground/75">{s.label}</dt>
+                  <dt className="text-sm text-primary-foreground/80 flex items-center gap-1.5 font-medium">
+                    <InfoMetrik jenis={s.jenis}>
+                      <span className="underline decoration-dotted underline-offset-4 cursor-help text-white font-semibold">
+                        {s.label}
+                      </span>
+                    </InfoMetrik>
+                  </dt>
                   <dd className="angka mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">{s.nilai}</dd>
                 </div>
               ))}
@@ -207,7 +206,7 @@ export default async function Beranda() {
                   <div key={m.label} className="rounded-xl bg-card/80 p-2">
                     <m.ikon className="mx-auto size-4 text-risiko-rendah" aria-hidden />
                     <dd className="angka mt-1 text-base font-bold">{m.nilai}</dd>
-                    <dt className="text-[11px] text-muted-foreground">{m.label}</dt>
+                    <dt className="text-xs font-semibold text-muted-foreground">{m.label}</dt>
                   </div>
                 ))}
               </dl>

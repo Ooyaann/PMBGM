@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { FolderOpen, School, Search, ShieldCheck, ShieldOff, Users } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { angka } from "@/lib/format";
 import { kategoriRisiko, RISIKO, type KategoriRisiko } from "@/lib/label";
 import { cn } from "@/lib/utils";
@@ -73,19 +74,23 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
                 </span>
                 <BadgeRisiko skor={s.indeks} />
               </span>
-              <span className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><School className="size-3.5" aria-hidden />{s.jumlahSekolah}</span>
-                <span className="flex items-center gap-1"><Users className="size-3.5" aria-hidden />{angka(s.penerima)}</span>
-                <span className="flex items-center gap-1"><FolderOpen className="size-3.5" aria-hidden />{s.kasus} kasus</span>
-                <span className={cn("flex items-center gap-1", s.statusSlhs === "berlaku" ? "text-risiko-rendah" : "text-risiko-sedang")}>
-                  {s.statusSlhs === "berlaku" ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
-                  {s.statusSlhs === "berlaku" ? "SLHS" : "Tanpa SLHS"}
-                </span>
+              <span className="flex flex-wrap gap-x-3.5 gap-y-1.5 text-xs text-muted-foreground font-medium">
+                <span className="flex items-center gap-1"><School className="size-3.5 text-primary" aria-hidden />{s.jumlahSekolah} Sekolah</span>
+                <span className="flex items-center gap-1"><Users className="size-3.5 text-primary" aria-hidden />{angka(s.penerima)} Siswa</span>
+                <span className="flex items-center gap-1"><FolderOpen className="size-3.5 text-primary" aria-hidden />{s.kasus} Kasus</span>
+                <InfoMetrik jenis="slhs">
+                  <span className={cn("inline-flex items-center gap-1 font-semibold rounded-md px-1.5 py-0.5", s.statusSlhs === "berlaku" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:text-amber-400")}>
+                    {s.statusSlhs === "berlaku" ? <ShieldCheck className="size-3.5" aria-hidden /> : <ShieldOff className="size-3.5" aria-hidden />}
+                    {s.statusSlhs === "berlaku" ? "SLHS Aktif" : "Tanpa SLHS"}
+                  </span>
+                </InfoMetrik>
               </span>
               {s.statusOperasional !== "beroperasi" && (
-                <span className="w-fit rounded-full bg-risiko-tinggi-lembut px-2 py-0.5 text-[11px] font-semibold text-risiko-tinggi">
-                  {s.statusOperasional === "ditutup_sementara" ? "Ditutup sementara" : s.statusOperasional}
-                </span>
+                <InfoMetrik jenis="status_operasional">
+                  <span className="w-fit rounded-lg bg-rose-500/15 px-2.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
+                    {s.statusOperasional === "ditutup_sementara" ? "Ditutup Sementara" : s.statusOperasional}
+                  </span>
+                </InfoMetrik>
               )}
             </Link>
           </li>

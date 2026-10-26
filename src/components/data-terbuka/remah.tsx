@@ -21,20 +21,48 @@ export function Remah({ butir }: { butir: { label: string; href?: string }[] }) 
   );
 }
 
-/** Tile angka ringkas: label kecil, nilai besar (angka proporsional, bukan tabular). */
-export function Tile({ label, nilai, sub, ikon: Ikon }: {
+import { InfoMetrik } from "@/components/ui/info-metrik";
+
+/** Tile angka ringkas: label nyaman dibaca, nilai tegas, dilengkapi hover keterangan metrik jika relevan. */
+export function Tile({
+  label,
+  nilai,
+  sub,
+  ikon: Ikon,
+  infoKey,
+}: {
   label: string;
   nilai: string;
   sub?: React.ReactNode;
   ikon?: React.ComponentType<{ className?: string }>;
+  infoKey?: "pagu" | "realisasi" | "penerima" | "sppg" | "risiko" | "slhs" | "tanggap" | "selesai" | "terlambat" | "kepuasan" | "sinyal" | "prioritas" | "status_operasional" | "kredibilitas" | "porsi" | "kasus_per_100rb";
 }) {
+  const kunci =
+    infoKey ??
+    (label.toLowerCase().includes("pagu")
+      ? "pagu"
+      : label.toLowerCase().includes("realisasi")
+        ? "realisasi"
+        : label.toLowerCase().includes("penerima")
+          ? "penerima"
+          : label.toLowerCase().includes("sppg") || label.toLowerCase().includes("dapur")
+            ? "sppg"
+            : undefined);
+
   return (
-    <div className="rounded-2xl border bg-card p-4">
-      <dt className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        {Ikon && <Ikon className="size-4" />} {label}
+    <div className="rounded-2xl border bg-card p-4 transition-shadow hover:shadow-xs">
+      <dt className="flex items-center justify-between text-sm text-muted-foreground font-medium">
+        <span className="flex items-center gap-1.5">
+          {Ikon && <Ikon className="size-4 shrink-0" />} {label}
+        </span>
+        {kunci && (
+          <InfoMetrik jenis={kunci} side="top">
+            <span className="text-[11px] font-semibold text-primary/80 group-hover:underline">info</span>
+          </InfoMetrik>
+        )}
       </dt>
-      <dd className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">{nilai}</dd>
-      {sub && <dd className="mt-0.5 text-xs text-muted-foreground">{sub}</dd>}
+      <dd className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">{nilai}</dd>
+      {sub && <dd className="mt-1 text-xs text-muted-foreground">{sub}</dd>}
     </div>
   );
 }

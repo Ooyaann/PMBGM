@@ -9,7 +9,7 @@ const WARNA_RISIKO = {
   tinggi: "bg-risiko-tinggi-lembut text-risiko-tinggi ring-risiko-tinggi/25",
 } as const;
 
-/** Skor Indeks Risiko dengan warna, teks kategori, dan tombol info ramah awam yang bebas bentrok saat diklik. */
+/** Skor Indeks Risiko dengan warna, teks kategori, dan tooltip info saat kursor diarahkan (hover). */
 export function BadgeRisiko({
   skor,
   besar = false,
@@ -23,28 +23,28 @@ export function BadgeRisiko({
 }) {
   const kategori = kategoriRisiko(skor);
   return (
-    <span
-      className={cn(
-        "angka inline-flex items-center gap-1.5 rounded-full font-semibold ring-1 ring-inset",
-        besar ? "h-8 px-3 text-sm" : "h-6 px-2 text-xs",
-        WARNA_RISIKO[kategori],
-        className,
-      )}
-    >
-      <span className={cn("rounded-full bg-current", besar ? "size-2" : "size-1.5")} aria-hidden />
-      <span>{skor == null ? "–" : skor.toLocaleString("id-ID", { maximumFractionDigits: 0 })}</span>
-      <span className="font-medium opacity-90">· {RISIKO[kategori].label}</span>
-      {tampilkanBantuan && (
-        <InfoMetrik jenis="risiko" className="ml-0.5 inline-flex">
+    <InfoMetrik jenis="risiko" className="inline-flex">
+      <span
+        className={cn(
+          "angka inline-flex items-center gap-1.5 rounded-full font-semibold ring-1 ring-inset cursor-help transition-all hover:scale-105",
+          besar ? "h-8 px-3 text-sm" : "h-6 px-2.5 text-xs",
+          WARNA_RISIKO[kategori],
+          className,
+        )}
+      >
+        <span className={cn("rounded-full bg-current", besar ? "size-2" : "size-1.5")} aria-hidden />
+        <span>{skor == null ? "–" : skor.toLocaleString("id-ID", { maximumFractionDigits: 0 })}</span>
+        <span className="font-medium opacity-90">· {RISIKO[kategori].label}</span>
+        {tampilkanBantuan && (
           <span
-            className="flex size-3.5 items-center justify-center rounded-full bg-current/20 text-current hover:bg-current/35 transition"
-            title="Klik untuk melihat penjelasan Indeks Risiko"
+            className="flex size-3.5 items-center justify-center rounded-full bg-current/20 text-current ml-0.5"
+            aria-hidden
           >
-            <HelpCircle className="size-2.5" aria-hidden />
+            <HelpCircle className="size-2.5" />
           </span>
-        </InfoMetrik>
-      )}
-    </span>
+        )}
+      </span>
+    </InfoMetrik>
   );
 }
 
@@ -72,18 +72,22 @@ export function BadgeStatus({ status, className }: { status: StatusAlur; classNa
 export function BadgeSla({ terlambat, tidakDitanggapi }: { terlambat: boolean; tidakDitanggapi?: boolean }) {
   if (tidakDitanggapi) {
     return (
-      <span className="inline-flex h-6 items-center gap-1 rounded-full bg-risiko-tinggi-lembut px-2 text-xs font-semibold text-risiko-tinggi">
-        <AlertTriangle className="size-3.5" aria-hidden />
-        Tidak ditanggapi
-      </span>
+      <InfoMetrik jenis="terlambat" className="inline-flex">
+        <span className="inline-flex h-6 items-center gap-1 rounded-full bg-risiko-tinggi-lembut px-2.5 text-xs font-semibold text-risiko-tinggi cursor-help">
+          <AlertTriangle className="size-3.5" aria-hidden />
+          Tidak ditanggapi
+        </span>
+      </InfoMetrik>
     );
   }
   if (terlambat) {
     return (
-      <span className="inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2 text-xs font-semibold text-risiko-sedang">
-        <Clock className="size-3.5" aria-hidden />
-        Melewati batas waktu
-      </span>
+      <InfoMetrik jenis="terlambat" className="inline-flex">
+        <span className="inline-flex h-6 items-center gap-1 rounded-full bg-risiko-sedang-lembut px-2.5 text-xs font-semibold text-risiko-sedang cursor-help">
+          <Clock className="size-3.5" aria-hidden />
+          Melewati batas waktu
+        </span>
+      </InfoMetrik>
     );
   }
   return null;
@@ -97,8 +101,10 @@ export function BadgePrioritas({ prioritas }: { prioritas: TingkatPrioritas }) {
     rendah: "bg-muted text-muted-foreground",
   }[prioritas];
   return (
-    <span className={cn("inline-flex h-6 items-center rounded-full px-2 text-xs font-semibold", kelas)}>
-      {PRIORITAS[prioritas]}
-    </span>
+    <InfoMetrik jenis="prioritas" className="inline-flex">
+      <span className={cn("inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold cursor-help", kelas)}>
+        {PRIORITAS[prioritas]}
+      </span>
+    </InfoMetrik>
   );
 }

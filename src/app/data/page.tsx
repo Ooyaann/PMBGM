@@ -5,6 +5,7 @@ import { Meter, Tile } from "@/components/data-terbuka/remah";
 import { GrafikGaris, GrafikTargetRealisasi } from "@/components/grafik/grafik";
 import { KartuGrafik, Legenda } from "@/components/grafik/kartu-grafik";
 import { LabelSumber } from "@/components/data/label-sumber";
+import { InfoMetrik } from "@/components/ui/info-metrik";
 import { ambilDashboardProvinsi, labelBulan } from "@/lib/data/data-terbuka";
 import { angka, persen, rupiahRingkas } from "@/lib/format";
 
@@ -90,7 +91,13 @@ export default async function HalamanData() {
                 <th scope="col" className="py-2 pr-3 text-left font-medium">Terserap</th>
                 <th scope="col" className="py-2 pr-3 text-right font-medium">Penerima</th>
                 <th scope="col" className="py-2 pr-3 text-right font-medium">SPPG</th>
-                <th scope="col" className="py-2 text-right font-medium" title="Kasus keracunan 3 bulan per 100 ribu penerima">Kasus/100rb</th>
+                <th scope="col" className="py-2 text-right font-medium">
+                  <span className="inline-flex items-center justify-end">
+                    <InfoMetrik jenis="kasus_per_100rb" side="top">
+                      <span>Kasus/100rb</span>
+                    </InfoMetrik>
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody className="angka divide-y">
