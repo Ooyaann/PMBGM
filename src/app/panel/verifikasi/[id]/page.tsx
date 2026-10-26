@@ -141,7 +141,7 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
                 {ai.alasan && <span className="w-full text-muted-foreground">{ai.alasan}</span>}
                 {ai.metode === "ai" && (
                   <span className="w-full text-[11px] text-muted-foreground" title="Analisis klasifikasi teks laporan menggunakan kecerdasan buatan terpadu PantauGizi">
-                    AI PantauGizi{ai.yakin != null ? ` · Tingkat keyakinan ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diverifikasi ganda" : ""}
+                    AI PMBGM{ai.yakin != null ? ` · Tingkat keyakinan ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diverifikasi ganda" : ""}
                   </span>
                 )}
               </p>
