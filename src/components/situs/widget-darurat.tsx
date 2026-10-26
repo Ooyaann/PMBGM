@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   HeartPulse,
   Phone,
@@ -19,6 +20,9 @@ const PERTOLONGAN_CEPAT = [
 
 export function WidgetDarurat() {
   const [buka, setBuka] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/panel")) return null;
 
   return (
     <aside

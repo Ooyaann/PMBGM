@@ -11,15 +11,27 @@ export const metadata: Metadata = {
 
 function SidebarSkeleton() {
   return (
-    <aside className="w-full lg:w-72 lg:min-h-screen border-b lg:border-b-0 lg:border-r bg-card p-5 animate-pulse">
-      <div className="h-10 w-44 bg-muted rounded mb-6" />
-      <div className="h-16 w-full bg-muted rounded-xl mb-6" />
-      <div className="space-y-2">
-        <div className="h-9 w-full bg-muted rounded-lg" />
-        <div className="h-9 w-full bg-muted rounded-lg" />
-        <div className="h-9 w-full bg-muted rounded-lg" />
+    <>
+      {/* Mobile topbar skeleton */}
+      <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-card px-4 lg:hidden">
+        <div className="h-6 w-32 rounded-lg bg-muted animate-pulse" />
+        <div className="size-9 rounded-lg bg-muted animate-pulse" />
       </div>
-    </aside>
+      {/* Desktop sidebar skeleton */}
+      <aside className="hidden lg:flex lg:w-64 xl:w-72 lg:h-screen lg:sticky lg:top-0 border-r bg-card p-5 shrink-0 animate-pulse flex-col justify-between">
+        <div className="space-y-6">
+          <div className="h-10 w-44 rounded-lg bg-muted" />
+          <div className="h-14 w-full rounded-xl bg-muted" />
+          <div className="space-y-2 pt-2">
+            <div className="h-9 w-full rounded-lg bg-muted/60" />
+            <div className="h-9 w-full rounded-lg bg-muted/60" />
+            <div className="h-9 w-full rounded-lg bg-muted/60" />
+            <div className="h-9 w-full rounded-lg bg-muted/60" />
+          </div>
+        </div>
+        <div className="h-12 w-full rounded-xl bg-muted" />
+      </aside>
+    </>
   );
 }
 
@@ -62,7 +74,7 @@ export default function LayoutPanel({ children }: LayoutProps<"/panel">) {
       <Suspense fallback={<SidebarSkeleton />}>
         <SidebarSlot />
       </Suspense>
-      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
+      <main id="konten" className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
         <div className="mx-auto max-w-6xl space-y-6">
           {children}
         </div>

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/situs/footer";
 import { SidebarGlobalSlot } from "@/components/situs/sidebar-global-slot";
@@ -56,10 +57,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <main id="konten" className="flex-1 min-w-0">
                 {children}
               </main>
-              <Footer />
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
             </div>
           </div>
-          <WidgetDarurat />
+          <Suspense fallback={null}>
+            <WidgetDarurat />
+          </Suspense>
           <Toaster position="top-center" richColors />
         </TooltipProvider>
       </body>

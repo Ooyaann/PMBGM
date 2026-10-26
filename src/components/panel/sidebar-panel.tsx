@@ -153,8 +153,6 @@ export function SidebarPanel({
 }) {
   const [mobileBuka, setMobileBuka] = useState(false);
   const [desktopSembunyi, setDesktopSembunyi] = useState(false);
-  const [topbarTampil, setTopbarTampil] = useState(true);
-  const prevScrollY = useRef(0);
   const pathname = usePathname();
   const menu = ambilMenuPeran(pengguna.peran, instansi);
   const tema = ambilTemaPeran(pengguna.peran, instansi);
@@ -192,33 +190,10 @@ export function SidebarPanel({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // Smart hide mobile topbar on scroll
-  useEffect(() => {
-    const onScroll = () => {
-      const currentScrollY = window.scrollY;
-      const prev = prevScrollY.current;
-      if (currentScrollY < 60) {
-        setTopbarTampil(true);
-      } else if (currentScrollY > prev && currentScrollY - prev > 8) {
-        setTopbarTampil(false);
-      } else if (currentScrollY < prev && prev - currentScrollY > 8) {
-        setTopbarTampil(true);
-      }
-      prevScrollY.current = currentScrollY;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <>
-      {/* Mobile Top Bar dengan auto hide on scroll */}
-      <div
-        className={cn(
-          "sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-card px-4 transition-transform duration-300 ease-in-out lg:hidden",
-          topbarTampil ? "translate-y-0" : "-translate-y-full"
-        )}
-      >
+      {/* Mobile Top Bar (selalu standby dan mudah diakses di panel) */}
+      <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b bg-card px-4 lg:hidden">
         <div className="flex items-center gap-2.5">
           <TandaLogo className="size-7" />
           <span className="font-black text-sm tracking-tight">
@@ -228,7 +203,7 @@ export function SidebarPanel({
         <button
           type="button"
           onClick={() => setMobileBuka(!mobileBuka)}
-          className="inline-flex size-9 items-center justify-center rounded-lg border bg-background text-foreground"
+          className="inline-flex size-9 items-center justify-center rounded-lg border bg-background text-foreground hover:bg-muted transition-colors cursor-pointer"
           aria-label={mobileBuka ? "Tutup menu" : "Buka menu"}
         >
           {mobileBuka ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -238,7 +213,7 @@ export function SidebarPanel({
       {/* Backdrop Mobile */}
       {mobileBuka && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden"
           onClick={() => setMobileBuka(false)}
           aria-hidden
         />
@@ -247,106 +222,119 @@ export function SidebarPanel({
       {/* Sidebar Kontainer */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r bg-card shadow-lg transition-all duration-300 ease-in-out lg:static lg:z-auto lg:shrink-0 lg:shadow-none",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r bg-card shadow-lg transition-all duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:z-auto lg:shrink-0 lg:shadow-none",
           mobileBuka ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           desktopSembunyi
-            ? "lg:w-0 lg:p-0 lg:border-none lg:overflow-hidden lg:opacity-0 pointer-events-none"
-            : "lg:w-64 lg:opacity-100"
+            ? "lg:w-0 lg:p-0 lg:border-none lg:overflow-hidden lg:opacity-0 lg:pointer-events-none"
+            : "lg:w-64 xl:w-72 lg:opacity-100"
         )}
       >
-        {/* Header Sidebar: Logo & Identitas Peran */}
-        <div className="border-b p-5">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="group flex items-center gap-2.5">
-              <TandaLogo className="size-8" />
-              <div className="flex flex-col leading-none">
-                <span className="text-lg font-black tracking-tight">
-                  <span className="text-teal-600">P</span>
-                  <span className="text-foreground">MBG</span>
-                  <span className="text-emerald-600">M</span>
-                </span>
-                <span className="mt-0.5 text-[9px] font-bold tracking-wider text-muted-foreground uppercase">
-                  Panel Kerja
-                </span>
-              </div>
-            </Link>
-            <Bertip
-              label="Sembunyikan menu (Ctrl+B)"
-              sisi="right"
-              render={
+        <div className={cn("flex h-full flex-col justify-between w-72 lg:w-64 xl:w-72 transition-opacity duration-200", desktopSembunyi && "lg:opacity-0")}>
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Header Sidebar: Logo & Identitas Peran */}
+            <div className="border-b p-5 shrink-0">
+              <div className="flex items-center justify-between">
+                <Link href="/" className="group flex items-center gap-2.5">
+                  <TandaLogo className="size-8" />
+                  <div className="flex flex-col leading-none">
+                    <span className="text-lg font-black tracking-tight">
+                      <span className="text-teal-600">P</span>
+                      <span className="text-foreground">MBG</span>
+                      <span className="text-emerald-600">M</span>
+                    </span>
+                    <span className="mt-0.5 text-[9px] font-bold tracking-wider text-muted-foreground uppercase">
+                      Panel Kerja
+                    </span>
+                  </div>
+                </Link>
+                {/* Tombol Tutup di Mobile & Tombol Sembunyikan di Desktop */}
                 <button
                   type="button"
-                  onClick={toggleSidebar}
-                  className="hidden lg:inline-flex size-8 items-center justify-center rounded-xl border border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
-                  aria-label="Sembunyikan menu"
-                />
-              }
-            >
-              <PanelLeftClose className="size-4" />
-            </Bertip>
-          </div>
+                  onClick={() => setMobileBuka(false)}
+                  className="inline-flex size-8 items-center justify-center rounded-xl border border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors lg:hidden cursor-pointer"
+                  aria-label="Tutup menu"
+                >
+                  <X className="size-4" />
+                </button>
+                <Bertip
+                  label="Sembunyikan menu (Ctrl+B)"
+                  sisi="right"
+                  render={
+                    <button
+                      type="button"
+                      onClick={toggleSidebar}
+                      className="hidden lg:inline-flex size-8 items-center justify-center rounded-xl border border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                      aria-label="Sembunyikan menu"
+                    />
+                  }
+                >
+                  <PanelLeftClose className="size-4" />
+                </Bertip>
+              </div>
 
-          {/* Badge Peran Kerja */}
-          <div className={cn("mt-4 flex items-start gap-2.5 rounded-xl border p-2.5", tema.badgeKls)}>
-            <IkonTema className="mt-0.5 size-4 shrink-0" aria-hidden />
-            <div className="min-w-0 flex-1 leading-tight">
-              <span className="block text-xs font-bold">{tema.judulPeran}</span>
-              <span className="block truncate text-[11px] opacity-85">{tema.subLabel}</span>
+              {/* Badge Peran Kerja */}
+              <div className={cn("mt-4 flex items-start gap-2.5 rounded-xl border p-2.5", tema.badgeKls)}>
+                <IkonTema className="mt-0.5 size-4 shrink-0" aria-hidden />
+                <div className="min-w-0 flex-1 leading-tight">
+                  <span className="block text-xs font-bold">{tema.judulPeran}</span>
+                  <span className="block truncate text-[11px] opacity-85">{tema.subLabel}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Daftar Navigasi Menu */}
-        <nav className="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu panel kerja">
-          {menu.map((m) => {
-            const aktif = pathname === m.href || (m.href !== "/panel" && pathname.startsWith(m.href));
-            const IkonItem = m.ikon;
-            return (
-              <Link
-                key={m.href}
-                href={m.href}
-                onClick={() => setMobileBuka(false)}
-                className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
-                  aktif
-                    ? "bg-primary text-primary-foreground shadow-xs"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
+            {/* Daftar Navigasi Menu */}
+            <nav className="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Menu panel kerja">
+              {menu.map((m) => {
+                const aktif = pathname === m.href || (m.href !== "/panel" && Boolean(pathname?.startsWith(m.href)));
+                const IkonItem = m.ikon;
+                return (
+                  <Link
+                    key={m.href}
+                    href={m.href}
+                    onClick={() => setMobileBuka(false)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
+                      aktif
+                        ? "bg-primary text-primary-foreground shadow-xs"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    )}
+                  >
+                    <IkonItem className="size-4 shrink-0" aria-hidden />
+                    <span className="truncate">{m.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Footer Sidebar: User info, public site & logout */}
+          <div className="border-t p-3 space-y-1 bg-muted/20 shrink-0">
+            <div className="flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground">
+              <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 font-bold text-primary text-[11px]">
+                {pengguna.nama.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1 leading-tight">
+                <span className="block truncate font-semibold text-foreground">{pengguna.nama}</span>
+                <span className="block truncate text-[10px] text-muted-foreground">{pengguna.email ?? "Akun Staf"}</span>
+              </div>
+            </div>
+
+            <Link
+              href="/"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            >
+              <Globe className="size-3.5" aria-hidden /> Lihat Web Publik
+            </Link>
+
+            <form action={keluar}>
+              <button
+                type="submit"
+                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-400 cursor-pointer"
               >
-                <IkonItem className="size-4 shrink-0" aria-hidden />
-                <span className="truncate">{m.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Footer Sidebar: User info, public site & logout */}
-        <div className="border-t p-3 space-y-1 bg-muted/20">
-          <div className="flex items-center gap-2.5 px-3 py-2 text-xs text-muted-foreground">
-            <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 font-bold text-primary text-[11px]">
-              {pengguna.nama.charAt(0).toUpperCase()}
-            </div>
-            <div className="min-w-0 flex-1 leading-tight">
-              <span className="block truncate font-semibold text-foreground">{pengguna.nama}</span>
-              <span className="block truncate text-[10px] text-muted-foreground">{pengguna.email ?? "Akun Staf"}</span>
-            </div>
+                <LogOut className="size-3.5" aria-hidden /> Keluar
+              </button>
+            </form>
           </div>
-
-          <Link
-            href="/"
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-          >
-            <Globe className="size-3.5" aria-hidden /> Lihat Web Publik
-          </Link>
-
-          <form action={keluar}>
-            <button
-              type="submit"
-              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-400"
-            >
-              <LogOut className="size-3.5" aria-hidden /> Keluar
-            </button>
-          </form>
         </div>
       </aside>
 

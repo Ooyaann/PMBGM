@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FlaskConical, PhoneCall, ShieldAlert } from "lucide-react";
 import { Logo } from "./logo";
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/panel")) return null;
+
   return (
     <footer className="mt-auto border-t bg-card/60 backdrop-blur-xs text-foreground">
       <div className="kontainer py-12">

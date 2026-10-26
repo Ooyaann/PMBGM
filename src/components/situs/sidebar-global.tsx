@@ -42,7 +42,8 @@ export interface InfoAkunGlobal {
   punyaPanel: boolean;
 }
 
-function aktif(pathname: string, href: string) {
+function aktif(pathname: string | null, href: string) {
+  if (!pathname) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -110,7 +111,7 @@ export function SidebarGlobal({ akun }: { akun: InfoAkunGlobal | null }) {
   }, []);
 
   // Di area kerja panel internal staf, SidebarPanel internal yang tampil
-  if (pathname.startsWith("/panel")) {
+  if (pathname?.startsWith("/panel")) {
     return null;
   }
 
