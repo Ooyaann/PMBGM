@@ -1,204 +1,161 @@
 <div align="center">
 
-# 🥗 PMBGM
-### **Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
-*Inovasi Pengawasan Partisipatif & Akuntabilitas Publik Program MBG Kota Semarang*
+# PMBGM
+### Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_17-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
-[![Status](https://img.shields.io/badge/Status-Production_Ready-emerald?style=for-the-badge)](https://github.com/Ooyaann/Pantau-Gizi)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.3-087EA4?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_17-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
+[![Python ML](https://img.shields.io/badge/ML_Pipeline-NumPy_%26_Colab-F9AB00?style=flat-square&logo=googlecolab)](./ml-training/Training_Model_ML_PMBGM.ipynb)
 
----
-
-*Dikembangkan oleh Tim **Ctrl Win Enter** untuk kompetisi **Web In Action (WIA) MIA 2026**.*
+*Dikembangkan oleh Tim **Ctrl Win Enter** — Kompetisi Web In Action (WIA) MIA 2026*
 
 </div>
 
-<br />
+---
 
-## 📌 1. Judul Project & Deskripsi Singkat
+## 1. Judul Project & Deskripsi Singkat
 
-**Judul Project**:
-> ### **PMBGM: Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
+**Judul Project**  
+**PMBGM: Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
 
-**Deskripsi Singkat (1–2 Kalimat)**:
-> **PMBGM** adalah platform pengawasan publik partisipatif berbasis web yang memberdayakan orang tua murid, guru, dan warga untuk mengawal kualitas Program Makan Bergizi Gratis (MBG) secara transparan, akuntabel, dan *real-time*. Melalui pelaporan masalah terlindungi, pelacakan SLA terbuka, dan pemantauan Indeks Risiko Dapur Satuan Pelayanan (SPPG), PMBGM mencegah risiko keracunan pangan dan memastikan hak nutrisi terbaik bagi generasi penerus bangsa.
+**Deskripsi Singkat (2 Kalimat)**  
+**PMBGM** adalah platform pengawasan publik partisipatif berbasis web yang memfasilitasi orang tua murid, guru, dan warga dalam melaporkan kendala layanan, melacak kepatuhan batas waktu tindak lanjut (SLA), serta memantau kualitas dapur Satuan Pelayanan Pemenuhan Gizi (SPPG) pada Program Makan Bergizi Gratis secara transparan dan *real-time*. Sistem ini mengintegrasikan metode pendukung keputusan *Simple Additive Weighting* (SAW) dan model *Machine Learning* privat (*Naive Bayes* & *Multi-Layer Perceptron*) untuk mendeteksi keaslian bukti laporan, memetakan prioritas inspeksi Dinas Kesehatan, serta mencegah Kejadian Luar Biasa (KLB) keracunan pangan.
 
 ---
 
-## 🛠️ 2. Tech Stack yang Digunakan
+## 2. Tech Stack yang Digunakan
 
-Aplikasi ini dibangun menggunakan arsitektur modern yang mengedepankan performa tinggi, keandalan data, serta aksesibilitas ramah warga:
-
-| Komponen / Lapisan | Teknologi | Penjelasan & Peran dalam Sistem |
+| Lapisan Sistem | Teknologi Utama | Peran dalam Aplikasi |
 | :--- | :--- | :--- |
-| **Frontend Framework** | **Next.js 16 (Turbopack)** | Framework React dengan *App Router*, *Partial Prerendering*, dan kompilasi *React Compiler*. |
-| **Core UI & Language** | **React 19 & TypeScript 5** | Manajemen antarmuka berbasis komponen modern dengan ketelitian tipe statis menyeluruh. |
-| **Styling & Design System** | **Tailwind CSS v4 & CSS Tokens** | Desain ceria, kontras tinggi, tata letak responsif, serta palet warna ramah warga (WCAG AA). |
-| **Komponen Interaktif** | **Base UI & Radix UI** | Primitif UI nir-gaya (*headless*) untuk modal, dialog, dropdown, dan tooltip aksesibel. |
-| **Iconography** | **Lucide React** | Ikon visual yang konsisten dan informatif untuk kemudahan pemahaman warga. |
-| **Database & Engine** | **Supabase (PostgreSQL 17)** | Skema relasional kuat, *Row Level Security* (RLS), *Materialized Views*, dan *Triggers*. |
-| **Realtime Engine** | **Supabase Realtime** | Pembaruan linimasa aduan dan papan akuntabilitas secara instan (latensi <0.2 detik). |
-| **Scheduled Automation** | **pg_cron** | Eksekusi otomatis per 15 menit untuk eskalasi batas waktu penanganan (SLA) instansi. |
-| **Object Storage** | **Supabase Storage** | Penyimpanan aman bukti foto laporan warga (akses privat untuk pelapor & publik tersaring). |
-| **Ekspor Dokumen** | **@react-pdf/renderer** | Mesin pembuatan berkas PDF resmi untuk Berita Acara Perbaikan dan Laporan Insight. |
-| **Form & Validasi** | **React Hook Form & Zod** | Validasi masukan data lapor di sisi klien dan server yang ketat dan aman. |
-| **Hosting & Deployment** | **Vercel & Supabase Cloud** | Infrastruktur *Edge Network* berkecepatan tinggi dengan ketersediaan global 99.9%. |
+| **Frontend Framework** | **Next.js 16.4 (App Router & Turbopack)** | *Server Components*, *Server Actions*, *Cache Components* (`"use cache"`), dan *React Compiler*. |
+| **Bahasa & Core UI** | **React 19.3, TypeScript 5, HTML5, CSS3** | Komponen antarmuka reaktif dengan pemeriksaan tipe statis menyeluruh (`strict mode`). |
+| **Styling & UI Primitives** | **Tailwind CSS v4, Base UI, Lucide React** | Sistem desain berbasis token semantik OKLCH, kontras aksesibel (WCAG AA), dan komponen responsif. |
+| **Database & Keamanan** | **Supabase (PostgreSQL 17)** | Penyimpanan relasional dengan *Row Level Security* (RLS), *Materialized View*, fungsi RPC, dan *Trigger*. |
+| **Realtime & Otomasi** | **Supabase Realtime & `pg_cron`** | Pembaruan langsung antrean/linimasa kasus serta eskalasi otomatis keterlambatan SLA setiap 15 menit. |
+| **Penyimpanan Berkas** | **Supabase Storage (`exifr`, kompresi klien)** | Bucket privat bukti warga (URL bertanda tangan) dan pembersihan metadata lokasi sebelum publikasi. |
+| **Machine Learning & DSS** | **Python (Colab/NumPy) → TypeScript Native** | Pelatihan model *Multinomial Naive Bayes* & *Feedforward MLP ANN* (`7 → 12 → 3`) di Google Colab serta perhitungan DSS SAW. |
+| **Peta & Visualisasi Data** | **D3-Geo (`d3-geo`) & Recharts 3** | Peta koroplet interaktif 35 kab/kota Jawa Tengah & 16 kecamatan Kota Semarang serta grafik analitik. |
+| **Validasi & Dokumen** | **Zod 4 & `@react-pdf/renderer`** | Validasi skema input klien-server dan pembuatan dokumen laporan resmi berformat PDF. |
 
 ---
 
-## 🚀 3. Cara Menjalankan Project (`clone => install => run`)
+## 3. Cara Menjalankan Project (`clone => install => run`)
 
-Berikut adalah panduan lengkap menjalankan proyek PMBGM di lingkungan pengembang lokal:
+### Prasyarat
+- **Node.js** versi 20.x atau lebih baru
+- **NPM** versi 10.x atau lebih baru
 
-### Prasyarat Sistem
-- **Node.js**: Versi 20.x atau lebih baru (`node -v`)
-- **NPM**: Versi 10.x atau lebih baru (`npm -v`)
-- **Docker Desktop** *(hanya jika ingin menjalankan Supabase secara lokal)*
-
----
-
-### Langkah 1: Clone Repository
-Buka terminal dan unduh repositori dari GitHub:
+### Langkah 1 — Clone Repository
 ```bash
-git clone https://github.com/Ooyaann/Pantau-Gizi.git
-cd Pantau-Gizi
+git clone https://github.com/Ooyaann/PMBGM.git
+cd PMBGM
 ```
 
-### Langkah 2: Install Dependensi
-Pasang seluruh paket pustaka yang dibutuhkan proyek:
+### Langkah 2 — Install Dependensi
 ```bash
 npm install
 ```
 
-### Langkah 3: Konfigurasi Environment Variable
-Salin berkas contoh konfigurasi ke berkas `.env.local`:
+### Langkah 3 — Konfigurasi Environment (`.env.local`)
+Salin berkas `.env.example` menjadi `.env.local` lalu isi kredensial Supabase:
 ```bash
 cp .env.example .env.local
 ```
-> Pastikan nilai `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY` terisi (dapat menggunakan instance Supabase Cloud Anda atau Supabase lokal).
+Variabel utama di dalam `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<supabase-anon-publishable-key>
+SUPABASE_SECRET_KEY=<supabase-service-role-secret-key>
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres
+DEMO_PASSWORD=DemoPMBGM-2026!
+NEXT_PUBLIC_MODE_DEMO=true
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-### Langkah 4: Inisialisasi Database & Data Simulasi
-Jalankan kontainer database lokal dan isi data sampel deterministik Kota Semarang:
+### Langkah 4 — Inisialisasi Data Simulasi (Opsional bila DB belum terisi)
 ```bash
-# Menyalakan Supabase lokal beserta migrasi skema
-npm run db:start
-
-# Mengisi data simulasi (25 SPPG, 165 sekolah, ~1.000 laporan)
 npm run seed
 ```
-*(Jika menggunakan Supabase Cloud yang sudah terisi, Anda dapat melewati langkah `db:start`)*.
 
-### Langkah 5: Jalankan Server Pengembang (`Run`)
-Nyalakan server pengembang Next.js:
+### Langkah 5 — Jalankan Aplikasi (`Run`)
 ```bash
 npm run dev
 ```
-Buka peramban Anda di alamat: **[http://localhost:3000](http://localhost:3000)** 🌐
+Akses aplikasi di peramban melalui alamat **[http://localhost:3000](http://localhost:3000)**.
 
----
-
-### Perintah Penting Lainnya
-| Perintah | Deskripsi |
+| Perintah Tambahan | Fungsi |
 | :--- | :--- |
-| `npm run build` | Membuat bundel produksi teroptimasi (*Production Build*) |
-| `npm run start` | Menjalankan server aplikasi dari hasil build produksi |
-| `npm run lint` | Menjalankan audit linter ESLint |
-| `npx tsc --noEmit` | Memeriksa integritas tipe TypeScript (*Static Typecheck*) |
-| `npm run db:reset` | Mereset database lokal dan mengaplikasikan ulang seed data |
-| `npm run db:stop` | Menghentikan kontainer Supabase lokal |
+| `npm run build` | Membangun bundel produksi Next.js |
+| `npm run start` | Menjalankan server produksi hasil build |
+| `npm run typecheck` | Memeriksa tipe statis TypeScript (`tsc --noEmit`) |
+| `npm run lint` | Menjalankan pemeriksaan kode dengan ESLint |
+| `npm run seed` | Menyegarkan data simulasi, akun demo, dan indeks risiko di database |
 
 ---
 
-## 📈 4. Progress Saat Ini (Daftar Fitur yang Selesai)
+## 4. Progress Saat Ini
 
-Aplikasi **PMBGM** telah selesai diimplementasikan secara komprehensif dengan cakupan modul sebagai berikut:
+Seluruh modul utama, basis data, model *Machine Learning*, dan antarmuka pengguna telah selesai **100% (Siap Pakai / Production Ready)**:
 
-- [x] **🏠 Beranda Interaktif & Partisipatif (`/`)**
-  - Statistik real-time nasional & Kota Semarang (Porsi makan, anggaran, dapur aktif, kepuasan).
-  - Tautan aksi cepat ramah warga: *Lapor Masalah*, *Lacak Status*, *Cari Sekolah*, dan *Data Terbuka*.
-  - Pemantauan SPPG Prioritas Inspeksi dan sinyal peringatan dini lonjakan aduan.
-- [x] **📝 Modul Lapor Masalah Terlindungi (`/lapor`)**
-  - Form bertahap (*multi-step wizard*) yang mudah dan inklusif.
-  - Mode Anonim/Kerahasiaan Identitas untuk melindungi pelapor dari intimidasi.
-  - Deteksi instan laporan serupa (dalam radius & rentang 24 jam) untuk mencegah tiket duplikat.
-  - Unggah bukti foto langsung melalui kamera gawai atau berkas galeri.
-  - Geolokasi otomatis untuk mendeteksi sekolah dan dapur SPPG pemasok secara akurat.
-- [x] **🔍 Modul Lacak & Papan Akuntabilitas SLA (`/lacak`, `/lacak/[kode]`)**
-  - Cek progres penanganan tiket menggunakan kode tiket unik (contoh: `MBG-2026-X8Y9`).
-  - Linimasa audit terbuka (*transparent audit trail*) yang mencatat setiap aksi penanganan.
-  - Status kepatuhan batas waktu (SLA) instansi dengan penanda tegas *"Melewati Batas Waktu"* dan *"Tidak Ditanggapi"*.
-  - Formulir penilaian kepuasan orang tua siswa pasca perbaikan (bintang 1–5 dan sanggahan).
-- [x] **🏫 Direktori Pencarian Sekolah & SPPG (`/cari-sekolah`)**
-  - Pencarian cepat sekolah berdasarkan nama, jenjang (TK, SD, SMP, SMA), atau kecamatan.
-  - Kartu informasi sekolah lengkap dengan SPPG penyedia, status SLHS, dan jumlah kasus berjalan.
-- [x] **📊 Modul Data Terbuka Program MBG (`/data`)**
-  - Direktori Lengkap SPPG Kota Semarang dengan skor Indeks Risiko dan status operasional (`/data/sppg`).
-  - Halaman profil mendalam setiap SPPG (`/data/sppg/[id]`) disertai grafik riwayat tren 12 minggu.
-  - Rekapitulasi per wilayah kecamatan dan kabupaten/kota se-Jawa Tengah (`/data/wilayah`).
-  - Pusat unduh data publik format CSV dan JSON terstandarisasi Satu Data Indonesia (`/data/unduh`).
-- [x] **🧭 Modul Insight & Analitik Risiko (`/insight`)**
-  - **Peta Risiko Interaktif**: Visualisasi peta sebaran SPPG dengan filter kategori risiko tinggi, sedang, dan rendah.
-  - **Daftar Prioritas Inspeksi**: Rekomendasi audit lapangan berbasis skor risiko gabungan 5 parameter.
-  - **Sinyal Lonjakan Kasus**: Algoritma deteksi anomali kenaikan aduan >3× rata-rata harian (pencegahan KLB).
-  - **Komparasi SPPG (`/insight/banding`)**: Fitur perbandingan *side-by-side* kinerja antar dua dapur katering.
-- [x] **📑 Ekspor Dokumen Resmi PDF**
-  - Pembuatan lembar Laporan Analisis Kepatuhan & Risiko SPPG berstandar resmi instansi via `@react-pdf/renderer`.
-- [x] **💡 Pusat Panduan Interaktif & Kamus Warga (`/panduan`)**
-  - Dasbor panduan alur lapor, arti label metrik, dan hak partisipasi warga dengan ilustrasi antarmuka nyata.
-  - Tooltip edukatif pintar (`InfoMetrik`) di setiap istilah teknis (SLHS, SLA, Indeks Risiko) dengan penjelasan sederhana.
-- [x] **🚨 Widget Tanggap Darurat Keracunan**
-  - Tombol darurat mengambang di pojok layar dengan akses cepat hotline 112/119 dan SOP pertolongan pertama keracunan.
-- [x] **🔐 Panel Pengawasan Multi-Peran (`/panel`)**
-  - **Verifikator Independen**: Verifikasi keabsahan bukti foto dan kategorisasi prioritas kasus.
-  - **Dapur SPPG**: Unggah berita acara perbaikan fisik dan klarifikasi menu.
-  - **Dinas Kesehatan (Dinkes)**: Audit izin SLHS dan investigasi sampel makanan.
-  - **Korwil BGN & Admin**: Pengawasan kepatuhan lintas wilayah dan penutupan sementara operasional.
+- [x] **Beranda Pencarian Terpadu (`/`)**: Pencarian instan sekolah, dapur SPPG, dan nomor tiket aduan beserta pemantauan metrik program.
+- [x] **Modul Lapor Masalah 2 Langkah (`/lapor`)**: Pengisian laporan dengan ekstraksi otomatis waktu & GPS foto (`EXIF`), kompresi gambar di sisi klien, deteksi laporan serupa (*deduplikasi*), dan 3 opsi perlindungan identitas (*Rahasia*, *Publik*, *Anonim*).
+- [x] **Modul Lacak Tiket & Papan Akuntabilitas (`/lacak`, `/lacak/[kode]`, `/lacak/kasus/[id]`)**: Pelacakan progres 5 tahap penanganan tanpa wajib login, hitung mundur tenggat SLA, penanda otomatis *"Tidak Ditanggapi"*, serta pemberian rating kepuasan (1–5) dan buka ulang kasus.
+- [x] **Direktori Pencarian Sekolah (`/cari-sekolah`)**: Pencarian 165 sekolah berdasarkan nama, NPSN, kecamatan, atau dapur SPPG penyedia dengan tautan pelaporan langsung (`?sekolah=`).
+- [x] **Portal Data Terbuka & Unduh Dataset (`/data`, `/data/sppg`, `/data/wilayah`, `/data/unduh`)**: Profil lengkap 25 SPPG, riwayat indeks risiko 12 minggu, rekapitulasi anggaran & kasus 35 kab/kota Jawa Tengah, serta unduhan CSV/JSON dan REST API publik (`/api/v1/[dataset]`) berlisensi CC BY 4.0.
+- [x] **Insight, Peta Risiko & Komparasi (`/insight`, `/insight/banding`)**: Peta koroplet interaktif Jawa Tengah & Kota Semarang, tabel prioritas inspeksi SPPG, deteksi dini lonjakan kasus 24 jam, komparasi *side-by-side* antar-SPPG/wilayah, dan ekspor laporan PDF.
+- [x] **Panduan Interaktif & Simulator DSS SAW (`/panduan`, `/metodologi`, `/faq`)**: Kamus istilah teknis ramah warga dan simulator interaktif untuk menguji perhitungan rumus Indeks Risiko SAW secara langsung.
+- [x] **Panel Kerja Multi-Peran (`/panel`)**: Dasbor khusus **Verifikator** (antrean prioritas, skor kredibilitas, evaluasi ML Multimodal), **Instansi/Dapur SPPG/Dinkes/Korwil BGN** (tindak lanjut dan unggah bukti perbaikan), serta **Admin** (kelola peran pengguna dan batas waktu SLA per kategori).
 
 ---
 
-## 🔑 Akun Demo Pengujian (Untuk Dewan Juri)
+## 5. Metode Komputasi & Model AI / Machine Learning
 
-Untuk menguji seluruh alur kerja dan variasi hak akses sistem, telah disiapkan 7 akun persona siap pakai:
+PMBGM menggunakan pendekatan **White-Box Decision Support System** dan **Private Machine Learning (Non-LLM)** yang berjalan langsung di server aplikasi dan database tanpa ketergantungan API LLM berbayar:
 
-| Peran | Akun Email | Persona & Tugas Pengujian |
+1. **Simple Additive Weighting (SAW) — Indeks Risiko SPPG (0–100)**  
+   Menentukan urutan prioritas inspeksi dapur SPPG setiap jam berdasarkan 5 kriteria berbobot:
+   $$\text{Indeks Risiko} = 0{,}35 L + 0{,}25 K + 0{,}15 S + 0{,}15 T + 0{,}10 (100 - P)$$
+   - $L$ (**35%**): Tingkat laporan terverifikasi 30 hari terakhir per 1.000 porsi harian (dinormalisasi persentil ke-95).
+   - $K$ (**25%**): Tingkat kasus dugaan keracunan 30 hari terakhir per 1.000 porsi harian.
+   - $S$ (**15%**): Status kepatuhan Sertifikat Laik Higiene Sanitasi / SLHS (`berlaku = 0`, `proses = 50`, `kedaluwarsa/tidak ada = 100`).
+   - $T$ (**15%**): Persentase kasus melewati batas waktu SLA dalam 90 hari terakhir.
+   - $P$ (**10%**): Skor kepuasan pelapor yang dibalik ($100 - P$) dengan *Bayesian smoothing* ke rata-rata kota.
+   - **Ambang Kategori**: `0–39` Rendah · `40–69` Sedang · `70–100` Tinggi.
+
+2. **Feedforward Multi-Layer Perceptron (MLP / ANN `7 → 12 → 3`) — Verifikasi Keaslian Laporan**  
+   Model jaringan saraf tiruan yang dilatih di Google Colab ([`ml-training/Training_Model_ML_PMBGM.ipynb`](./ml-training/Training_Model_ML_PMBGM.ipynb)) pada 1.500 sampel dataset laporan MBG ([`ml-training/dataset_laporan_mbg.csv`](./ml-training/dataset_laporan_mbg.csv)) dengan akurasi uji **95,33%**:
+   - **Input Layer (7 Fitur Multimodal)**: Leksikon menu MBG ($x_1$), anomali gejala medis ($x_2$), koherensi & kerapatan teks anti-spam ($x_3$), kecocokan waktu foto EXIF $\le 48$ jam ($x_4$), kecocokan koordinat GPS foto $\le 2$ km dari sekolah ($x_5$), status verifikasi pelapor ($x_6$), dan kewajaran rasio siswa terdampak ($x_7$).
+   - **Hidden Layer**: 12 neuron dengan fungsi aktivasi *Rectified Linear Unit* (`ReLU`).
+   - **Output Layer**: 3 neuron dengan aktivasi `Softmax` (*Otentik & Valid*, *Meragukan*, *Indikasi Fiktif*).
+
+3. **Multinomial Naive Bayes & Pencocokan Leksikal — Klasifikasi Kategori & Urgensi Otomatis**  
+   Menghitung *log-likelihood* kata kunci gejala dan masalah pangan untuk menyarankan kategori laporan serta menandai tingkat urgensi (`darurat`, `tinggi`, `normal`) secara instan saat laporan dibuat.
+
+4. **Rule-Based Credibility Scoring (0–100) & Anomaly Spike Detection**  
+   - **Skor Kredibilitas Laporan**: Menggabungkan kelengkapan bukti foto/video (maks 30 poin), kecocokan metadata EXIF waktu & lokasi (maks 25 poin), reputasi pelapor (maks 25 poin), dukungan warga *"Saya juga mengalami"* (maks 15 poin), dan kelengkapan kronologi (maks 5 poin).
+   - **Deteksi Dini KLB**: Memicu peringatan darurat otomatis apabila dalam 24 jam terakhir sebuah SPPG menerima $\ge 3$ laporan dengan laju $> 3\times$ rata-rata harian 30 hari sebelumnya.
+
+---
+
+## 6. Akun Demo Pengujian (Untuk Dewan Juri)
+
+Seluruh akun demo dapat langsung diakses melalui tombol pilih cepat di halaman **`/masuk`** (atau menggunakan kata sandi sesuai variabel `DEMO_PASSWORD` di `.env.local`):
+
+| Peran | Email Akun | Persona & Skenario Uji |
 | :--- | :--- | :--- |
-| **Warga (Orang Tua)** | `rina@pmbgm.test` | Ibu Rina · Melaporkan porsi kurang dan memberi nilai kepuasan. |
-| **Guru (Terverifikasi)** | `budi@pmbgm.test` | Pak Budi · Guru pelapor dengan bobot verifikasi prioritas cepat. |
-| **Verifikator Wilayah** | `sari@pmbgm.test` | Mbak Sari · Memeriksa foto bukti, menyetujui atau menolak tiket aduan. |
-| **Pengelola SPPG** | `sppg@pmbgm.test` | Dapur Tembalang 03 · Merespons keluhan dan mengunggah bukti perbaikan menu. |
-| **Dinas Kesehatan** | `hendra@pmbgm.test` | Pak Hendra (Dinkes) · Menindaklanjuti kasus higienitas dan pembaruan izin SLHS. |
-| **Korwil BGN** | `korwil@pmbgm.test` | Pengawas Badan Gizi Nasional · Mengevaluasi dapur bermasalah & eskalasi SLA. |
-| **Admin Sistem** | `admin@pmbgm.test` | Administrator · Pengelolaan master data sekolah, SPPG, dan konfigurasi wilayah. |
-
-> **Kata Sandi Akun Demo**: Gunakan nilai yang ditentukan pada `DEMO_PASSWORD` di `.env.local` (default: `Pmbgm2026!`).
+| **Pelapor (Orang Tua)** | `rina@pmbgm.test` | **Ibu Rina** — Melapor masalah makanan di SD Tembalang 10 & memantau tiket. |
+| **Pelapor Terverifikasi** | `budi@pmbgm.test` | **Pak Budi** — Guru SMP Semarang Tengah 1 dengan bobot kredibilitas terverifikasi. |
+| **Verifikator** | `sari@pmbgm.test` | **Mbak Sari** — Memeriksa antrean laporan, hasil evaluasi ML/EXIF, dan meneruskan kasus. |
+| **Dinas Kesehatan** | `hendra@pmbgm.test` | **Pak Hendra** — Menangani kasus keracunan/higiene, memantau sinyal KLB & prioritas inspeksi. |
+| **Pengelola SPPG** | `sppg@pmbgm.test` | **Pengelola SPPG Tembalang 03** — Menanggapi kasus yang diteruskan dan mengunggah bukti perbaikan. |
+| **Korwil BGN** | `korwil@pmbgm.test` | **Korwil BGN Kota Semarang** — Memantau kepatuhan SLA dan papan akuntabilitas SPPG wilayah. |
+| **Administrator** | `admin@pmbgm.test` | **Admin PMBGM** — Mengelola peran pengguna dan mengatur batas waktu SLA per kategori. |
 
 ---
 
-## ✨ Inovasi & Nilai Tambah Utama
-
-1. **Rumus Indeks Risiko Terbuka (0–100)**:
-   Perhitungan transparan berbasis 5 bobot indikator: frekuensi aduan (30%), insidensi keracunan (25%), kepemilikan sertifikat Laik Higiene Sanitasi/SLHS (20%), ketepatan waktu tanggap SLA (15%), dan kepuasan warga (10%).
-2. **Akuntabilitas Waktu Nyata Tanpa Manipulasi**:
-   Log riwayat status bersumber dari tabel PostgreSQL *append-only* dengan aturan RLS ketat, memastikan tidak ada instansi yang dapat menghapus atau memanipulasi keterlambatan penanganan.
-3. **Pencegahan KLB Keracunan Pangan**:
-   Sistem memantau kenaikan jumlah anak yang terdampak gejala pencernaan dan secara otomatis memunculkan sinyal merah darurat di dasbor Korwil BGN serta Dinkes jika terjadi indikasi kontaminasi massal.
-4. **Desain Ceria & Ramah Warga**:
-   Antarmuka memadukan kesederhanaan navigasi, tipografi yang nyaman dibaca, serta penjelasan istilah teknis secara langsung, sehingga dapat digunakan dengan mudah oleh seluruh lapisan masyarakat.
-
----
-
-## 👥 Tim Pengembang
-
-Platform **PMBGM** dirancang dan dibangun dengan dedikasi penuh oleh tim:
-
-### **Ctrl Win Enter** 
-*Kompetisi Web In Action (WIA) — MIA 2026*
-
----
 <div align="center">
-  <small>© 2026 PMBGM (Pemantau MBG Masyarakat). Didedikasikan untuk transparansi gizi anak Indonesia.</small>
+  <small>© 2026 Tim Ctrl Win Enter — PMBGM. Lisensi Data Terbuka CC BY 4.0.</small>
 </div>
