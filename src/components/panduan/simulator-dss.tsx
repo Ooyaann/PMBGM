@@ -144,30 +144,25 @@ export function SimulatorDss() {
       aria-labelledby="judul-simulator"
     >
       {/* Header Simulator */}
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b pb-6">
-        <div className="space-y-1.5 max-w-2xl">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-5">
+        <div className="space-y-1">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-            <Sliders className="size-3.5" aria-hidden /> Laboratorium Interaktif DSS
+            <Sliders className="size-3.5" aria-hidden /> Simulator Interaktif DSS (SAW)
           </div>
           <h2 id="judul-simulator" className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Simulator Indeks Risiko SPPG (Metode SAW)
+            Kalkulator Risiko SPPG
           </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Eksplorasi bagaimana metode <em>Multi-Criteria Decision Making</em> (MCDM) <strong>Simple Additive Weighting (SAW)</strong>{" "}
-            menghitung skor komposit dapur dan membagi level pengawasan untuk Dinas Kesehatan & BGN.
-          </p>
         </div>
 
         {/* Preset Cepat Uji Coba */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-muted-foreground">Preset Kasus:</span>
+          <span className="text-xs font-bold text-muted-foreground">Preset:</span>
           {PRESET_CONTOH.map((p) => (
             <button
               key={p.nama}
               type="button"
               onClick={() => terapkanPreset(p)}
-              className="rounded-xl border border-border bg-muted/60 px-2.5 py-1 text-xs font-semibold hover:bg-primary/10 hover:text-primary transition cursor-pointer"
-              title={p.keterangan}
+              className="rounded-xl border border-border bg-card px-3 py-1 text-xs font-bold hover:bg-primary/10 hover:text-primary transition cursor-pointer shadow-2xs"
             >
               {p.nama.split(" ")[1]}
             </button>
@@ -175,19 +170,17 @@ export function SimulatorDss() {
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] items-start">
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] items-start">
         {/* Kolom Kiri: Pengaturan Nilai Kriteria (Sliders & Toggles) */}
-        <div className="space-y-6">
-          <h3 className="text-base font-extrabold flex items-center gap-2">
-            <FileSpreadsheet className="size-4.5 text-primary" /> Parameter 5 Kriteria Penilaian
+        <div className="space-y-4">
+          <h3 className="text-xs font-extrabold flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
+            <FileSpreadsheet className="size-4 text-primary" /> Parameter Bobot Penilaian
           </h3>
 
           {/* Kriteria 1: Jumlah Laporan Masuk */}
-          <div className="rounded-2xl border bg-muted/20 p-4 space-y-2">
+          <div className="rounded-2xl border bg-card p-4 space-y-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="font-bold flex items-center gap-1.5">
-                1. Laporan Warga 30 Hari (Bobot 35%)
-              </span>
+              <span className="font-bold">Laporan Masuk (35%)</span>
               <span className="angka font-black text-primary">{laporan} aduan</span>
             </div>
             <input
@@ -198,17 +191,12 @@ export function SimulatorDss() {
               onChange={(e) => setLaporan(Number(e.target.value))}
               className="w-full accent-primary cursor-pointer"
             />
-            <p className="text-[11px] text-muted-foreground">
-              Menghitung intensitas keluhan warga yang telah terverifikasi per 1.000 porsi.
-            </p>
           </div>
 
           {/* Kriteria 2: Kasus Dugaan Keracunan */}
-          <div className="rounded-2xl border bg-muted/20 p-4 space-y-2">
+          <div className="rounded-2xl border bg-card p-4 space-y-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="font-bold flex items-center gap-1.5 text-rose-600 dark:text-rose-400">
-                2. Kasus Keracunan (Bobot 25%)
-              </span>
+              <span className="font-bold text-rose-600 dark:text-rose-400">Kasus Keracunan (25%)</span>
               <span className="angka font-black text-rose-600 dark:text-rose-400">{keracunan} kasus</span>
             </div>
             <input
@@ -219,17 +207,14 @@ export function SimulatorDss() {
               onChange={(e) => setKeracunan(Number(e.target.value))}
               className="w-full accent-rose-600 cursor-pointer"
             />
-            <p className="text-[11px] text-muted-foreground">
-              Insiden medis terverifikasi. Memiliki bobot penalti darurat paling tinggi.
-            </p>
           </div>
 
           {/* Kriteria 3: Sertifikasi SLHS */}
-          <div className="rounded-2xl border bg-muted/20 p-4 flex items-center justify-between gap-3">
+          <div className="rounded-2xl border bg-card p-4 flex items-center justify-between gap-3">
             <div>
-              <span className="font-bold text-sm block">3. Sertifikat Laik Higiene (Bobot 15%)</span>
+              <span className="font-bold text-sm block">Sertifikat SLHS (15%)</span>
               <span className="text-xs text-muted-foreground">
-                {slhsBerlaku ? "Sertifikat SLHS Kemenkes Masih Berlaku (Aman)" : "Belum Ber-SLHS / Kadaluwarsa (Penalti Penuh)"}
+                {slhsBerlaku ? "Sertifikat Higiene Berlaku" : "Tanpa Sertifikat SLHS"}
               </span>
             </div>
             <button
@@ -242,14 +227,14 @@ export function SimulatorDss() {
                   : "bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-300"
               )}
             >
-              {slhsBerlaku ? "✓ SLHS Berlaku" : "✗ Tanpa SLHS"}
+              {slhsBerlaku ? "✓ Berlaku" : "✗ Belum Ada"}
             </button>
           </div>
 
           {/* Kriteria 4: Keterlambatan SLA */}
-          <div className="rounded-2xl border bg-muted/20 p-4 space-y-2">
+          <div className="rounded-2xl border bg-card p-4 space-y-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="font-bold">4. Keterlambatan Respon SLA (Bobot 15%)</span>
+              <span className="font-bold">Terlambat Respon SLA (15%)</span>
               <span className="angka font-black text-amber-600 dark:text-amber-400">{terlambatSla}%</span>
             </div>
             <input
@@ -261,15 +246,12 @@ export function SimulatorDss() {
               onChange={(e) => setTerlambatSla(Number(e.target.value))}
               className="w-full accent-amber-600 cursor-pointer"
             />
-            <p className="text-[11px] text-muted-foreground">
-              Persentase kasus aduan yang melewati batas waktu respon resmi.
-            </p>
           </div>
 
           {/* Kriteria 5: Rating Kepuasan Pelapor */}
-          <div className="rounded-2xl border bg-muted/20 p-4 space-y-2">
+          <div className="rounded-2xl border bg-card p-4 space-y-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="font-bold">5. Penilaian Kepuasan Konsumen (Bobot 10%)</span>
+              <span className="font-bold">Penilaian Kepuasan (10%)</span>
               <span className="angka font-black text-primary">⭐ {ratingKepuasan.toFixed(1)} / 5.0</span>
             </div>
             <input
@@ -281,9 +263,6 @@ export function SimulatorDss() {
               onChange={(e) => setRatingKepuasan(Number(e.target.value))}
               className="w-full accent-primary cursor-pointer"
             />
-            <p className="text-[11px] text-muted-foreground">
-              Rata-rata bintang kepuasan orang tua/guru atas tindak lanjut perbaikan menu.
-            </p>
           </div>
         </div>
 
@@ -351,15 +330,12 @@ export function SimulatorDss() {
             </div>
           </div>
 
-          {/* Catatan Akademis untuk Dosen & Juri */}
-          <div className="rounded-2xl border bg-muted/20 p-4 text-xs text-muted-foreground space-y-1.5">
-            <p className="font-bold text-foreground flex items-center gap-1">
-              <Info className="size-3.5 text-primary" /> Keabsahan Ilmiah Metode:
-            </p>
-            <p>
-              Metode Simple Additive Weighting (SAW) dipilih karena sifatnya yang deterministik, linear, dan tidak memiliki bias subjektif.
-              Kriteria telah dinormalisasi min-max dengan pemotongan persentil 95 agar outlier satu dapur tidak merusak skala dapur lainnya di Kota Semarang.
-            </p>
+          {/* Badge Keabsahan Metode */}
+          <div className="flex items-center justify-between rounded-2xl border bg-card/60 px-4 py-2.5 text-xs text-muted-foreground shadow-2xs">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Info className="size-3.5 text-primary" /> Algoritma SAW Deterministik
+            </span>
+            <span className="font-bold text-foreground">Normalisasi Min-Max</span>
           </div>
         </div>
       </div>

@@ -22,17 +22,16 @@ export default function HalamanPanduan() {
             Pusat Informasi & Tata Kelola Pengawasan
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Panduan Lengkap & Cara Kerja PMBGM
+            Panduan Sistem & Cara Kerja PMBGM
           </h1>
-          <p className="text-base text-muted-foreground leading-relaxed">
-            Semua yang perlu Anda ketahui tentang pengawasan Program Makan Bergizi Gratis (MBG): alur aduan dari warga,
-            siapa yang memverifikasi, arti setiap angka metrik risiko dapur, hingga bagaimana sistem menjamin transparansi tanpa manipulasi.
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+            Panduan resmi alur pengawasan Makan Bergizi Gratis (MBG), tugas instansi, hingga simulasi interaktif perhitungan risiko SPPG.
           </p>
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Button size="lg" className="rounded-xl font-semibold shadow-sm" render={<Link href="/lapor" />}>
-              <Megaphone className="size-4" aria-hidden /> Buat Laporan Sekarang
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <Button size="default" className="rounded-xl font-bold shadow-xs" render={<Link href="/lapor" />}>
+              <Megaphone className="size-4" aria-hidden /> Buat Laporan
             </Button>
-            <Button variant="outline" size="lg" className="rounded-xl font-semibold" render={<Link href="#simulator-dss" />}>
+            <Button variant="outline" size="default" className="rounded-xl font-semibold bg-card" render={<Link href="#simulator-dss" />}>
               <Sliders className="size-4 text-primary" aria-hidden /> Coba Simulator DSS
             </Button>
           </div>

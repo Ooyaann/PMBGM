@@ -2,216 +2,111 @@ import Link from "next/link";
 import {
   ArrowRight,
   Clock,
-  Megaphone,
   Phone,
-  Radar,
-  School,
-  Send,
   ShieldCheck,
+  Sparkles,
+  UtensilsCrossed,
 } from "lucide-react";
-import { FormCekTiket } from "@/components/beranda/form-cek-tiket";
-import { KartuLacak } from "@/components/beranda/kartu-lacak";
-import { AlurStatus } from "@/components/data/alur-status";
-import { buttonVariants } from "@/components/ui/button";
+import { GoogleSearchBar } from "@/components/beranda/google-search-bar";
 import { ambilKasusSorotan } from "@/lib/data/publik";
-import { cn } from "@/lib/utils";
-
-const LANGKAH_ALUR = [
-  {
-    ikon: Megaphone,
-    judul: "1. Lapor Mudah",
-    teks: "Kirim foto ompreng dan catatan kejadian secara aman tanpa ribet.",
-    href: "/lapor",
-  },
-  {
-    ikon: ShieldCheck,
-    judul: "2. Verifikasi Objektif",
-    teks: "Validasi bukti laporan didukung model Machine Learning & tim wilayah.",
-    href: "/lacak",
-  },
-  {
-    ikon: Send,
-    judul: "3. Tindak Lanjut Nyata",
-    teks: "Otomatis diteruskan ke dapur SPPG dan Dinas Kesehatan berbatas waktu.",
-    href: "/lacak/akuntabilitas",
-  },
-  {
-    ikon: Radar,
-    judul: "4. Pengawasan Terbuka",
-    teks: "Pantau linimasa perbaikan dan kepatuhan dapur secara transparan.",
-    href: "/data/kasus",
-  },
-];
 
 export default async function Beranda() {
   const sorotan = await ambilKasusSorotan();
 
   return (
-    <div className="space-y-12 sm:space-y-16 py-6 sm:py-10">
-      {/* Hero Utama: Sederhana, Bersih, dan Fokus Penuh pada Pelaporan */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/50 via-background to-background dark:from-emerald-950/20 py-10 sm:py-16 lg:py-20 rounded-3xl border border-border/60 mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-10 lg:px-12">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] max-w-6xl mx-auto">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs sm:text-sm font-bold text-primary shadow-2xs">
-              <ShieldCheck className="size-4" aria-hidden /> Pengawasan Partisipatif MBG oleh Masyarakat
-            </div>
-            <h1 className="text-3xl leading-tight font-extrabold sm:text-4xl lg:text-5xl tracking-tight">
-              Makanan anak kita,<br />
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                kita jaga bersama.
-              </span>
-            </h1>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
-              Temukan porsi kurang, makanan basi, atau anak mengeluh sakit perut? Laporkan langsung di sini.
-              Identitas Anda aman, aduan diverifikasi secara objektif, dan langsung diteruskan ke pihak berwenang.
-            </p>
+    <main className="min-h-[calc(100vh-4.5rem)] flex flex-col justify-between items-center px-4 py-4 sm:py-6 overflow-hidden">
+      {/* 1. Area Atas: Kasus Baru Ticker / Pill Terkini (Clickable) */}
+      <div className="w-full flex justify-center pt-1">
+        {sorotan?.kasus ? (
+          <Link
+            href={`/lacak?tiket=${sorotan.kasus.kode_kasus}`}
+            className="group inline-flex items-center gap-2.5 rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs font-bold text-rose-700 dark:text-rose-300 backdrop-blur-md transition hover:bg-rose-500/20 hover:shadow-xs max-w-full"
+            title="Klik untuk melihat perkembangan kasus ini"
+          >
+            <span className="relative flex size-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
+              <span className="relative inline-flex size-2 rounded-full bg-rose-500" />
+            </span>
+            <span className="font-extrabold uppercase tracking-wider text-[10px] text-rose-600 dark:text-rose-400 shrink-0">
+              Kasus Terkini:
+            </span>
+            <span className="truncate max-w-[14rem] sm:max-w-md font-semibold text-foreground group-hover:text-primary transition-colors">
+              {sorotan.kasus.judul}
+            </span>
+            <span className="text-[10px] bg-background/80 px-2 py-0.5 rounded-full text-muted-foreground border shrink-0">
+              {sorotan.kasus.status?.replace("_", " ") ?? "Proses"}
+            </span>
+            <ArrowRight className="size-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition shrink-0" />
+          </Link>
+        ) : (
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1 text-xs font-semibold text-primary">
+            <ShieldCheck className="size-3.5" /> Pengawasan Partisipatif Makan Bergizi Gratis Aktif
+          </div>
+        )}
+      </div>
 
-            {/* Tombol Aksi Utama yang Ramah & Manusiawi */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link
-                href="/lapor"
-                className={cn(
-                  buttonVariants({ size: "xl" }),
-                  "rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 h-13 px-7 text-base gap-2"
-                )}
-              >
-                <Megaphone className="size-5" aria-hidden /> Lapor Masalah Sekarang
-              </Link>
-              <Link
-                href="/cari-sekolah"
-                className={cn(
-                  buttonVariants({ size: "xl", variant: "outline" }),
-                  "rounded-2xl font-bold bg-card border-border/80 h-13 px-6 text-base shadow-2xs gap-2 hover:bg-muted"
-                )}
-              >
-                <School className="size-5 text-muted-foreground" aria-hidden /> Cari Sekolah Anak
-              </Link>
-            </div>
-
-            {/* Cek Cepat Kode Tiket */}
-            <div className="pt-2 max-w-md">
-              <p className="text-xs font-semibold text-muted-foreground mb-2">
-                Sudah pernah melapor sebelumnya? Cek status tiket Anda:
+      {/* 2. Area Tengah: Google-Style Centerpiece (Logo + Headline Singkat + Search Bar + 2 Tombol) */}
+      <div className="w-full max-w-3xl mx-auto text-center space-y-6 my-auto py-2">
+        {/* Identitas PMBGM */}
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <div className="flex items-center gap-3">
+            <span className="flex size-14 sm:size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-inner">
+              <UtensilsCrossed className="size-8 sm:size-9" />
+            </span>
+            <div className="text-left">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-emerald-600 to-teal-700 bg-clip-text text-transparent">
+                PMBGM
+              </div>
+              <p className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-muted-foreground">
+                Pemantau MBG Masyarakat
               </p>
-              <FormCekTiket />
             </div>
           </div>
-
-          {/* Kartu Sorotan Kasus Riil */}
-          <div>
-            {sorotan ? (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground px-1">
-                  <span>Kasus yang Sedang Ditangani Terbuka</span>
-                  <Link href="/lacak" className="text-primary hover:underline">
-                    Lihat Semua Tiket →
-                  </Link>
-                </div>
-                <KartuLacak kasus={sorotan.kasus} timeline={sorotan.timeline} />
-              </div>
-            ) : (
-              <div className="rounded-3xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground bg-card/50">
-                Sistem aktif memantau dapur SPPG dan sekolah se-Kota Semarang.
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Alur Pengawasan Terbuka 4 Langkah (Sangat Mudah Dipahami Orang Awam) */}
-      <section aria-labelledby="judul-alur" className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <h2 id="judul-alur" className="text-2xl font-extrabold sm:text-3xl tracking-tight">
-            Bagaimana Aduan Anda Diproses?
-          </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Empat langkah transparan untuk memastikan setiap keluhan mendapatkan tindak lanjut nyata tanpa ditutup-tutupi.
+          <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
+            Kawal mutu gizi, kebersihan, dan ketepatan menu anak sekolah Kota Semarang.
           </p>
         </div>
 
-        <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {LANGKAH_ALUR.map((m, i) => (
-            <li key={m.judul} className="relative">
-              <Link
-                href={m.href}
-                className="group flex h-full flex-col justify-between gap-4 rounded-3xl border border-border/80 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
-                    <m.ikon className="size-6" aria-hidden />
-                  </span>
-                  <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
-                    Langkah 0{i + 1}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-base font-extrabold text-foreground group-hover:text-primary transition-colors">
-                    {m.judul}
-                  </h3>
-                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    {m.teks}
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ol>
+        {/* Input Google Search Bar & 2 Tombol Utama */}
+        <GoogleSearchBar />
 
-        {/* Informasi Batas Waktu Kepatuhan (SLA) */}
-        <div className="mt-6 rounded-3xl border border-border/80 bg-card p-5 sm:p-6 shadow-2xs">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="flex items-center gap-2 text-sm font-bold">
-              <Clock className="size-4 text-primary" aria-hidden /> Setiap Tahap Memiliki Batas Waktu (SLA) Terukur
-            </h3>
-            <Link href="/panduan" className="text-xs font-semibold text-primary hover:underline">
-              Pelajari Standar Batas Waktu →
-            </Link>
-          </div>
-          <AlurStatus
-            className="mt-4"
-            sla={{
-              diterima: "6 jam",
-              diverifikasi: "2 jam",
-              diteruskan: "6 jam",
-              ditindaklanjuti: "3 hari",
-            }}
-          />
+        {/* Elemen Visual (Icon Chips) — Tanpa Tembok Tulisan */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+          <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground shadow-2xs">
+            <ShieldCheck className="size-3.5 text-primary" /> Identitas Terlindungi
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground shadow-2xs">
+            <Clock className="size-3.5 text-amber-500" /> Respon SLA Terikat 24 Jam
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border bg-card/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground shadow-2xs">
+            <Sparkles className="size-3.5 text-teal-500" /> Deteksi Cerdas ANN
+          </span>
         </div>
-      </section>
+      </div>
 
-      {/* Ajakan Akhir & Saluran Darurat Medis 119 */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col items-start gap-6 rounded-3xl bg-foreground p-8 text-background sm:flex-row sm:items-center sm:justify-between sm:p-10 shadow-xl">
-          <div className="space-y-1 max-w-xl">
-            <h2 className="text-2xl font-black sm:text-3xl tracking-tight">
-              Anak Mengalami Gejala Keracunan Makanan?
-            </h2>
-            <p className="text-sm text-background/80 leading-relaxed">
-              Utamakan keselamatan medis anak terlebih dahulu. Segera hubungi saluran darurat kesehatan atau bawa ke fasilitas kesehatan terdekat.
-            </p>
-          </div>
-          <div className="flex w-full flex-wrap gap-3 sm:w-auto">
-            <a
-              href="tel:119"
-              className={cn(
-                buttonVariants({ size: "xl" }),
-                "flex-1 sm:flex-none rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold h-12 px-6 shadow-md gap-2"
-              )}
-            >
-              <Phone className="size-5" aria-hidden /> Darurat Medis 119
-            </a>
-            <Link
-              href="/lapor"
-              className={cn(
-                buttonVariants({ size: "xl", variant: "outline" }),
-                "flex-1 sm:flex-none rounded-2xl border-background/30 bg-background/10 hover:bg-background/20 text-background font-bold h-12 px-6 gap-2"
-              )}
-            >
-              <Megaphone className="size-5" aria-hidden /> Buat Laporan Kasus
-            </Link>
-          </div>
+      {/* 3. Area Bawah: Status Layanan & Hotline Darurat 119 (1 Baris Bersih) */}
+      <footer className="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-border/40 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Kota Semarang · Sistem Terhubung 394 Sekolah & Dapur SPPG</span>
         </div>
-      </section>
-    </div>
+
+        <div className="flex items-center gap-4">
+          <a
+            href="tel:119"
+            className="flex items-center gap-1.5 font-bold text-rose-600 dark:text-rose-400 hover:underline"
+          >
+            <Phone className="size-3.5" /> Darurat Medis 119
+          </a>
+          <span className="text-border">|</span>
+          <Link href="/panduan" className="hover:text-foreground hover:underline">
+            Panduan
+          </Link>
+          <Link href="/insight" className="hover:text-foreground hover:underline">
+            Peta Risiko
+          </Link>
+        </div>
+      </footer>
+    </main>
   );
 }

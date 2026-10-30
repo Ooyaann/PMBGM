@@ -23,37 +23,27 @@ async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">[
   const { sekolah } = await searchParams;
   const pengguna = await ambilPengguna();
 
-  // 1. Auth Guard (Poin 1 Revisi Dosen): Wajib login sebelum mengakses pengisian form lapor
+  // 1. Auth Guard: Wajib login sebelum mengakses pengisian form lapor
   if (!pengguna) {
     const urlLanjut = `/lapor${typeof sekolah === "string" ? `?sekolah=${sekolah}` : ""}`;
     return (
-      <div className="mx-auto max-w-2xl rounded-3xl border border-primary/20 bg-card p-6 sm:p-10 shadow-lg text-center space-y-6">
+      <div className="mx-auto max-w-lg rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-md text-center space-y-5">
         <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <Lock className="size-7" aria-hidden />
         </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-black tracking-tight">Wajib Masuk Sebelum Melapor</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto">
-            Demi menjaga integritas aduan dan mencegah laporan palsu/fiktif yang merugikan pihak sekolah atau dapur,
-            setiap pelapor diwajibkan masuk ke akun terdaftar.
+        <div className="space-y-1.5">
+          <h2 className="text-2xl font-black tracking-tight">Masuk untuk Melapor</h2>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto">
+            Aduan resmi memerlukan verifikasi akun demi validitas data. Identitas Anda tetap dapat disamarkan (Anonim).
           </p>
         </div>
 
-        <div className="rounded-2xl border bg-muted/30 p-4 text-xs text-muted-foreground text-left space-y-2">
-          <p className="font-bold text-foreground flex items-center gap-1.5">
-            <ShieldAlert className="size-4 text-primary" /> Jaminan Perlindungan Identitas:
-          </p>
-          <p>
-            Meskipun Anda wajib masuk, Anda tetap dapat memilih opsi <strong>Identitas Rahasia</strong> atau <strong>Anonim</strong> di akhir pengisian formulir. Data pribadi Anda tidak akan pernah dibagikan ke pihak dapur tanpa izin.
-          </p>
-        </div>
-
-        <div className="pt-2 max-w-sm mx-auto space-y-3">
+        <div className="pt-2 space-y-2.5">
           <Link
             href={`/masuk?lanjut=${encodeURIComponent(urlLanjut)}`}
             className={cn(
-              buttonVariants({ size: "xl" }),
-              "w-full rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground h-12 shadow-md shadow-primary/15 text-base flex items-center justify-center gap-2"
+              buttonVariants({ size: "default" }),
+              "w-full rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground h-11 text-sm flex items-center justify-center gap-2 shadow-xs"
             )}
           >
             Masuk ke Akun Anda
@@ -61,8 +51,8 @@ async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">[
           <Link
             href={`/masuk?mode=daftar&lanjut=${encodeURIComponent(urlLanjut)}`}
             className={cn(
-              buttonVariants({ size: "xl", variant: "outline" }),
-              "w-full rounded-2xl font-bold bg-card border-border/80 h-12 text-base flex items-center justify-center gap-2 hover:bg-muted"
+              buttonVariants({ size: "default", variant: "outline" }),
+              "w-full rounded-2xl font-semibold bg-card border-border/80 h-11 text-sm flex items-center justify-center gap-2 hover:bg-muted"
             )}
           >
             Daftar Akun Pelapor Baru
