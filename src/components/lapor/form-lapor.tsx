@@ -252,6 +252,24 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
           </div>
         )}
 
+        {/* Banner Konfirmasi Sekolah Otomatis Terhubung */}
+        {draf.sekolah && (
+          <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-primary/5 p-3 text-xs sm:text-sm">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <School className="size-4" aria-hidden />
+              </span>
+              <span className="truncate">
+                Sekolah tujuan: <strong className="text-foreground font-bold">{draf.sekolah.nama}</strong>
+                {draf.sekolah.kecamatan ? ` · ${draf.sekolah.kecamatan}` : ""}
+              </span>
+            </div>
+            <span className="rounded-lg bg-primary/15 px-2 py-0.5 text-[10px] sm:text-[11px] font-extrabold text-primary shrink-0">
+              Terisi Otomatis
+            </span>
+          </div>
+        )}
+
         {/* Stepper berikon; langkah yang sudah dilewati bisa diklik untuk kembali */}
         <nav aria-label="Langkah laporan" className="mb-6">
           <ol className="flex items-center">

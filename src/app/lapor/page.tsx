@@ -17,15 +17,20 @@ export const metadata: Metadata = {
   description: "Formulir resmi pelaporan masalah Makan Bergizi Gratis di sekolah. Identitas terlindungi, wajib bukti autentik, dan diteruskan berbatas waktu.",
 };
 
-const POLA_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">["searchParams"] }) {
-  const { sekolah } = await searchParams;
+  const params = await searchParams;
+  const paramSekolah =
+    typeof params?.sekolah === "string" && params.sekolah.trim()
+      ? params.sekolah.trim()
+      : typeof params?.sekolahId === "string" && params.sekolahId.trim()
+      ? params.sekolahId.trim()
+      : null;
+
   const pengguna = await ambilPengguna();
 
   // 1. Auth Guard: Wajib login sebelum mengakses pengisian form lapor
   if (!pengguna) {
-    const urlLanjut = `/lapor${typeof sekolah === "string" ? `?sekolah=${sekolah}` : ""}`;
+    const urlLanjut = `/lapor${paramSekolah ? `?sekolah=${encodeURIComponent(paramSekolah)}` : ""}`;
     return (
       <div className="mx-auto max-w-lg rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-md text-center space-y-5">
         <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -62,18 +67,13 @@ async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">[
     );
   }
 
-  // 2. Otomatisasi Input Sekolah (Poin 1.3 Revisi Dosen)
-  // Utamakan sekolah dari query string, jika tidak ada fallback ke sekolahId dari profil akun pengguna
-  const idSekolah =
-    typeof sekolah === "string" && POLA_UUID.test(sekolah)
-      ? sekolah
-      : pengguna.sekolahId && POLA_UUID.test(pengguna.sekolahId)
-      ? pengguna.sekolahId
-      : null;
+  // 2. Otomatisasi Input Sekolah:
+  // Utamakan sekolah dari query string (ID UUID atau nama), jika tidak ada fallback ke profil akun pengguna
+  const kunciSekolah = paramSekolah ?? pengguna.sekolahId ?? null;
 
   const [sla, sekolahAwal] = await Promise.all([
     ambilAturanSla(),
-    idSekolah ? ambilSekolahPilihan(idSekolah) : null,
+    kunciSekolah ? ambilSekolahPilihan(kunciSekolah) : null,
   ]);
 
   return (

@@ -60,17 +60,25 @@ export async function cariSekolah(kueri = ""): Promise<HasilSekolah[]> {
   });
 }
 
-/** Satu sekolah dalam bentuk pilihan formulir Lapor. */
-export async function ambilSekolahPilihan(id: string) {
+/** Satu sekolah dalam bentuk pilihan formulir Lapor (menerima ID UUID atau Nama Sekolah). */
+export async function ambilSekolahPilihan(idAtauNama: string) {
   "use cache";
   cacheLife("hours");
   cacheTag(TAG_DATA_PUBLIK);
   const supabase = buatKlienPublik();
-  const { data: s } = await supabase
+  const adalahUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idAtauNama);
+
+  let kueri = supabase
     .from("sekolah")
-    .select("id, nama, jenjang, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama)")
-    .eq("id", id)
-    .maybeSingle();
+    .select("id, nama, jenjang, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama)");
+
+  if (adalahUuid) {
+    kueri = kueri.eq("id", idAtauNama);
+  } else {
+    kueri = kueri.ilike("nama", `%${idAtauNama.trim()}%`);
+  }
+
+  const { data: s } = await kueri.limit(1).maybeSingle();
   if (!s) return null;
   const { data: i } = s.sppg ? await supabase.from("indeks_risiko").select("indeks").eq("sppg_id", s.sppg.id).maybeSingle() : { data: null };
   return {

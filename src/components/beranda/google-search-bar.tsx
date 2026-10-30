@@ -3,22 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Megaphone, Radar, Search, Sparkles, Utensils, X } from "lucide-react";
+import { ArrowRight, Megaphone, Search, X } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-interface PintasanItem {
-  label: string;
-  q: string;
-  href?: string;
-  ikon: React.ComponentType<{ className?: string }>;
-}
-
-const PINTASAN_CARI: PintasanItem[] = [
-  { label: "SD Tembalang 10", q: "SD Tembalang 10", ikon: Search },
-  { label: "SPPG Tembalang 03", q: "SPPG Tembalang", ikon: Utensils },
-  { label: "Peta Risiko SAW", q: "", href: "/insight", ikon: Radar },
-];
 
 export function GoogleSearchBar() {
   const router = useRouter();
@@ -60,7 +47,7 @@ export function GoogleSearchBar() {
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="mr-1.5 flex size-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition"
+              className="mr-1.5 flex size-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition cursor-pointer"
               aria-label="Hapus kata kunci pencarian"
             >
               <X className="size-4" />
@@ -107,41 +94,6 @@ export function GoogleSearchBar() {
           <Search className="size-4.5 text-muted-foreground" aria-hidden />
           <span>Lacak Kasus & Tiket</span>
         </button>
-      </div>
-
-      {/* Quick Chips Pintasan */}
-      <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
-        <span className="text-muted-foreground font-medium hidden sm:inline">Pencarian Cepat:</span>
-        {PINTASAN_CARI.map((chip) => {
-          const Ikon = chip.ikon;
-          if ("href" in chip && chip.href) {
-            return (
-              <Link
-                key={chip.label}
-                href={chip.href}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-3 py-1 text-xs font-semibold text-foreground/80 hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition shadow-2xs"
-              >
-                <Ikon className="size-3 text-muted-foreground" />
-                <span>{chip.label}</span>
-              </Link>
-            );
-          }
-          const queryPintas = chip.q;
-          return (
-            <button
-              key={chip.label}
-              type="button"
-              onClick={() => {
-                setQuery(queryPintas);
-                router.push(`/cari-sekolah?q=${encodeURIComponent(queryPintas)}`);
-              }}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-3 py-1 text-xs font-semibold text-foreground/80 hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition shadow-2xs cursor-pointer"
-            >
-              <Ikon className="size-3 text-muted-foreground" />
-              <span>{chip.label}</span>
-            </button>
-          );
-        })}
       </div>
     </div>
   );

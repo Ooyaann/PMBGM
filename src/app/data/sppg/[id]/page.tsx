@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowRight, CircleCheck, Clock, FolderOpen, HelpCircle, School, ShieldCheck, ShieldOff, Star, TriangleAlert, Users, Utensils,
+  ArrowRight, CircleCheck, Clock, FolderOpen, HelpCircle, Megaphone, School, ShieldCheck, ShieldOff, Star, TriangleAlert, Users, Utensils,
 } from "lucide-react";
 import { BadgeRisiko, BadgeSla, BadgeStatus } from "@/components/data/badge";
 import { IKON_KATEGORI } from "@/components/data/ikon-kategori";
@@ -171,9 +171,17 @@ async function IsiProfil({ params }: { params: PageProps<"/data/sppg/[id]">["par
               <li key={x.id} className="flex items-center justify-between gap-3 py-2.5">
                 <span className="flex min-w-0 items-center gap-2">
                   <span className="w-9 shrink-0 rounded-md bg-muted py-0.5 text-center text-[11px] font-semibold text-muted-foreground">{JENJANG[x.jenjang]}</span>
-                  <span className="truncate">{x.nama}</span>
+                  <span className="truncate font-medium">{x.nama}</span>
                 </span>
-                <span className="angka shrink-0 text-muted-foreground">{angka(x.jumlah_siswa)}</span>
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <span className="angka text-xs text-muted-foreground hidden sm:inline">{angka(x.jumlah_siswa)} siswa</span>
+                  <Link
+                    href={`/lapor?sekolah=${x.id}`}
+                    className="inline-flex items-center gap-1 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold px-2.5 py-1 transition"
+                  >
+                    <Megaphone className="size-3" aria-hidden /> Lapor
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

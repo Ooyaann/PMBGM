@@ -17,7 +17,7 @@ export function Footer() {
           <div className="space-y-4 lg:col-span-2">
             <Logo />
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Platform pengawasan partisipatif masyarakat untuk menjaga porsi, kebersihan, dan keselamatan pangan Program Makan Bergizi Gratis di Jawa Tengah.
+              Platform pengawasan partisipatif masyarakat untuk menjaga porsi, kebersihan, dan keselamatan pangan Program Makan Bergizi Gratis di seluruh Indonesia.
             </p>
             <div className="flex items-center gap-2 pt-1">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
