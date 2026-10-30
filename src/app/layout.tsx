@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/situs/footer";
-import { SidebarGlobalSlot } from "@/components/situs/sidebar-global-slot";
+import { TopNavbarSlot } from "@/components/situs/top-navbar-slot";
 import { WidgetDarurat } from "@/components/situs/widget-darurat";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,10 +28,11 @@ export const metadata: Metadata = {
     "PMBGM (Pemantau MBG Masyarakat) — Laporkan masalah Makan Bergizi Gratis, pantau tindak lanjutnya secara terbuka, dan cek kepatuhan higienitas dapur SPPG anak Anda.",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/icon.png", type: "image/png" },
-      { url: "/logo-pmbgm-ikon.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/icon.png",
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
 };
@@ -43,7 +44,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className={`${jakarta.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-slate-50/60 dark:bg-slate-950 text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+      <body className="min-h-full bg-slate-50/60 dark:bg-slate-950 text-foreground antialiased selection:bg-primary/20 selection:text-primary flex flex-col">
         <a
           href="#konten"
           className="sr-only z-50 rounded-lg bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -51,16 +52,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Lewati ke konten
         </a>
         <TooltipProvider>
-          <div className="flex min-h-screen flex-col lg:flex-row">
-            <SidebarGlobalSlot />
-            <div className="flex flex-1 flex-col min-w-0">
-              <main id="konten" className="flex-1 min-w-0">
-                {children}
-              </main>
-              <Suspense fallback={null}>
-                <Footer />
-              </Suspense>
-            </div>
+          <div className="flex min-h-screen flex-col">
+            <TopNavbarSlot />
+            <main id="konten" className="flex-1 min-w-0">
+              {children}
+            </main>
+            <Suspense fallback={null}>
+              <Footer />
+            </Suspense>
           </div>
           <Suspense fallback={null}>
             <WidgetDarurat />

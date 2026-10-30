@@ -94,8 +94,11 @@ export default function HalamanMetodologi() {
   return (
     <HalamanInfo judul="Metodologi" isi={ISI}
       pengantar="Semua angka di PMBGM dihitung dengan aturan terbuka di bawah ini, hanya dari laporan yang sudah diverifikasi.">
-      <BagianInfo id="indeks" judul="Indeks Risiko SPPG" ikon={Gauge}>
-        <p>Skor 0–100 untuk setiap dapur SPPG, dihitung ulang tiap jam dan setiap ada verifikasi.</p>
+      <BagianInfo id="indeks" judul="Indeks Risiko SPPG (Metode Simple Additive Weighting / SAW)" ikon={Gauge}>
+        <p>
+          Skor komposit 0–100 untuk setiap dapur SPPG dihitung menggunakan metode <strong>Multi-Criteria Decision Making (MCDM) Simple Additive Weighting (SAW)</strong>.
+          Perhitungan diperbarui secara otomatis setiap ada laporan yang terverifikasi.
+        </p>
         <Rumus hasil="Indeks" suku={KOMPONEN.map((k) => ({
           label: k.kunci === "p" ? "(100 − Kepuasan)" : k.label, bobot: BOBOT_LABEL[k.kunci], warna: k.warna,
         }))} />
@@ -111,11 +114,28 @@ export default function HalamanMetodologi() {
           Laporan dan keracunan dinormalkan min–maks antar-SPPG setelah dipotong di persentil 95, agar satu dapur ekstrem
           tidak menekan skor dapur lain. Skor kecamatan di peta memakai SPPG tertinggi di kecamatan itu (atau rata-rata berbobot porsi).
         </p>
-        <ul className="flex flex-wrap gap-2">
-          {(["rendah", "sedang", "tinggi"] as const).map((k) => (
-            <li key={k} className="rounded-full bg-muted px-3 py-1 text-sm"><strong>{RISIKO[k].label}</strong> · {RISIKO[k].penjelasan.split(".")[0]}</li>
-          ))}
-        </ul>
+        <div className="space-y-2 pt-1">
+          <p className="text-sm font-bold">Klasifikasi Level Risiko & Rekomendasi Audit Resmi:</p>
+          <ul className="grid gap-2 sm:grid-cols-3">
+            <li className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs">
+              <strong className="block text-emerald-700 dark:text-emerald-300 font-bold">Level A (0 – 34,9)</strong>
+              <span>Risiko Rendah / Kepatuhan Tinggi. Audit berkala standar 6 bulan sekali.</span>
+            </li>
+            <li className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs">
+              <strong className="block text-amber-700 dark:text-amber-300 font-bold">Level B (35,0 – 59,9)</strong>
+              <span>Risiko Sedang / Waspada. Evaluasi pembinaan rutin sanitasi 1 bulan sekali.</span>
+            </li>
+            <li className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs">
+              <strong className="block text-rose-700 dark:text-rose-300 font-bold">Level C (60,0 – 100)</strong>
+              <span>Risiko Tinggi / Kritis. Prioritas inspeksi lapangan mendadak 1x24 jam Dinkes.</span>
+            </li>
+          </ul>
+        </div>
+        <p className="pt-2">
+          <a href="/panduan#simulator-dss" className="inline-flex items-center gap-1.5 font-bold text-sm text-primary hover:underline">
+            Uji Coba Kalkulator di Simulator DSS Interaktif →
+          </a>
+        </p>
       </BagianInfo>
 
       <BagianInfo id="kredibilitas" judul="Skor kredibilitas laporan" ikon={BadgeCheck}>

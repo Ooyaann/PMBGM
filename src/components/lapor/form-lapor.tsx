@@ -144,6 +144,10 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
         }
       }
     }
+    if (t === 3 && bukti.length === 0) {
+      g.bukti = "Wajib melampirkan minimal 1 bukti foto/video kondisi makanan untuk mencegah laporan fiktif.";
+      toast.error("Wajib mengunggah minimal 1 foto bukti nyata.");
+    }
     setGalat(g);
     return Object.values(g).every((v) => !v);
   }
@@ -156,8 +160,12 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
 
   async function kirimSekarang() {
     if (!pengguna) return setDialogMasuk(true);
-    for (let t = 0; t < 3; t++) {
+    for (let t = 0; t <= 3; t++) {
       if (!validasiTahap(t)) return keTahap(t);
+    }
+    if (bukti.length === 0) {
+      toast.error("Wajib mengunggah minimal 1 bukti foto.");
+      return keTahap(3);
     }
     setGalatKirim(null);
     setKirim({ status: "menyimpan", selesai: 0 });
@@ -399,10 +407,16 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
 
           {tahap === 3 && (
             <div className="space-y-5">
-              <h2 className="flex items-center gap-2 text-xl font-bold">
-                Foto bukti <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">opsional</span>
-              </h2>
+              <div>
+                <h2 className="flex items-center gap-2 text-xl font-bold">
+                  Foto Bukti Nyata <span className="rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 px-2.5 py-0.5 text-xs font-bold">Wajib Minimal 1 Foto</span>
+                </h2>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Foto ompreng, porsi menu, atau kondisi anak diperlukan untuk verifikasi Machine Learning dan audit independen guna mencegah laporan fiktif.
+                </p>
+              </div>
               <UnggahBukti bukti={bukti} onUbah={setBukti} />
+              <Galat pesan={galat.bukti} />
             </div>
           )}
 
@@ -478,7 +492,7 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
           )}
           {tahap < LANGKAH.length - 1 ? (
             <Button type="button" size="xl" onClick={lanjut} className="flex-1 sm:min-w-40 sm:flex-none">
-              {tahap === 3 && bukti.length === 0 ? "Lewati" : "Lanjut"} <ArrowRight aria-hidden />
+              Lanjut <ArrowRight aria-hidden />
             </Button>
           ) : (
             <Button type="button" size="xl" onClick={kirimSekarang} disabled={sibuk || !pengguna}

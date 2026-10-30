@@ -1,251 +1,217 @@
 import Link from "next/link";
 import {
-  ArrowRight, BarChart3, Check, ClipboardList, Clock, ExternalLink, HeartPulse, Megaphone, Phone, Radar,
-  School, Search, Send, ShieldCheck, Star, ThumbsUp,
+  ArrowRight,
+  Clock,
+  Megaphone,
+  Phone,
+  Radar,
+  School,
+  Send,
+  ShieldCheck,
 } from "lucide-react";
 import { FormCekTiket } from "@/components/beranda/form-cek-tiket";
 import { KartuLacak } from "@/components/beranda/kartu-lacak";
 import { AlurStatus } from "@/components/data/alur-status";
-import { BadgeRisiko } from "@/components/data/badge";
-import { ChipAlasan } from "@/components/data/chip-alasan";
-import { LabelSumber } from "@/components/data/label-sumber";
-import { Bertip } from "@/components/ui/bertip";
 import { buttonVariants } from "@/components/ui/button";
-import { InfoMetrik } from "@/components/ui/info-metrik";
-import {
-  ambilKasusSorotan, ambilKecamatanResponsif, ambilPrioritasInspeksi, ambilStatistik,
-} from "@/lib/data/publik";
-import { angka, durasiJam, persen } from "@/lib/format";
-import { FAKTA_NASIONAL } from "@/lib/konteks";
+import { ambilKasusSorotan } from "@/lib/data/publik";
 import { cn } from "@/lib/utils";
 
 const LANGKAH_ALUR = [
-  { ikon: Megaphone, judul: "Lapor Mudah", teks: "Kirim foto dan catatan kejadian secara aman", href: "/lapor" },
-  { ikon: ShieldCheck, judul: "Verifikasi Cepat", teks: "Validasi bukti laporan oleh tim independen", href: "/lacak" },
-  { ikon: Send, judul: "Tindak Lanjut", teks: "Otomatis diteruskan ke dapur dan dinas terkait", href: "/lacak/akuntabilitas" },
-  { ikon: Radar, judul: "Pantauan Publik", teks: "Linimasa status dan batas waktu terbuka bagi semua", href: "/data" },
+  {
+    ikon: Megaphone,
+    judul: "1. Lapor Mudah",
+    teks: "Kirim foto ompreng dan catatan kejadian secara aman tanpa ribet.",
+    href: "/lapor",
+  },
+  {
+    ikon: ShieldCheck,
+    judul: "2. Verifikasi Objektif",
+    teks: "Validasi bukti laporan didukung model Machine Learning & tim wilayah.",
+    href: "/lacak",
+  },
+  {
+    ikon: Send,
+    judul: "3. Tindak Lanjut Nyata",
+    teks: "Otomatis diteruskan ke dapur SPPG dan Dinas Kesehatan berbatas waktu.",
+    href: "/lacak/akuntabilitas",
+  },
+  {
+    ikon: Radar,
+    judul: "4. Pengawasan Terbuka",
+    teks: "Pantau linimasa perbaikan dan kepatuhan dapur secara transparan.",
+    href: "/data/kasus",
+  },
 ];
 
 export default async function Beranda() {
-  const [statistik, prioritas, responsif, sorotan] = await Promise.all([
-    ambilStatistik(),
-    ambilPrioritasInspeksi(5),
-    ambilKecamatanResponsif(),
-    ambilKasusSorotan(),
-  ]);
-
-  const persenTerverifikasi = statistik?.laporan_masuk ? (100 * statistik.laporan_terverifikasi) / statistik.laporan_masuk : null;
-  const persenSelesai = statistik?.kasus_total ? (100 * statistik.kasus_selesai) / statistik.kasus_total : null;
+  const sorotan = await ambilKasusSorotan();
 
   return (
-    <>
-      {/* Hero dengan Ambient Gradient yang Menawan & Nyaman di Mata */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/40 via-background to-background dark:from-emerald-950/20 py-12 sm:py-16 lg:py-20 border-b">
-        <div className="kontainer grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+    <div className="space-y-12 sm:space-y-16 py-6 sm:py-10">
+      {/* Hero Utama: Sederhana, Bersih, dan Fokus Penuh pada Pelaporan */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/50 via-background to-background dark:from-emerald-950/20 py-10 sm:py-16 lg:py-20 rounded-3xl border border-border/60 mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-10 lg:px-12">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] max-w-6xl mx-auto">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs sm:text-sm font-bold text-primary shadow-xs">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs sm:text-sm font-bold text-primary shadow-2xs">
               <ShieldCheck className="size-4" aria-hidden /> Pengawasan Partisipatif MBG oleh Masyarakat
             </div>
-            <h1 className="text-4xl leading-[1.1] font-extrabold sm:text-5xl lg:text-[3.25rem] tracking-tight">
+            <h1 className="text-3xl leading-tight font-extrabold sm:text-4xl lg:text-5xl tracking-tight">
               Makanan anak kita,<br />
               <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 kita jaga bersama.
               </span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
-              Layanan pengawasan makanan bergizi anak sekolah. Laporkan porsi atau mutu makanan dan pantau perbaikannya secara terbuka.
+              Temukan porsi kurang, makanan basi, atau anak mengeluh sakit perut? Laporkan langsung di sini.
+              Identitas Anda aman, aduan diverifikasi secara objektif, dan langsung diteruskan ke pihak berwenang.
             </p>
+
+            {/* Tombol Aksi Utama yang Ramah & Manusiawi */}
             <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "rounded-2xl font-bold shadow-md shadow-primary/15 h-12 px-6")}>
-                <Megaphone aria-hidden /> Lapor Masalah
+              <Link
+                href="/lapor"
+                className={cn(
+                  buttonVariants({ size: "xl" }),
+                  "rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 h-13 px-7 text-base gap-2"
+                )}
+              >
+                <Megaphone className="size-5" aria-hidden /> Lapor Masalah Sekarang
               </Link>
-              <Link href="/cari-sekolah" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "rounded-2xl font-bold bg-card h-12 px-6 shadow-xs")}>
-                <School aria-hidden /> Cari Sekolah Anak
+              <Link
+                href="/cari-sekolah"
+                className={cn(
+                  buttonVariants({ size: "xl", variant: "outline" }),
+                  "rounded-2xl font-bold bg-card border-border/80 h-13 px-6 text-base shadow-2xs gap-2 hover:bg-muted"
+                )}
+              >
+                <School className="size-5 text-muted-foreground" aria-hidden /> Cari Sekolah Anak
               </Link>
             </div>
-            <FormCekTiket className="pt-2 max-w-md" />
+
+            {/* Cek Cepat Kode Tiket */}
+            <div className="pt-2 max-w-md">
+              <p className="text-xs font-semibold text-muted-foreground mb-2">
+                Sudah pernah melapor sebelumnya? Cek status tiket Anda:
+              </p>
+              <FormCekTiket />
+            </div>
           </div>
-          {sorotan && <KartuLacak kasus={sorotan.kasus} timeline={sorotan.timeline} />}
+
+          {/* Kartu Sorotan Kasus Riil */}
+          <div>
+            {sorotan ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground px-1">
+                  <span>Kasus yang Sedang Ditangani Terbuka</span>
+                  <Link href="/lacak" className="text-primary hover:underline">
+                    Lihat Semua Tiket →
+                  </Link>
+                </div>
+                <KartuLacak kasus={sorotan.kasus} timeline={sorotan.timeline} />
+              </div>
+            ) : (
+              <div className="rounded-3xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground bg-card/50">
+                Sistem aktif memantau dapur SPPG dan sekolah se-Kota Semarang.
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Konteks nasional */}
-      <section aria-labelledby="judul-konteks" className="border-y bg-card">
-        <div className="kontainer py-10">
-          <h2 id="judul-konteks" className="sr-only">Skala program MBG</h2>
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
-            {FAKTA_NASIONAL.map((f) => (
-              <li key={f.label}>
-                <p className="angka text-3xl font-extrabold tracking-tight sm:text-4xl">{f.angka}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{f.label}</p>
-                <p className="mt-2 flex items-center gap-1.5">
-                  <LabelSumber jenis={f.jenis} />
-                  <Bertip label={`${f.sumber.nama}, ${f.sumber.tanggal}`}
-                    render={<a href={f.sumber.url} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground" />}>
-                    <ExternalLink className="size-3.5" aria-hidden />
-                  </Bertip>
-                </p>
-              </li>
-            ))}
-          </ul>
+      {/* Alur Pengawasan Terbuka 4 Langkah (Sangat Mudah Dipahami Orang Awam) */}
+      <section aria-labelledby="judul-alur" className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <h2 id="judul-alur" className="text-2xl font-extrabold sm:text-3xl tracking-tight">
+            Bagaimana Aduan Anda Diproses?
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Empat langkah transparan untuk memastikan setiap keluhan mendapatkan tindak lanjut nyata tanpa ditutup-tutupi.
+          </p>
         </div>
-      </section>
 
-      {/* Alur Pengawasan Terbuka 4 Langkah */}
-      <section aria-labelledby="judul-alur" className="kontainer py-16">
-        <div className="flex flex-col gap-1">
-          <h2 id="judul-alur" className="text-2xl font-bold sm:text-3xl">Alur Pengawasan Terbuka</h2>
-          <p className="text-sm text-muted-foreground">Empat langkah terpadu dari aduan warga hingga penyelesaian tuntas.</p>
-        </div>
-        <ol className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {LANGKAH_ALUR.map((m, i) => (
             <li key={m.judul} className="relative">
-              <Link href={m.href}
-                className="group flex h-full flex-col gap-4 rounded-2xl border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
-                <span className="flex items-center justify-between">
-                  <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
+              <Link
+                href={m.href}
+                className="group flex h-full flex-col justify-between gap-4 rounded-3xl border border-border/80 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
                     <m.ikon className="size-6" aria-hidden />
                   </span>
-                  <span className="angka text-xs font-semibold text-muted-foreground">Langkah 0{i + 1}</span>
-                </span>
-                <span>
-                  <span className="block text-lg font-bold">{m.judul}</span>
-                  <span className="block text-sm text-muted-foreground">{m.teks}</span>
-                </span>
+                  <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+                    Langkah 0{i + 1}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-foreground group-hover:text-primary transition-colors">
+                    {m.judul}
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                    {m.teks}
+                  </p>
+                </div>
               </Link>
-              {i < LANGKAH_ALUR.length - 1 && (
-                <ArrowRight aria-hidden className="absolute top-1/2 -right-3 z-10 hidden size-5 -translate-y-1/2 rounded-full bg-background text-muted-foreground lg:block" />
-              )}
             </li>
           ))}
         </ol>
 
-        <div className="mt-6 rounded-3xl border bg-card p-5 sm:p-6">
+        {/* Informasi Batas Waktu Kepatuhan (SLA) */}
+        <div className="mt-6 rounded-3xl border border-border/80 bg-card p-5 sm:p-6 shadow-2xs">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="flex items-center gap-2 font-semibold"><Clock className="size-4 text-primary" aria-hidden /> Setiap tahap tercatat dan berbatas waktu</h3>
-            <span className="text-xs text-muted-foreground">Batas waktu untuk kasus keracunan</span>
+            <h3 className="flex items-center gap-2 text-sm font-bold">
+              <Clock className="size-4 text-primary" aria-hidden /> Setiap Tahap Memiliki Batas Waktu (SLA) Terukur
+            </h3>
+            <Link href="/panduan" className="text-xs font-semibold text-primary hover:underline">
+              Pelajari Standar Batas Waktu →
+            </Link>
           </div>
-          <AlurStatus className="mt-5" sla={{ diterima: "6 jam", diverifikasi: "2 jam", diteruskan: "6 jam", ditindaklanjuti: "3 hari" }} />
+          <AlurStatus
+            className="mt-4"
+            sla={{
+              diterima: "6 jam",
+              diverifikasi: "2 jam",
+              diteruskan: "6 jam",
+              ditindaklanjuti: "3 hari",
+            }}
+          />
         </div>
       </section>
 
-      {/* Statistik platform */}
-      {statistik && (
-        <section aria-labelledby="judul-statistik" className="bg-primary text-primary-foreground">
-          <div className="kontainer py-12">
-            <div className="flex items-center justify-between gap-3">
-              <h2 id="judul-statistik" className="text-xl font-bold sm:text-2xl">Kota Semarang</h2>
-              <LabelSumber jenis="simulasi" className="bg-primary-foreground/15 text-primary-foreground" />
-            </div>
-            <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-3 lg:grid-cols-5">
-              {[
-                { jenis: "laporan_masuk" as const, label: "Laporan Masuk", nilai: angka(statistik.laporan_masuk) },
-                { jenis: "terverifikasi" as const, label: "Terverifikasi", nilai: persen(persenTerverifikasi) },
-                { jenis: "selesai" as const, label: "Kasus Selesai", nilai: persen(persenSelesai) },
-                { jenis: "tanggap" as const, label: "Waktu Tanggap", nilai: durasiJam(statistik.rata_jam_respons) },
-                { jenis: "kepuasan" as const, label: "Kepuasan Pelapor", nilai: statistik.kepuasan ? `${statistik.kepuasan.toLocaleString("id-ID")}/5` : "–" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <dt className="text-sm text-primary-foreground/80 flex items-center gap-1.5 font-medium">
-                    <InfoMetrik jenis={s.jenis}>
-                      <span className="underline decoration-dotted underline-offset-4 cursor-help text-white font-semibold">
-                        {s.label}
-                      </span>
-                    </InfoMetrik>
-                  </dt>
-                  <dd className="angka mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">{s.nilai}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
-      )}
-
-      {/* Prioritas inspeksi + contoh baik + cari sekolah */}
-      <section aria-labelledby="judul-prioritas" className="kontainer grid gap-6 py-16 lg:grid-cols-[1.5fr_1fr]">
-        <div className="rounded-3xl border bg-card p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <h2 id="judul-prioritas" className="flex items-center gap-2 text-xl font-bold">
-              <Radar className="size-5 text-primary" aria-hidden /> Prioritas inspeksi
+      {/* Ajakan Akhir & Saluran Darurat Medis 119 */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col items-start gap-6 rounded-3xl bg-foreground p-8 text-background sm:flex-row sm:items-center sm:justify-between sm:p-10 shadow-xl">
+          <div className="space-y-1 max-w-xl">
+            <h2 className="text-2xl font-black sm:text-3xl tracking-tight">
+              Anak Mengalami Gejala Keracunan Makanan?
             </h2>
-            <LabelSumber jenis="laporan_warga_terverifikasi" />
+            <p className="text-sm text-background/80 leading-relaxed">
+              Utamakan keselamatan medis anak terlebih dahulu. Segera hubungi saluran darurat kesehatan atau bawa ke fasilitas kesehatan terdekat.
+            </p>
           </div>
-          <ol className="mt-5 divide-y">
-            {prioritas.map((s, i) => (
-              <li key={s.sppgId} className="py-3.5 first:pt-0 last:pb-0">
-                <div className="flex items-center gap-3">
-                  <span className="angka w-4 text-sm font-bold text-muted-foreground">{i + 1}</span>
-                  <Link href={`/data/sppg/${s.sppgId}`} className="min-w-0 flex-1 truncate font-semibold hover:text-primary">
-                    {s.nama}
-                  </Link>
-                  <BadgeRisiko skor={s.indeks} className="shrink-0" />
-                </div>
-                <ul className="mt-2 ml-7 flex flex-wrap gap-1.5">
-                  {s.alasan.map((a) => <li key={a.jenis}><ChipAlasan alasan={a} /></li>)}
-                </ul>
-              </li>
-            ))}
-          </ol>
-          <Link href="/insight" className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-            Peta risiko & rumus <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          {responsif && (
-            <Link href="/lacak/akuntabilitas" className="group rounded-3xl border border-risiko-rendah/20 bg-risiko-rendah-lembut p-5 transition hover:shadow-lg sm:p-6">
-              <p className="flex items-center gap-1.5 text-xs font-bold text-risiko-rendah"><ThumbsUp className="size-4" aria-hidden /> Paling responsif</p>
-              <h3 className="mt-1 text-xl font-bold">{responsif.nama}</h3>
-              <dl className="mt-4 grid grid-cols-3 gap-2 text-center">
-                {[
-                  { ikon: Check, nilai: persen(responsif.persen_selesai), label: "selesai" },
-                  { ikon: Clock, nilai: durasiJam(responsif.rata_jam_respons), label: "tanggap" },
-                  { ikon: Star, nilai: responsif.kepuasan?.toLocaleString("id-ID") ?? "–", label: "kepuasan" },
-                ].map((m) => (
-                  <div key={m.label} className="rounded-xl bg-card/80 p-2">
-                    <m.ikon className="mx-auto size-4 text-risiko-rendah" aria-hidden />
-                    <dd className="angka mt-1 text-base font-bold">{m.nilai}</dd>
-                    <dt className="text-xs font-semibold text-muted-foreground">{m.label}</dt>
-                  </div>
-                ))}
-              </dl>
-            </Link>
-          )}
-
-          <form action="/cari-sekolah" method="get" role="search" className="rounded-3xl border bg-card p-5 sm:p-6">
-            <label htmlFor="cari-sekolah-beranda" className="flex items-center gap-2 text-lg font-bold">
-              <School className="size-5 text-primary" aria-hidden /> Dapur sekolah anak aman?
-            </label>
-            <div className="mt-4 flex h-12 items-center gap-2 rounded-2xl border border-input bg-background pr-1.5 pl-3.5 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
-              <Search className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-              <input id="cari-sekolah-beranda" name="q" placeholder="Nama sekolah"
-                className="h-full min-w-0 flex-1 bg-transparent text-base placeholder:text-muted-foreground/80 focus:outline-none" />
-              <Bertip label="Cari" render={<button type="submit" className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90" />}>
-                <ArrowRight className="size-5" aria-hidden />
-              </Bertip>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      {/* Ajakan akhir */}
-      <section className="kontainer py-14">
-        <div className="flex flex-col items-start gap-6 rounded-3xl bg-foreground p-8 text-background sm:flex-row sm:items-center sm:justify-between sm:p-10 shadow-lg">
-          <div>
-            <h2 className="text-2xl font-bold sm:text-3xl">Temukan masalah makanan bergizi?</h2>
-            <p className="mt-1 text-sm text-background/80">Laporan Anda langsung diverifikasi dan diteruskan ke dapur penanggung jawab.</p>
-          </div>
-          <div className="flex w-full gap-3 sm:w-auto">
-            <Link href="/lapor" className={cn(buttonVariants({ size: "xl" }), "flex-1 bg-background text-foreground hover:bg-background/90 font-bold sm:flex-none")}>
-              <Megaphone aria-hidden /> Buat Laporan
-            </Link>
-            <a href="tel:119" className={cn(buttonVariants({ size: "xl", variant: "outline" }), "border-background/30 bg-transparent text-background hover:bg-background/10 font-bold hover:text-background")}>
-              <Phone aria-hidden /> Darurat 119
+          <div className="flex w-full flex-wrap gap-3 sm:w-auto">
+            <a
+              href="tel:119"
+              className={cn(
+                buttonVariants({ size: "xl" }),
+                "flex-1 sm:flex-none rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold h-12 px-6 shadow-md gap-2"
+              )}
+            >
+              <Phone className="size-5" aria-hidden /> Darurat Medis 119
             </a>
+            <Link
+              href="/lapor"
+              className={cn(
+                buttonVariants({ size: "xl", variant: "outline" }),
+                "flex-1 sm:flex-none rounded-2xl border-background/30 bg-background/10 hover:bg-background/20 text-background font-bold h-12 px-6 gap-2"
+              )}
+            >
+              <Megaphone className="size-5" aria-hidden /> Buat Laporan Kasus
+            </Link>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -13,6 +13,7 @@ import { AksiVerifikasi } from "@/components/panel/aksi-verifikasi";
 import { IKON_MODE, Kredibilitas } from "@/components/panel/baris";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ambilLaporanPanel, type FotoPanel } from "@/lib/data/panel";
+import { klasifikasiOtentisitasAnn } from "@/lib/ai/ann-verifikasi";
 import { angka, tanggalJam } from "@/lib/format";
 import { KATEGORI, MODE_IDENTITAS, STATUS, type Kategori } from "@/lib/label";
 import { wajibPeran } from "@/lib/sesi";
@@ -86,6 +87,22 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
   const ai = l.klasifikasi_otomatis as { kategori_saran?: Kategori; urgensi?: string; cocok?: string[]; metode?: string; alasan?: string; model?: string; yakin?: number; diperiksa_ulang?: boolean } | null;
   const sekolah = l.sekolah!;
 
+  // Evaluasi Model Machine Learning Multimodal ANN (Non-LLM)
+  const evaluasiAnn = klasifikasiOtentisitasAnn({
+    deskripsi: l.deskripsi,
+    jumlahTerdampak: l.jumlah_terdampak,
+    kategoriPelapor: l.kategori,
+    terverifikasi: identitas?.terverifikasi ?? false,
+    kapasitasSiswaSekolah: sekolah.jumlah_siswa,
+    fotoExif: foto[0]?.exif
+      ? {
+          adaExif: true,
+          waktuFotoCocok: komponen?.waktu_foto_cocok ?? true,
+          lokasiGpsCocok: komponen?.lokasi_foto_cocok ?? true,
+        }
+      : null,
+  });
+
   return (
     <div className="space-y-5">
       <header className="space-y-3">
@@ -129,23 +146,56 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
               )}
             </dl>
             <p className="mt-4 rounded-2xl bg-muted/50 p-4 text-sm leading-relaxed whitespace-pre-line">{l.deskripsi}</p>
-            {ai?.kategori_saran && (
-              <p className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-                <span className="inline-flex items-center gap-1 rounded-full bg-info-lembut px-2 py-1 font-semibold text-info">
-                  <Sparkles className="size-3.5" aria-hidden /> Saran {ai.metode === "ai" ? "AI" : "otomatis"}
+
+            {/* Model Machine Learning Multimodal ANN: Deteksi Keaslian & Rekomendasi Non-LLM */}
+            <div className="mt-5 rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <Sparkles className="size-3.5" aria-hidden /> Model Machine Learning Multimodal ANN (Feedforward MLP)
                 </span>
-                <span className={cn("font-semibold", ai.kategori_saran !== l.kategori && "text-risiko-sedang")}>
-                  {KATEGORI[ai.kategori_saran].label}{ai.kategori_saran !== l.kategori ? " (berbeda dari pilihan pelapor)" : ""}
+                <span
+                  className={cn(
+                    "rounded-full px-2.5 py-0.5 text-xs font-black border",
+                    evaluasiAnn.skorOtentisitas >= 70
+                      ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-700 dark:text-emerald-300"
+                      : evaluasiAnn.skorOtentisitas >= 40
+                      ? "bg-amber-500/15 border-amber-500/30 text-amber-700 dark:text-amber-300"
+                      : "bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-300"
+                  )}
+                >
+                  Keaslian: {evaluasiAnn.skorOtentisitas}% · {evaluasiAnn.klasifikasiKeaslian}
                 </span>
-                {ai.urgensi && ai.urgensi !== "normal" && <span className="text-muted-foreground">· urgensi {ai.urgensi}</span>}
-                {ai.alasan && <span className="w-full text-muted-foreground">{ai.alasan}</span>}
-                {ai.metode === "ai" && (
-                  <span className="w-full text-[11px] text-muted-foreground" title="Analisis klasifikasi teks laporan menggunakan kecerdasan buatan terpadu PantauGizi">
-                    AI PMBGM{ai.yakin != null ? ` · Tingkat keyakinan ${Math.round(ai.yakin * 100)}%` : ""}{ai.diperiksa_ulang ? " · diverifikasi ganda" : ""}
-                  </span>
-                )}
-              </p>
-            )}
+              </div>
+
+              {/* Rincian 7 Fitur Vektor Input Model ANN */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t text-[11px]">
+                <div className="rounded-xl bg-card/80 p-2 border">
+                  <span className="text-muted-foreground block">Leksikon MBG</span>
+                  <span className="font-bold text-foreground">{evaluasiAnn.radarFitur.leksikonMenu}%</span>
+                </div>
+                <div className="rounded-xl bg-card/80 p-2 border">
+                  <span className="text-muted-foreground block">Gejala Anomali</span>
+                  <span className="font-bold text-foreground">{evaluasiAnn.radarFitur.anomaliGejala}%</span>
+                </div>
+                <div className="rounded-xl bg-card/80 p-2 border">
+                  <span className="text-muted-foreground block">Kesesuaian Waktu Foto</span>
+                  <span className="font-bold text-foreground">{evaluasiAnn.radarFitur.integritasWaktuFoto}%</span>
+                </div>
+                <div className="rounded-xl bg-card/80 p-2 border">
+                  <span className="text-muted-foreground block">Radius GPS Foto</span>
+                  <span className="font-bold text-foreground">{evaluasiAnn.radarFitur.integritasGpsFoto}%</span>
+                </div>
+              </div>
+
+              <div className="text-xs text-muted-foreground space-y-1">
+                <p>
+                  <strong className="text-foreground">Saran Klasifikasi:</strong> {KATEGORI[evaluasiAnn.kategoriSaran].label} · Urgensi: <strong className={evaluasiAnn.urgensi !== "normal" ? "text-rose-600 dark:text-rose-400" : ""}>{evaluasiAnn.urgensi}</strong>
+                </p>
+                <p className="text-[11px] leading-relaxed italic">
+                  &ldquo;{evaluasiAnn.rekomendasiVerifikator}&rdquo;
+                </p>
+              </div>
+            </div>
           </section>
 
           <section aria-labelledby="judul-bukti" className="rounded-3xl border bg-card p-5">
