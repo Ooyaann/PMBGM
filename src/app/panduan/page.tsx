@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, Megaphone, ShieldCheck, Sliders, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { DasborPanduan } from "@/components/panduan/dasbor-panduan";
 import { SimulatorDss } from "@/components/panduan/simulator-dss";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Panduan, Metodologi, & Simulator DSS",
@@ -28,12 +29,12 @@ export default function HalamanPanduan() {
             Panduan resmi alur pengawasan Makan Bergizi Gratis (MBG), tugas instansi, hingga simulasi interaktif perhitungan risiko SPPG.
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-1">
-            <Button size="default" className="rounded-xl font-bold shadow-xs" render={<Link href="/lapor" />}>
+            <Link href="/lapor" className={cn(buttonVariants({ size: "default" }), "rounded-xl font-bold shadow-xs")}>
               <Megaphone className="size-4" aria-hidden /> Buat Laporan
-            </Button>
-            <Button variant="outline" size="default" className="rounded-xl font-semibold bg-card" render={<Link href="#simulator-dss" />}>
+            </Link>
+            <Link href="#simulator-dss" className={cn(buttonVariants({ variant: "outline", size: "default" }), "rounded-xl font-semibold bg-card")}>
               <Sliders className="size-4 text-primary" aria-hidden /> Coba Simulator DSS
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

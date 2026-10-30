@@ -30,7 +30,7 @@ import {
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -753,13 +753,13 @@ export function DasborPanduan() {
                 Tutup Panduan
               </Button>
               {kartuTerpilih.tautanAksi && (
-                <Button
-                  size="lg"
-                  className="rounded-xl font-bold"
-                  render={<Link href={kartuTerpilih.tautanAksi.href} onClick={() => setKartuTerpilih(null)} />}
+                <Link
+                  href={kartuTerpilih.tautanAksi.href}
+                  onClick={() => setKartuTerpilih(null)}
+                  className={cn(buttonVariants({ size: "lg" }), "rounded-xl font-bold")}
                 >
                   {kartuTerpilih.tautanAksi.label} <ArrowRight className="size-4 ml-1.5" />
-                </Button>
+                </Link>
               )}
             </div>
           </DialogContent>
