@@ -6,18 +6,16 @@ import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   BarChart3,
-  BookOpen,
+  Building2,
   Camera,
   CheckCircle2,
   Clock,
   Compass,
   EyeOff,
-  FileText,
   Globe,
   HelpCircle,
   Lock,
   Megaphone,
-  Phone,
   Radar,
   RotateCcw,
   Scale,
@@ -26,9 +24,10 @@ import {
   ShieldAlert,
   ShieldCheck,
   Siren,
+  Sliders,
   Sparkles,
-  Star,
   Users,
+  Utensils,
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
@@ -58,13 +57,13 @@ interface ItemPanduan {
 }
 
 const KATEGORI = [
-  { id: "semua", label: "Semua Topik" },
-  { id: "lapor", label: "Cara Melapor" },
-  { id: "aktor", label: "Pihak Penanggung Jawab" },
-  { id: "metrik", label: "Arti Angka & Label" },
+  { id: "semua", label: "Semua" },
+  { id: "lapor", label: "Alur Lapor" },
+  { id: "aktor", label: "Instansi" },
+  { id: "metrik", label: "Indeks Risiko" },
   { id: "keamanan", label: "Anti-Manipulasi" },
-  { id: "status", label: "Status Tiket & SLA" },
-  { id: "pintasan", label: "Peta Fitur" },
+  { id: "status", label: "Status & SLA" },
+  { id: "pintasan", label: "Pintasan" },
 ] as const;
 
 export function DasborPanduan() {
@@ -76,7 +75,6 @@ export function DasborPanduan() {
   const [kartuTerpilih, setKartuTerpilih] = useState<ItemPanduan | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Pastikan posisi scroll modal dialog selalu direset ke paling atas (scrollTop = 0) saat dibuka
   useEffect(() => {
     if (kartuTerpilih) {
       const timer = setTimeout(() => {
@@ -89,282 +87,188 @@ export function DasborPanduan() {
   }, [kartuTerpilih]);
 
   const DAFTAR_KARTU: ItemPanduan[] = [
-    // 1. CARA MELAPOR DENGAN ELEMEN UI WEB ASLI
+    // 1. CARA MELAPOR
     {
       id: "cara-melapor",
       kategori: "lapor",
-      judul: "Alur & Tahapan Melapor",
-      ringkasan: "Panduan 4 langkah praktis dengan tombol & menu yang sama persis seperti di web.",
-      badgeRingkas: ["4 Langkah Mudah", "Tiruan UI Web Asli", "Mode Darurat 2 Jam"],
+      judul: "Alur Pelaporan",
+      ringkasan: "4 langkah mudah melapor dengan foto bukti & kode tiket unik.",
+      badgeRingkas: ["4 Langkah", "Kode Tiket"],
       ikon: Megaphone,
       warnaAksen: "text-emerald-700 dark:text-emerald-400",
       warnaBg: "bg-emerald-500/10",
       warnaBorder: "hover:border-emerald-500/50 hover:shadow-emerald-500/10",
-      kataKunci: ["lapor", "foto", "bukti", "anonim", "rahasia", "tiket", "keracunan", "darurat", "tahapan"],
-      tautanAksi: { href: "/lapor", label: "Buka Formulir Lapor Sekarang" },
+      kataKunci: ["lapor", "foto", "bukti", "anonim", "rahasia", "tiket", "keracunan", "darurat"],
+      tautanAksi: { href: "/lapor", label: "Formulir Lapor" },
       kontenModal: (
-        <div className="space-y-6 text-foreground">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Ikuti 4 langkah visual berikut. Tampilan tombol dan menu di panduan ini dibuat sama dengan yang ada di layar Anda:
-          </p>
-
-          <div className="space-y-4">
-            {/* LANGKAH 1 */}
-            <div className="rounded-2xl border bg-muted/20 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-extrabold text-white">
-                  1
-                </span>
-                <h4 className="text-sm sm:text-base font-bold text-foreground">
-                  Klik Tombol &quot;Lapor Masalah&quot; di Navigasi Atas atau Beranda
-                </h4>
-              </div>
-              <div className="ml-9 space-y-2">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Pada navigasi atas atau beranda website, klik tombol lapor berikut:
-                </p>
-                {/* Mockup UI Web Asli Tombol Lapor */}
-                <div className="w-fit flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-3.5 py-2 text-white shadow-sm pointer-events-none">
-                  <Megaphone className="size-4" />
-                  <span className="text-xs font-bold">Lapor Masalah MBG</span>
-                  <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full">Aman</span>
-                </div>
-              </div>
-            </div>
-
-            {/* LANGKAH 2 */}
-            <div className="rounded-2xl border bg-muted/20 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-extrabold text-white">
-                  2
-                </span>
-                <h4 className="text-sm sm:text-base font-bold text-foreground">
-                  Ambil Foto Makanan & Cari Nama Sekolah
-                </h4>
-              </div>
-              <div className="ml-9 space-y-2">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Unggah bukti foto porsi atau makanan basi, lalu ketik nama sekolah anak Anda:
-                </p>
-                {/* Mockup UI Web Asli Form Foto & Sekolah */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-md pointer-events-none">
-                  <div className="flex items-center gap-2 rounded-xl border border-dashed border-emerald-500/40 bg-emerald-500/5 p-2.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300">
-                    <Camera className="size-4" /> Unggah Foto Makanan
-                  </div>
-                  <div className="flex items-center gap-2 rounded-xl border bg-card p-2.5 text-xs text-muted-foreground">
-                    <School className="size-4 text-primary" /> SD Negeri Tembalang 01
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* LANGKAH 3 */}
-            <div className="rounded-2xl border bg-muted/20 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-extrabold text-white">
-                  3
-                </span>
-                <h4 className="text-sm sm:text-base font-bold text-foreground">
-                  Pilih Tingkat Privasi Identitas Anda
-                </h4>
-              </div>
-              <div className="ml-9 space-y-2">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Pilih apakah nama Anda tampil terbuka, dirahasiakan, atau disamarkan:
-                </p>
-                {/* Mockup UI Web Asli Pilihan Privasi */}
-                <div className="flex flex-wrap gap-2 pointer-events-none">
-                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold inline-flex items-center gap-1.5">
-                    <Globe className="size-3.5 text-muted-foreground" /> Nama Terbuka
-                  </span>
-                  <span className="rounded-xl border border-primary bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary inline-flex items-center gap-1.5">
-                    <Lock className="size-3.5 text-primary" /> Rahasia (Direkomendasikan)
-                  </span>
-                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold inline-flex items-center gap-1.5">
-                    <EyeOff className="size-3.5 text-muted-foreground" /> Anonim
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* LANGKAH 4 */}
-            <div className="rounded-2xl border bg-muted/20 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-extrabold text-white">
-                  4
-                </span>
-                <h4 className="text-sm sm:text-base font-bold text-foreground">
-                  Simpan Kode Tiket untuk Melacak Status
-                </h4>
-              </div>
-              <div className="ml-9 space-y-2">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  Setelah terkirim, Anda menerima kode tiket unik untuk dipantau kapan saja:
-                </p>
-                {/* Mockup UI Web Asli Kartu Tiket */}
-                <div className="flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3 max-w-sm pointer-events-none">
-                  <span className="font-mono text-sm font-extrabold text-emerald-800 dark:text-emerald-300">
-                    #MBG-7821
-                  </span>
-                  <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white">
-                    Status: Diterima
-                  </span>
-                </div>
-              </div>
+        <div className="space-y-3 text-foreground">
+          {/* LANGKAH 1 */}
+          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
+              1
+            </span>
+            <div className="space-y-0.5">
+              <h4 className="font-bold text-sm text-foreground">Buka Menu Lapor</h4>
+              <p className="text-xs text-muted-foreground">
+                Klik tombol &quot;Lapor Masalah&quot; di navigasi atas atau beranda.
+              </p>
             </div>
           </div>
 
-          {/* Banner Tombol Darurat */}
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 flex items-center justify-between gap-3 text-rose-950 dark:text-rose-200">
-            <div className="flex items-center gap-2.5">
-              <Siren className="size-5 text-rose-600 shrink-0 animate-pulse" />
-              <div className="text-xs sm:text-sm">
-                <strong>Anak Muntah / Keracunan?</strong>
-                <p className="text-[11px] sm:text-xs text-muted-foreground">
-                  Gunakan tombol darurat merah di pojok kanan bawah web untuk respon medis 2 jam.
-                </p>
-              </div>
+          {/* LANGKAH 2 */}
+          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
+              2
+            </span>
+            <div className="space-y-0.5">
+              <h4 className="font-bold text-sm text-foreground">Unggah Foto & Pilih Sekolah</h4>
+              <p className="text-xs text-muted-foreground">
+                Sertakan dokumentasi menu bermasalah dan pilih sekolah penerima MBG.
+              </p>
+            </div>
+          </div>
+
+          {/* LANGKAH 3 */}
+          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
+              3
+            </span>
+            <div className="space-y-1">
+              <h4 className="font-bold text-sm text-foreground">Pilih Mode Privasi</h4>
+              <p className="text-xs text-muted-foreground">
+                Pilih identitas: <strong>Nama Terbuka</strong>, <strong>Rahasia</strong> (hanya verifikator), atau <strong>Anonim</strong>.
+              </p>
+            </div>
+          </div>
+
+          {/* LANGKAH 4 */}
+          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
+              4
+            </span>
+            <div className="space-y-0.5">
+              <h4 className="font-bold text-sm text-foreground">Simpan Kode Tiket</h4>
+              <p className="text-xs text-muted-foreground">
+                Gunakan kode tiket unik (misal #MBG-7821) untuk memantau proses tindak lanjut.
+              </p>
+            </div>
+          </div>
+
+          {/* Banner Darurat */}
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3.5 flex items-center gap-3 text-rose-950 dark:text-rose-200">
+            <Siren className="size-5 text-rose-600 shrink-0" />
+            <div className="text-xs">
+              <strong className="block text-foreground">Dugaan Keracunan Pangan?</strong>
+              <span className="text-muted-foreground">Pilih kategori keracunan untuk penanganan medis darurat prioritas 2 jam.</span>
             </div>
           </div>
         </div>
       ),
     },
 
-    // 2. PIHAK PENANGGUNG JAWAB DENGAN BAGAN VISUAL
+    // 2. PIHAK PENANGGUNG JAWAB
     {
       id: "pihak-penanggung-jawab",
       kategori: "aktor",
-      judul: "Siapa yang Menangani Laporan?",
-      ringkasan: "Alur penanganan otomatis antara Verifikator, Dapur SPPG, Dinkes, dan Korwil BGN.",
-      badgeRingkas: ["Verifikator Independen", "Dapur SPPG", "Dinas Kesehatan", "Korwil BGN"],
+      judul: "Peran & Instansi",
+      ringkasan: "Pembagian tugas Verifikator, Dapur SPPG, Dinkes, dan Korwil BGN.",
+      badgeRingkas: ["4 Instansi", "Otomatis"],
       ikon: Users,
       warnaAksen: "text-teal-700 dark:text-teal-400",
       warnaBg: "bg-teal-500/10",
       warnaBorder: "hover:border-teal-500/50 hover:shadow-teal-500/10",
-      kataKunci: ["aktor", "pihak", "verifikator", "sppg", "dinkes", "bgn", "wewenang", "independen", "penanggung"],
-      tautanAksi: { href: "/tentang", label: "Pelajari Tata Kelola Lengkap" },
+      kataKunci: ["aktor", "pihak", "verifikator", "sppg", "dinkes", "bgn", "wewenang", "instansi"],
+      tautanAksi: { href: "/tentang", label: "Tentang Tata Kelola" },
       kontenModal: (
-        <div className="space-y-6 text-foreground">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Laporan Anda tidak ditahan oleh birokrasi manual. Begitu disetujui verifikator, sistem langsung meneruskannya ke instansi yang berwenang:
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-2xl border bg-card p-4 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-400 font-bold text-xs">
-                  1
-                </span>
-                <span className="font-bold text-sm text-foreground">Verifikator Wilayah</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Tim independen menyaring foto bukti & memastikan bukan hoaks sebelum dikirim ke dapur.
-              </p>
+        <div className="grid gap-2.5 sm:grid-cols-2 text-foreground">
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="size-4 text-teal-600" />
+              <h4 className="font-bold text-sm">Verifikator Wilayah</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Memvalidasi foto bukti dan memastikan laporan bebas dari hoaks/spam sebelum diteruskan.
+            </p>
+          </div>
 
-            <div className="rounded-2xl border bg-card p-4 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold text-xs">
-                  2
-                </span>
-                <span className="font-bold text-sm text-foreground">Pengelola Dapur SPPG</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Wajib memperbaiki porsi/kebersihan masakan & mengunggah foto perbaikan nyata.
-              </p>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Utensils className="size-4 text-amber-600" />
+              <h4 className="font-bold text-sm">Dapur Mitra SPPG</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Memperbaiki menu makanan dan mengunggah foto bukti perbaikan fisik ke sistem.
+            </p>
+          </div>
 
-            <div className="rounded-2xl border bg-card p-4 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-rose-500/15 text-rose-700 dark:text-rose-400 font-bold text-xs">
-                  3
-                </span>
-                <span className="font-bold text-sm text-foreground">Dinas Kesehatan Kota</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Investigasi medis keracunan, uji laboratorium sampel makanan, dan evaluasi izin SLHS.
-              </p>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Building2 className="size-4 text-rose-600" />
+              <h4 className="font-bold text-sm">Dinas Kesehatan</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Investigasi medis dugaan keracunan, pengujian laboratorium, dan penerbitan izin SLHS.
+            </p>
+          </div>
 
-            <div className="rounded-2xl border bg-card p-4 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 font-bold text-xs">
-                  4
-                </span>
-                <span className="font-bold text-sm text-foreground">Korwil BGN Wilayah</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Memantau kepatuhan batas waktu respon (SLA) dan menegur dapur yang lambat bertindak.
-              </p>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Clock className="size-4 text-indigo-600" />
+              <h4 className="font-bold text-sm">Korwil BGN</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Mengawasi kepatuhan batas waktu respon (SLA) dan koordinasi antarinstansi.
+            </p>
           </div>
         </div>
       ),
     },
 
-    // 3. KAMUS ANGKA & LABEL DENGAN CONTOH BADGE ASLI
+    // 3. KAMUS ANGKA & LABEL
     {
       id: "arti-angka-label",
       kategori: "metrik",
-      judul: "Kamus Angka, Label & Metrik",
-      ringkasan: "Penjelasan arti Skor Risiko, status SLHS, waktu tanggap, dan sinyal lonjakan.",
-      badgeRingkas: ["Skor Risiko 0–100", "Izin SLHS", "Waktu Tanggap", "Sinyal Lonjakan"],
+      judul: "Indeks Risiko & Label",
+      ringkasan: "Arti skor risiko 0–100, sertifikat SLHS, dan sinyal lonjakan kasus.",
+      badgeRingkas: ["Skor 0–100", "Izin SLHS"],
       ikon: HelpCircle,
       warnaAksen: "text-blue-700 dark:text-blue-400",
       warnaBg: "bg-blue-500/10",
       warnaBorder: "hover:border-blue-500/50 hover:shadow-blue-500/10",
-      kataKunci: ["metrik", "skor", "risiko", "slhs", "tanggap", "selesai", "terlambat", "sinyal", "arti", "kamus"],
-      tautanAksi: { href: "/metodologi", label: "Lihat Rumus Matematis Terbuka" },
+      kataKunci: ["metrik", "skor", "risiko", "slhs", "saw", "arti", "kamus"],
+      tautanAksi: { href: "/metodologi", label: "Rumus Metodologi" },
       kontenModal: (
-        <div className="space-y-6 text-foreground">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Berikut arti warna dan angka yang tampil di profil dapur anak Anda:
-          </p>
-
-          <div className="space-y-4">
-            {/* Skor Risiko */}
-            <div className="rounded-2xl border bg-card p-4 space-y-2">
-              <h4 className="text-sm font-bold text-foreground">1. Indeks Risiko Dapur (Skor 0–100)</h4>
-              <p className="text-xs text-muted-foreground">
-                Makin kecil skornya, makin aman dan sehat dapurnya:
-              </p>
-              {/* Mockup Badge Asli */}
-              <div className="flex flex-wrap items-center gap-2 pointer-events-none">
-                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                  ● 24 · Rendah (Aman)
-                </span>
-                <span className="rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-400">
-                  ● 58 · Sedang (Waspada)
-                </span>
-                <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
-                  ● 86 · Tinggi (Evaluasi)
-                </span>
-              </div>
+        <div className="space-y-3 text-foreground">
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
+            <h4 className="font-bold text-sm flex items-center justify-between">
+              <span>Indeks Risiko SPPG (Skor 0–100)</span>
+              <span className="text-xs text-muted-foreground font-normal">Metode SAW</span>
+            </h4>
+            <div className="flex flex-wrap gap-2 text-xs font-semibold">
+              <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-emerald-700 dark:text-emerald-400">
+                0–34,9 · Rendah (Aman)
+              </span>
+              <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-amber-700 dark:text-amber-400">
+                35–59,9 · Sedang (Waspada)
+              </span>
+              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-rose-700 dark:text-rose-400">
+                60–100 · Tinggi (Evaluasi)
+              </span>
             </div>
+          </div>
 
-            {/* SLHS */}
-            <div className="rounded-2xl border bg-card p-4 space-y-2">
-              <h4 className="text-sm font-bold text-foreground">2. Izin SLHS Dinas Kesehatan</h4>
-              <p className="text-xs text-muted-foreground">
-                Sertifikat kelayakan kebersihan air, alat masak, dan tempat saji:
-              </p>
-              <div className="flex flex-wrap items-center gap-2 pointer-events-none">
-                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                  <ShieldCheck className="size-3.5" /> SLHS Berlaku (Lolos Uji)
-                </span>
-                <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold text-rose-700 dark:text-rose-400 flex items-center gap-1">
-                  <ShieldAlert className="size-3.5" /> Tanpa SLHS (Belum Lolos)
-                </span>
-              </div>
-            </div>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
+            <h4 className="font-bold text-sm">Sertifikat SLHS (Dinkes)</h4>
+            <p className="text-xs text-muted-foreground">
+              Sertifikat Laik Higiene Sanitasi resmi untuk memastikan standar kebersihan dapur dan peralatan makan.
+            </p>
+          </div>
 
-            {/* Sinyal Lonjakan */}
-            <div className="rounded-2xl border bg-card p-4 space-y-2">
-              <h4 className="text-sm font-bold text-foreground">3. Sinyal Peringatan Dini</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Muncul bila aduan warga melonjak lebih dari 3× rata-rata harian dalam 24 jam untuk mendeteksi potensi keracunan massal sejak dini.
-              </p>
-            </div>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
+            <h4 className="font-bold text-sm">Sinyal Peringatan Dini</h4>
+            <p className="text-xs text-muted-foreground">
+              Aktif jika ada lonjakan aduan &gt;3× rata-rata harian dalam 24 jam untuk mendeteksi wabah insidental secara dini.
+            </p>
           </div>
         </div>
       ),
@@ -374,61 +278,55 @@ export function DasborPanduan() {
     {
       id: "jaminan-anti-manipulasi",
       kategori: "keamanan",
-      judul: "Jaminan Anti-Manipulasi Tindakan",
-      ringkasan: "Bagaimana sistem memastikan dapur sungguh-sungguh memperbaiki masalah di lapangan.",
-      badgeRingkas: ["Foto Fisik Wajib", "Masa Sanggah 3 Hari", "Kunci BAP Dinkes", "Jejak Audit Kekal"],
+      judul: "Anti-Manipulasi",
+      ringkasan: "Validasi foto wajib, masa sanggah 3 hari, dan kunci BAP Dinkes.",
+      badgeRingkas: ["Foto Fisik", "Kunci BAP"],
       ikon: ShieldCheck,
       warnaAksen: "text-purple-700 dark:text-purple-400",
       warnaBg: "bg-purple-500/10",
       warnaBorder: "hover:border-purple-500/50 hover:shadow-purple-500/10",
-      kataKunci: ["manipulasi", "transparansi", "bukti", "foto", "sanggah", "bap", "dinkes", "rating", "keamanan"],
-      tautanAksi: { href: "/lacak/akuntabilitas", label: "Lihat Papan Akuntabilitas Terbuka" },
+      kataKunci: ["manipulasi", "foto", "sanggah", "bap", "dinkes", "rating", "keamanan"],
+      tautanAksi: { href: "/lacak/akuntabilitas", label: "Papan Akuntabilitas" },
       kontenModal: (
-        <div className="space-y-6 text-foreground">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Dapur tidak bisa menutup aduan hanya dengan kata-kata. Sistem mengunci penyelesaian dengan 4 aturan wajib:
-          </p>
-
-          <div className="space-y-3">
-            <div className="flex items-start gap-3 rounded-2xl border bg-card p-3.5">
-              <Camera className="size-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-sm text-foreground block">1. Wajib Unggah Foto Fisik Perbaikan</strong>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Foto alat yang dibersihkan atau menu baru langsung tampil di linimasa publik kasus.
-                </p>
-              </div>
+        <div className="grid gap-2.5 sm:grid-cols-2 text-foreground">
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Camera className="size-4 text-primary" />
+              <h4 className="font-bold text-sm">Foto Fisik Wajib</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Dapur wajib mengunggah foto perbaikan nyata sebelum status kasus dapat diselesaikan.
+            </p>
+          </div>
 
-            <div className="flex items-start gap-3 rounded-2xl border bg-card p-3.5">
-              <RotateCcw className="size-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-sm text-foreground block">2. Hak Masa Sanggah 3 Hari bagi Pelapor</strong>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Pelapor berhak mengonfirmasi hasil, memberi bintang 1–5, atau membuka sanggahan bila makanan masih bermasalah.
-                </p>
-              </div>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <RotateCcw className="size-4 text-primary" />
+              <h4 className="font-bold text-sm">Masa Sanggah 3 Hari</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Pelapor berhak mengonfirmasi kepuasan atau membuka sanggahan jika masalah belum tuntas.
+            </p>
+          </div>
 
-            <div className="flex items-start gap-3 rounded-2xl border bg-card p-3.5">
-              <Lock className="size-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-sm text-foreground block">3. Kasus Keracunan Dikunci Dinkes</strong>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Dapur tidak bisa menutup kasus keracunan sebelum petugas Dinas Kesehatan menerbitkan Berita Acara Pemeriksaan (BAP).
-                </p>
-              </div>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Lock className="size-4 text-primary" />
+              <h4 className="font-bold text-sm">Kunci BAP Dinkes</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Kasus keracunan hanya dapat ditutup setelah Berita Acara Pemeriksaan (BAP) resmi diterbitkan.
+            </p>
+          </div>
 
-            <div className="flex items-start gap-3 rounded-2xl border bg-card p-3.5">
-              <Scale className="size-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-sm text-foreground block">4. Catatan Waktu Permanen (Immutable)</strong>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Setiap riwayat perubahan status dan jam tindakan tercatat permanen di database tanpa bisa diedit diam-diam.
-                </p>
-              </div>
+          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
+            <div className="flex items-center gap-2">
+              <Scale className="size-4 text-primary" />
+              <h4 className="font-bold text-sm">Audit Trail Permanen</h4>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Setiap catatan waktu dan perubahan status tersimpan otomatis tanpa bisa dimanipulasi.
+            </p>
           </div>
         </div>
       ),
@@ -438,42 +336,36 @@ export function DasborPanduan() {
     {
       id: "status-tiket-sla",
       kategori: "status",
-      judul: "Fase Status Tiket & Batas Waktu",
-      ringkasan: "Ketahui 5 tahapan penanganan tiket dan batas waktu standar layanan resmi (SLA).",
-      badgeRingkas: ["Diterima (6 Jam)", "Diverifikasi (2 Jam)", "Diteruskan (6 Jam)", "Tindak Lanjut (3 Hari)"],
+      judul: "Status Tiket & SLA",
+      ringkasan: "5 fase penanganan tiket dan batas waktu standar layanan resmi.",
+      badgeRingkas: ["5 Status", "Batas SLA"],
       ikon: Clock,
       warnaAksen: "text-amber-700 dark:text-amber-400",
       warnaBg: "bg-amber-500/10",
       warnaBorder: "hover:border-amber-500/50 hover:shadow-amber-500/10",
-      kataKunci: ["status", "sla", "tiket", "lacak", "diterima", "diverifikasi", "diteruskan", "ditindaklanjuti", "selesai"],
-      tautanAksi: { href: "/lacak", label: "Cek Status Tiket Anda" },
+      kataKunci: ["status", "sla", "tiket", "lacak", "diterima", "diverifikasi", "selesai"],
+      tautanAksi: { href: "/lacak", label: "Lacak Tiket" },
       kontenModal: (
-        <div className="space-y-6 text-foreground">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Setiap aduan yang masuk dipantau batas waktunya oleh sistem secara transparan:
-          </p>
-
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between rounded-2xl border bg-card p-3 text-xs sm:text-sm">
-              <span className="font-bold text-foreground">1. Diterima</span>
-              <span className="text-muted-foreground">Maksimal 6 Jam (2 Jam Darurat)</span>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl border bg-card p-3 text-xs sm:text-sm">
-              <span className="font-bold text-foreground">2. Diverifikasi</span>
-              <span className="text-muted-foreground">Maksimal 2 Jam oleh Tim Netral</span>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl border bg-card p-3 text-xs sm:text-sm">
-              <span className="font-bold text-foreground">3. Diteruskan</span>
-              <span className="text-muted-foreground">Maksimal 6 Jam ke SPPG & Dinkes</span>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl border bg-card p-3 text-xs sm:text-sm">
-              <span className="font-bold text-foreground">4. Ditindaklanjuti</span>
-              <span className="text-muted-foreground">Maksimal 3 Hari Perbaikan Dapur</span>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl border border-primary/30 bg-primary/10 p-3 text-xs sm:text-sm font-bold text-primary">
-              <span>5. Selesai & Masa Sanggah</span>
-              <span>3 Hari Hak Penilaian Pelapor</span>
-            </div>
+        <div className="space-y-2 text-foreground">
+          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
+            <span className="font-bold">1. Diterima</span>
+            <span className="text-muted-foreground font-mono">Maks. 6 Jam (Darurat: 2 Jam)</span>
+          </div>
+          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
+            <span className="font-bold">2. Diverifikasi</span>
+            <span className="text-muted-foreground font-mono">Maks. 2 Jam (Oleh Tim Netral)</span>
+          </div>
+          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
+            <span className="font-bold">3. Diteruskan</span>
+            <span className="text-muted-foreground font-mono">Maks. 6 Jam ke SPPG / Dinkes</span>
+          </div>
+          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
+            <span className="font-bold">4. Ditindaklanjuti</span>
+            <span className="text-muted-foreground font-mono">Maks. 3 Hari Perbaikan Dapur</span>
+          </div>
+          <div className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 p-3 text-xs sm:text-sm font-bold text-primary">
+            <span>5. Selesai</span>
+            <span className="font-mono">3 Hari Hak Sanggah Pelapor</span>
           </div>
         </div>
       ),
@@ -483,83 +375,77 @@ export function DasborPanduan() {
     {
       id: "peta-fitur-situs",
       kategori: "pintasan",
-      judul: "Pintasan Akses & Peta Informasi",
-      ringkasan: "Akses cepat ke seluruh fitur pengawasan, profil dapur, peta risiko, dan unduh data.",
-      badgeRingkas: ["Cari Sekolah", "Direktori SPPG", "Peta Risiko", "Unduh Data CSV"],
+      judul: "Pintasan Modul",
+      ringkasan: "Akses cepat ke pencarian sekolah, direktori SPPG, dan data terbuka.",
+      badgeRingkas: ["Data Terbuka", "Peta Risiko"],
       ikon: Compass,
       warnaAksen: "text-cyan-700 dark:text-cyan-400",
       warnaBg: "bg-cyan-500/10",
       warnaBorder: "hover:border-cyan-500/50 hover:shadow-cyan-500/10",
-      kataKunci: ["pintasan", "fitur", "cari", "sekolah", "data", "insight", "faq", "privasi", "unduh"],
+      kataKunci: ["pintasan", "fitur", "cari", "sekolah", "data", "unduh"],
       kontenModal: (
-        <div className="space-y-4">
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Pilih menu yang ingin Anda kunjungi secara langsung:
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <Link
+            href="/cari-sekolah"
+            onClick={() => setKartuTerpilih(null)}
+            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <School className="size-4" />
+            </span>
+            <div>
+              <span className="block font-bold text-xs text-foreground">Cari Sekolah</span>
+              <span className="text-[11px] text-muted-foreground">Ketahui SPPG mitra penyuplai</span>
+            </div>
+          </Link>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Link
-              href="/cari-sekolah"
-              onClick={() => setKartuTerpilih(null)}
-              className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 transition hover:border-primary hover:shadow-sm"
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <School className="size-5" />
-              </span>
-              <div>
-                <span className="block font-bold text-sm text-foreground">Cari Sekolah Anak</span>
-                <span className="text-xs text-muted-foreground">Ketahui SPPG mitra penyuplai</span>
-              </div>
-            </Link>
+          <Link
+            href="/data/sppg"
+            onClick={() => setKartuTerpilih(null)}
+            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <UtensilsCrossed className="size-4" />
+            </span>
+            <div>
+              <span className="block font-bold text-xs text-foreground">Direktori Dapur SPPG</span>
+              <span className="text-[11px] text-muted-foreground">Cek izin sanitasi & skor risiko</span>
+            </div>
+          </Link>
 
-            <Link
-              href="/data/sppg"
-              onClick={() => setKartuTerpilih(null)}
-              className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 transition hover:border-primary hover:shadow-sm"
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <UtensilsCrossed className="size-5" />
-              </span>
-              <div>
-                <span className="block font-bold text-sm text-foreground">Direktori Dapur SPPG</span>
-                <span className="text-xs text-muted-foreground">Cek izin sanitasi & skor risiko</span>
-              </div>
-            </Link>
+          <Link
+            href="/insight"
+            onClick={() => setKartuTerpilih(null)}
+            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Radar className="size-4" />
+            </span>
+            <div>
+              <span className="block font-bold text-xs text-foreground">Peta Risiko SAW</span>
+              <span className="text-[11px] text-muted-foreground">Analisis zonasi risiko wilayah</span>
+            </div>
+          </Link>
 
-            <Link
-              href="/insight"
-              onClick={() => setKartuTerpilih(null)}
-              className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 transition hover:border-primary hover:shadow-sm"
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Radar className="size-5" />
-              </span>
-              <div>
-                <span className="block font-bold text-sm text-foreground">Peta Risiko Wilayah</span>
-                <span className="text-xs text-muted-foreground">Analisis prioritas kota</span>
-              </div>
-            </Link>
-
-            <Link
-              href="/data/unduh"
-              onClick={() => setKartuTerpilih(null)}
-              className="flex items-center gap-3 rounded-2xl border bg-card p-3.5 transition hover:border-primary hover:shadow-sm"
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <BarChart3 className="size-5" />
-              </span>
-              <div>
-                <span className="block font-bold text-sm text-foreground">Unduh Data Terbuka</span>
-                <span className="text-xs text-muted-foreground">Dataset resmi CSV & API</span>
-              </div>
-            </Link>
-          </div>
+          <Link
+            href="/data/unduh"
+            onClick={() => setKartuTerpilih(null)}
+            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <BarChart3 className="size-4" />
+            </span>
+            <div>
+              <span className="block font-bold text-xs text-foreground">Unduh Data Terbuka</span>
+              <span className="text-[11px] text-muted-foreground">Ekspor dataset CSV & JSON</span>
+            </div>
+          </Link>
         </div>
       ),
     },
   ];
 
-  // Buka otomatis kartu panduan jika diakses lewat tautan eksternal (misal dari /lapor)
+  // Buka otomatis kartu panduan jika diakses lewat tautan eksternal
   useEffect(() => {
     if (bukaParam) {
       const target = DAFTAR_KARTU.find(
@@ -589,33 +475,31 @@ export function DasborPanduan() {
   }, [kueri, kategoriAktif]);
 
   return (
-    <div className="space-y-8">
-      {/* Search Bar & Filter Pills */}
-      <div className="space-y-4 rounded-3xl border bg-card/90 backdrop-blur-md p-4 sm:p-6 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <label className="flex h-12 flex-1 items-center gap-3 rounded-2xl border border-input bg-background px-4 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition">
-            <Search className="size-5 text-muted-foreground shrink-0" aria-hidden />
-            <input
-              type="text"
-              value={kueri}
-              onChange={(e) => setKueri(e.target.value)}
-              placeholder="Cari panduan (contoh: cara lapor, rumus skor risiko, masa sanggah, bukti foto, keracunan...)"
-              className="h-full w-full bg-transparent text-sm sm:text-base placeholder:text-muted-foreground/70 focus:outline-none"
-            />
-            {kueri && (
-              <button
-                type="button"
-                onClick={() => setKueri("")}
-                className="text-xs text-muted-foreground hover:text-foreground font-medium px-2 py-1 rounded-md"
-              >
-                Reset
-              </button>
-            )}
-          </label>
-        </div>
+    <div className="space-y-6">
+      {/* Search Bar & Filter Pills Ringkas */}
+      <div className="space-y-3 rounded-3xl border bg-card/80 backdrop-blur-sm p-4 sm:p-5">
+        <label className="flex h-11 items-center gap-2.5 rounded-2xl border border-input bg-background px-3.5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition">
+          <Search className="size-4 text-muted-foreground shrink-0" aria-hidden />
+          <input
+            type="text"
+            value={kueri}
+            onChange={(e) => setKueri(e.target.value)}
+            placeholder="Cari panduan..."
+            className="h-full w-full bg-transparent text-sm placeholder:text-muted-foreground/60 focus:outline-none"
+          />
+          {kueri && (
+            <button
+              type="button"
+              onClick={() => setKueri("")}
+              className="text-xs text-muted-foreground hover:text-foreground font-medium px-2 py-0.5 rounded-md cursor-pointer"
+            >
+              Reset
+            </button>
+          )}
+        </label>
 
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar" role="tablist">
+        {/* Filter Tabs Singkat */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar" role="tablist">
           {KATEGORI.map((kat) => (
             <button
               key={kat.id}
@@ -623,10 +507,10 @@ export function DasborPanduan() {
               aria-selected={kategoriAktif === kat.id}
               onClick={() => setKategoriAktif(kat.id)}
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-4 text-xs font-semibold whitespace-nowrap transition-all",
+                "inline-flex h-8 items-center rounded-full px-3 text-xs font-semibold whitespace-nowrap transition cursor-pointer",
                 kategoriAktif === kat.id
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-2xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
               {kat.label}
@@ -635,8 +519,8 @@ export function DasborPanduan() {
         </div>
       </div>
 
-      {/* Grid Kartu Kotakan Dashboard Rapi */}
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {/* Grid Kartu Panduan Bersih */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {hasilFilter.map((kartu) => {
           const Ikon = kartu.ikon;
           return (
@@ -644,51 +528,44 @@ export function DasborPanduan() {
               key={kartu.id}
               onClick={() => setKartuTerpilih(kartu)}
               className={cn(
-                "group cursor-pointer rounded-3xl border bg-card/90 backdrop-blur-md p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between",
+                "group cursor-pointer rounded-2xl border bg-card p-4 sm:p-5 transition-all hover:border-primary/50 hover:shadow-xs flex flex-col justify-between space-y-3",
                 kartu.warnaBorder
               )}
             >
-              <div className="space-y-4">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span
                     className={cn(
-                      "flex size-12 items-center justify-center rounded-2xl transition group-hover:scale-105",
+                      "flex size-10 items-center justify-center rounded-xl",
                       kartu.warnaBg
                     )}
                   >
-                    <Ikon className={cn("size-6", kartu.warnaAksen)} aria-hidden />
+                    <Ikon className={cn("size-5", kartu.warnaAksen)} aria-hidden />
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">
-                    Buka Panduan <ArrowRight className="size-3.5" />
+                  <span className="flex size-6 items-center justify-center rounded-full bg-muted/60 text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <ArrowRight className="size-3" />
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
                     {kartu.judul}
                   </h3>
-                  <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                     {kartu.ringkasan}
                   </p>
                 </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {kartu.badgeRingkas.map((b) => (
-                    <span
-                      key={b}
-                      className="rounded-lg bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
               </div>
 
-              <div className="mt-5 pt-3 border-t flex items-center justify-between text-xs font-bold text-foreground/80 group-hover:text-primary">
-                <span>Klik untuk baca panduan</span>
-                <span className="flex size-7 items-center justify-center rounded-full bg-muted group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <ArrowRight className="size-3.5" />
-                </span>
+              <div className="flex flex-wrap gap-1.5 pt-1 border-t border-border/50">
+                {kartu.badgeRingkas.map((b) => (
+                  <span
+                    key={b}
+                    className="rounded-md bg-muted/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+                  >
+                    {b}
+                  </span>
+                ))}
               </div>
             </div>
           );
@@ -696,71 +573,69 @@ export function DasborPanduan() {
       </div>
 
       {hasilFilter.length === 0 && (
-        <div className="rounded-3xl border border-dashed p-12 text-center text-muted-foreground">
-          <BookOpen className="mx-auto size-10 text-muted-foreground/50 mb-3" />
-          <p className="text-base font-semibold text-foreground">Topik tidak ditemukan</p>
-          <p className="text-xs mt-1">Coba gunakan kata kunci lain seperti &quot;lapor&quot;, &quot;risiko&quot;, &quot;foto&quot;, atau &quot;tiket&quot;.</p>
-          <Button variant="outline" size="sm" className="mt-4" onClick={() => { setKueri(""); setKategoriAktif("semua"); }}>
-            Tampilkan Semua Panduan
+        <div className="rounded-2xl border border-dashed p-8 text-center text-muted-foreground">
+          <p className="text-sm font-semibold text-foreground">Topik tidak ditemukan</p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={() => { setKueri(""); setKategoriAktif("semua"); }}>
+            Tampilkan Semua
           </Button>
         </div>
       )}
 
-      {/* MODAL POP-UP DETAIL PANDUAN (SELALU SCROLL KE PALING ATAS SAAT DIBUKA) */}
+      {/* MODAL POP-UP DETAIL PANDUAN */}
       <Dialog open={!!kartuTerpilih} onOpenChange={(buka) => !buka && setKartuTerpilih(null)}>
         {kartuTerpilih && (
           <DialogContent
             initialFocus={false}
-            className="sm:max-w-2xl max-h-[88vh] p-0 rounded-3xl overflow-hidden flex flex-col"
+            className="sm:max-w-xl max-h-[85vh] p-0 rounded-3xl overflow-hidden flex flex-col"
             showCloseButton={true}
           >
-            {/* Header Dialog Tetap di Atas */}
-            <DialogHeader className="p-6 sm:p-7 border-b bg-muted/20 shrink-0">
+            {/* Header Dialog */}
+            <DialogHeader className="p-5 sm:p-6 border-b bg-muted/15 shrink-0">
               <div className="flex items-center gap-3">
                 <span
                   className={cn(
-                    "flex size-11 items-center justify-center rounded-2xl shrink-0",
+                    "flex size-10 items-center justify-center rounded-xl shrink-0",
                     kartuTerpilih.warnaBg
                   )}
                 >
-                  <kartuTerpilih.ikon className={cn("size-6", kartuTerpilih.warnaAksen)} aria-hidden />
+                  <kartuTerpilih.ikon className={cn("size-5", kartuTerpilih.warnaAksen)} aria-hidden />
                 </span>
                 <div>
-                  <DialogTitle className="text-xl sm:text-2xl font-extrabold text-foreground">
+                  <DialogTitle className="text-lg sm:text-xl font-extrabold text-foreground">
                     {kartuTerpilih.judul}
                   </DialogTitle>
-                  <DialogDescription className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                  <DialogDescription className="text-xs text-muted-foreground mt-0.5">
                     {kartuTerpilih.ringkasan}
                   </DialogDescription>
                 </div>
               </div>
             </DialogHeader>
 
-            {/* Container Konten yang Dapat Discroll dan Selalu Mulai dari Puncak */}
+            {/* Container Konten Ringkas */}
             <div
               ref={scrollContainerRef}
-              className="flex-1 overflow-y-auto p-6 sm:p-7 space-y-4"
+              className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3"
             >
               {kartuTerpilih.kontenModal}
             </div>
 
-            {/* Footer Dialog Tetap di Bawah */}
-            <div className="p-4 sm:p-5 border-t bg-muted/10 shrink-0 flex flex-wrap items-center justify-between gap-3">
+            {/* Footer Dialog */}
+            <div className="p-4 border-t bg-muted/10 shrink-0 flex items-center justify-between gap-3">
               <Button
                 variant="outline"
-                size="lg"
-                className="rounded-xl font-semibold"
+                size="sm"
+                className="rounded-xl font-semibold text-xs"
                 onClick={() => setKartuTerpilih(null)}
               >
-                Tutup Panduan
+                Tutup
               </Button>
               {kartuTerpilih.tautanAksi && (
                 <Link
                   href={kartuTerpilih.tautanAksi.href}
                   onClick={() => setKartuTerpilih(null)}
-                  className={cn(buttonVariants({ size: "lg" }), "rounded-xl font-bold")}
+                  className={cn(buttonVariants({ size: "sm" }), "rounded-xl font-bold text-xs")}
                 >
-                  {kartuTerpilih.tautanAksi.label} <ArrowRight className="size-4 ml-1.5" />
+                  {kartuTerpilih.tautanAksi.label} <ArrowRight className="size-3.5 ml-1" />
                 </Link>
               )}
             </div>
