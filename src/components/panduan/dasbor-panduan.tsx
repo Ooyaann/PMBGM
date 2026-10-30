@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   Clock,
   Compass,
+  EyeOff,
   FileText,
+  Globe,
   HelpCircle,
   Lock,
   Megaphone,
@@ -114,12 +116,12 @@ export function DasborPanduan() {
                   1
                 </span>
                 <h4 className="text-sm sm:text-base font-bold text-foreground">
-                  Klik Tombol &quot;Lapor Masalah&quot; di Menu Kiri
+                  Klik Tombol &quot;Lapor Masalah&quot; di Navigasi Atas atau Beranda
                 </h4>
               </div>
               <div className="ml-9 space-y-2">
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  Di bilah kiri website, klik tombol hijau berikut:
+                  Pada navigasi atas atau beranda website, klik tombol lapor berikut:
                 </p>
                 {/* Mockup UI Web Asli Tombol Lapor */}
                 <div className="w-fit flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-3.5 py-2 text-white shadow-sm pointer-events-none">
@@ -172,14 +174,14 @@ export function DasborPanduan() {
                 </p>
                 {/* Mockup UI Web Asli Pilihan Privasi */}
                 <div className="flex flex-wrap gap-2 pointer-events-none">
-                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold">
-                    🌐 Nama Terbuka
+                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold inline-flex items-center gap-1.5">
+                    <Globe className="size-3.5 text-muted-foreground" /> Nama Terbuka
                   </span>
-                  <span className="rounded-xl border border-primary bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary">
-                    🔒 Rahasia (Disarankan)
+                  <span className="rounded-xl border border-primary bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary inline-flex items-center gap-1.5">
+                    <Lock className="size-3.5 text-primary" /> Rahasia (Direkomendasikan)
                   </span>
-                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold">
-                    🕵️ Pelapor Anonim
+                  <span className="rounded-xl border bg-card px-3 py-1.5 text-xs font-semibold inline-flex items-center gap-1.5">
+                    <EyeOff className="size-3.5 text-muted-foreground" /> Anonim
                   </span>
                 </div>
               </div>
@@ -289,7 +291,7 @@ export function DasborPanduan() {
                 <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 font-bold text-xs">
                   4
                 </span>
-                <span className="font-bold text-sm text-foreground">Korwil BGN Semarang</span>
+                <span className="font-bold text-sm text-foreground">Korwil BGN Wilayah</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 Memantau kepatuhan batas waktu respon (SLA) dan menegur dapur yang lambat bertindak.

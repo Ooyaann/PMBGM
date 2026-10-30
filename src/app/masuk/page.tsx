@@ -63,7 +63,7 @@ export default function HalamanMasuk(props: PageProps<"/masuk">) {
 
               <div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-100 leading-tight">
-                  Kawal Kualitas MBG Kota Semarang
+                  Kawal Kualitas Pangan MBG
                 </h1>
                 <p className="mt-1.5 text-xs sm:text-sm text-emerald-900/70 dark:text-slate-300 font-normal">
                   Transparansi dan keselamatan pangan untuk generasi penerus.

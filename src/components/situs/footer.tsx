@@ -17,7 +17,7 @@ export function Footer() {
           <div className="space-y-4 lg:col-span-2">
             <Logo />
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Platform pengawasan partisipatif masyarakat untuk menjaga porsi, kebersihan, dan keselamatan pangan Program Makan Bergizi Gratis di seluruh Indonesia.
+              Platform pengawasan partisipatif masyarakat untuk transparansi dan mutu Program Makan Bergizi Gratis.
             </p>
             <div className="flex items-center gap-2 pt-1">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
@@ -34,22 +34,22 @@ export function Footer() {
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
                 <Link href="/lapor" className="text-muted-foreground hover:text-primary transition-colors">
-                  Lapor Masalah Makanan
+                  Lapor Masalah
                 </Link>
               </li>
               <li>
                 <Link href="/lacak" className="text-muted-foreground hover:text-primary transition-colors">
-                  Lacak Kode Tiket
+                  Lacak Tiket
                 </Link>
               </li>
               <li>
                 <Link href="/cari-sekolah" className="text-muted-foreground hover:text-primary transition-colors">
-                  Cari Dapur Sekolah
+                  Cari Sekolah & Dapur
                 </Link>
               </li>
               <li>
                 <Link href="/panduan" className="text-muted-foreground hover:text-primary transition-colors">
-                  Panduan Alur Pengawasan
+                  Panduan & Simulator
                 </Link>
               </li>
             </ul>
@@ -63,22 +63,22 @@ export function Footer() {
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
                 <Link href="/data" className="text-muted-foreground hover:text-primary transition-colors">
-                  Data Terbuka MBG
+                  Data Terbuka
                 </Link>
               </li>
               <li>
                 <Link href="/insight" className="text-muted-foreground hover:text-primary transition-colors">
-                  Peta Risiko & Peringatan
+                  Peta Risiko SAW
                 </Link>
               </li>
               <li>
                 <Link href="/metodologi" className="text-muted-foreground hover:text-primary transition-colors">
-                  Rumus Indeks Risiko
+                  Metodologi & SLA
                 </Link>
               </li>
               <li>
                 <Link href="/data/unduh" className="text-muted-foreground hover:text-primary transition-colors">
-                  Unduh Dataset Terbuka
+                  Unduh Data
                 </Link>
               </li>
             </ul>
@@ -97,12 +97,12 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/privasi" className="text-muted-foreground hover:text-primary transition-colors">
-                  Kebijakan Privasi
+                  Privasi Pelapor
                 </Link>
               </li>
               <li>
                 <Link href="/tentang" className="text-muted-foreground hover:text-primary transition-colors">
-                  Tentang Inisiatif
+                  Tentang PMBGM
                 </Link>
               </li>
               <li className="pt-1">

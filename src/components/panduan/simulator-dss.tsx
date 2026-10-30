@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import {
   Award,
+  Check,
   CheckCircle2,
   FileSpreadsheet,
   Gauge,
@@ -14,8 +15,10 @@ import {
   Siren,
   Sliders,
   Sparkles,
+  Star,
   TriangleAlert,
   Utensils,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -227,7 +230,15 @@ export function SimulatorDss() {
                   : "bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-300"
               )}
             >
-              {slhsBerlaku ? "✓ Berlaku" : "✗ Belum Ada"}
+              {slhsBerlaku ? (
+                <span className="inline-flex items-center gap-1">
+                  <Check className="size-3" /> Berlaku
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1">
+                  <X className="size-3" /> Belum Ada
+                </span>
+              )}
             </button>
           </div>
 
@@ -252,7 +263,9 @@ export function SimulatorDss() {
           <div className="rounded-2xl border bg-card p-4 space-y-2">
             <div className="flex justify-between items-center text-sm">
               <span className="font-bold">Penilaian Kepuasan (10%)</span>
-              <span className="angka font-black text-primary">⭐ {ratingKepuasan.toFixed(1)} / 5.0</span>
+              <span className="angka font-black text-primary inline-flex items-center gap-1">
+                <Star className="size-3.5 fill-amber-400 text-amber-500" /> {ratingKepuasan.toFixed(1)} / 5.0
+              </span>
             </div>
             <input
               type="range"

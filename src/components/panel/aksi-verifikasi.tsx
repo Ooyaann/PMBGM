@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Check, FolderPlus, GitMerge, Loader2, ShieldCheck, XCircle } from "lucide-react";
+import { AlertTriangle, Check, FolderPlus, GitMerge, Loader2, ShieldCheck, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -130,8 +130,8 @@ export function AksiVerifikasi({ laporanId, judulAwal, serupa, kasusTerbuka }: {
             />
             <div className="flex items-center justify-between text-[11px] pt-0.5">
               {alasan.trim().length < 10 ? (
-                <span className="text-amber-700 dark:text-amber-400 font-medium">
-                  ⚠️ Pilih opsi di atas atau ketik min. 10 karakter ({alasan.trim().length}/10)
+                <span className="text-amber-700 dark:text-amber-400 font-medium flex items-center gap-1">
+                  <AlertTriangle className="size-3 shrink-0" /> Pilih opsi di atas atau ketik min. 10 karakter ({alasan.trim().length}/10)
                 </span>
               ) : (
                 <span className="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1">

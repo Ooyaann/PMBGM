@@ -95,15 +95,15 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
     submenus: [
       {
         href: "/lacak",
-        judul: "Lacak Tiket Aduan",
-        deskripsi: "Pantau progres investigasi dan bukti tindak lanjut terbuka",
+        judul: "Lacak Tiket",
+        deskripsi: "Pantau status & hasil investigasi laporan",
         ikon: Search,
         aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       },
       {
         href: "/lacak/akuntabilitas",
-        judul: "Akuntabilitas SLA",
-        deskripsi: "Rekam jejak batas waktu tindak lanjut per SPPG & dinas",
+        judul: "Kepatuhan SLA",
+        deskripsi: "Batas waktu respon instansi & SPPG",
         ikon: Timer,
         aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
       },
@@ -114,43 +114,43 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
     submenus: [
       {
         href: "/data",
-        judul: "Ringkasan Data Terbuka",
-        deskripsi: "Ringkasan agregat nasional, metrik aduan, dan tren kepatuhan",
+        judul: "Ringkasan Data",
+        deskripsi: "Agregat nasional & tren laporan",
         ikon: Building2,
         aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       },
       {
         href: "/data/wilayah",
-        judul: "Data Wilayah & Agregat",
-        deskripsi: "Rasio aduan, alokasi anggaran, dan sebaran per kecamatan",
+        judul: "Sebaran Wilayah",
+        deskripsi: "Distribusi kasus & alokasi per wilayah",
         ikon: MapPin,
         aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
       },
       {
         href: "/data/sppg",
-        judul: "Dapur SPPG & SLHS",
-        deskripsi: "Status sertifikat higienitas pangan (SLHS) dan kepatuhan dapur",
+        judul: "Dapur Mitra SPPG",
+        deskripsi: "Daftar dapur & status sertifikasi SLHS",
         ikon: Utensils,
         aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
       },
       {
         href: "/cari-sekolah",
-        judul: "Sekolah Penerima MBG",
-        deskripsi: "Daftar sekolah penerima, SPPG penanggung jawab, dan kasus",
+        judul: "Cari Sekolah",
+        deskripsi: "Daftar sekolah penerima & dapur mitra",
         ikon: School,
         aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
       },
       {
         href: "/data/kasus",
-        judul: "Arsip Kasus Terbuka",
-        deskripsi: "Riwayat kasus dan transparansi audit lapangan yang telah selesai",
+        judul: "Arsip Kasus",
+        deskripsi: "Riwayat kasus tertangani & audit",
         ikon: FolderOpen,
         aksenIkon: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
       },
       {
         href: "/data/unduh",
-        judul: "Unduh Dataset Terbuka",
-        deskripsi: "Unduh data mentah format CSV/Excel untuk riset dan publik",
+        judul: "Unduh Data",
+        deskripsi: "Ekspor dataset terbuka (CSV / JSON)",
         ikon: Download,
         aksenIkon: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
       },
@@ -161,8 +161,8 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
     submenus: [
       {
         href: "/insight",
-        judul: "Peta Risiko Wilayah",
-        deskripsi: "Analisis spasial SAW (Simple Additive Weighting) per kecamatan",
+        judul: "Peta Risiko",
+        deskripsi: "Analisis spasial zonasi risiko SAW",
         ikon: Radar,
         badge: "SAW",
         aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -170,7 +170,7 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
       {
         href: "/insight/peringatan",
         judul: "Peringatan Dini",
-        deskripsi: "Deteksi anomali lonjakan keluhan sebelum menjadi KLB",
+        deskripsi: "Deteksi anomali & lonjakan keluhan",
         ikon: Siren,
         badge: "24 Jam",
         aksenIkon: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
@@ -178,7 +178,7 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
       {
         href: "/insight/prioritas",
         judul: "Prioritas Investigasi",
-        deskripsi: "Peringkat kasus yang paling mendesak diaudit lapangan",
+        deskripsi: "Antrean prioritas penanganan mendesak",
         ikon: ShieldAlert,
         aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
       },
@@ -190,21 +190,21 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
       {
         href: "/panduan",
         judul: "Panduan & Simulator DSS",
-        deskripsi: "Cara melapor, simulasi perhitungan SAW, dan kriteria bobot",
+        deskripsi: "Alur pelaporan & kalkulator risiko SAW",
         ikon: BookOpen,
         aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
       },
       {
         href: "/metodologi",
         judul: "Metodologi & SLA",
-        deskripsi: "Kriteria penilaian, bobot SAW, dan batas waktu tindak lanjut",
+        deskripsi: "Bobot kriteria SAW & standar SLA",
         ikon: Scale,
         aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
       },
       {
         href: "/faq",
         judul: "Tanya Jawab (FAQ)",
-        deskripsi: "Pertanyaan yang sering diajukan seputar program MBG",
+        deskripsi: "Jawaban pertanyaan umum seputar MBG",
         ikon: HelpCircle,
         aksenIkon: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
       },
@@ -485,8 +485,9 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                     {akun.peranLabel}
                   </p>
                   {akun.instansi && (
-                    <p className="text-[11px] text-primary font-bold mt-1 truncate">
-                      🏢 {akun.instansi.nama}
+                    <p className="text-[11px] text-primary font-bold mt-1 truncate flex items-center gap-1">
+                      <Building2 className="size-3 text-primary shrink-0" />
+                      <span className="truncate">{akun.instansi.nama}</span>
                     </p>
                   )}
                   {/* Badge Peran Staf di dalam popup profil */}
@@ -637,8 +638,9 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                     </div>
                     <p className="text-xs text-muted-foreground">{akun.peranLabel}</p>
                     {akun.instansi && (
-                      <p className="text-[11px] text-primary font-semibold truncate">
-                        🏢 {akun.instansi.nama}
+                      <p className="text-[11px] text-primary font-semibold truncate flex items-center gap-1">
+                        <Building2 className="size-3 text-primary shrink-0" />
+                        <span className="truncate">{akun.instansi.nama}</span>
                       </p>
                     )}
                     <div className="pt-1 flex flex-col gap-1.5">
