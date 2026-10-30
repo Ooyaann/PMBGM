@@ -114,9 +114,14 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
   const [tabAktif, setTabAktif] = useState<"demo" | "password">("demo");
   const [kunciPilihan, setKunciPilihan] = useState<KunciDemo>("rina");
 
-  const selesai = () => {
-    router.replace(lanjut);
-    router.refresh();
+  const selesai = (kunci?: KunciDemo) => {
+    let tujuan = lanjut;
+    if (tujuan === "/" || !tujuan) {
+      if (kunci === "sari") tujuan = "/panel/verifikasi";
+      else if (kunci === "sppg" || kunci === "hendra" || kunci === "korwil" || kunci === "admin") tujuan = "/panel";
+      else tujuan = "/";
+    }
+    window.location.href = tujuan;
   };
 
   const personaTerpilih = DAFTAR_PERSONA.find((p) => p.kunci === kunciPilihan) ?? DAFTAR_PERSONA[0];
@@ -126,7 +131,7 @@ export function PilihanMasuk({ lanjut, modeDemo }: { lanjut: string; modeDemo: b
       const hasil = await masukDemo(kunciPilihan);
       if (hasil.ok) {
         toast.success(`Berhasil masuk sebagai ${personaTerpilih.nama} (${personaTerpilih.peran})`);
-        selesai();
+        selesai(kunciPilihan);
       } else {
         toast.error(hasil.pesan);
       }

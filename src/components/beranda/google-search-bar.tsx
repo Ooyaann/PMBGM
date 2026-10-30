@@ -3,9 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Megaphone, Search, Ticket, X } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { ArrowRight, Megaphone, Radar, Search, Sparkles, Utensils, X } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+interface PintasanItem {
+  label: string;
+  q: string;
+  href?: string;
+  ikon: React.ComponentType<{ className?: string }>;
+}
+
+const PINTASAN_CARI: PintasanItem[] = [
+  { label: "SD Tembalang 10", q: "SD Tembalang 10", ikon: Search },
+  { label: "SPPG Tembalang 03", q: "SPPG Tembalang", ikon: Utensils },
+  { label: "Peta Risiko SAW", q: "", href: "/insight", ikon: Radar },
+];
 
 export function GoogleSearchBar() {
   const router = useRouter();
@@ -19,28 +32,27 @@ export function GoogleSearchBar() {
       return;
     }
 
-    // Jika format menyerupai kode tiket (MBG-xxxxxx atau kode tiket huruf/angka dengan strip)
+    // Jika format kode tiket (MBG-xxxxxx atau serupa)
     if (/^[A-Za-z]{3}-[A-Za-z0-9]{4,10}$/i.test(bersih) || bersih.toUpperCase().startsWith("MBG-")) {
       router.push(`/lacak?tiket=${encodeURIComponent(bersih.toUpperCase())}`);
     } else {
-      // Pencarian sekolah atau SPPG
       router.push(`/cari-sekolah?q=${encodeURIComponent(bersih)}`);
     }
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6">
+    <div className="w-full max-w-2xl mx-auto space-y-4">
       {/* Search Bar Utama (Google-Style Centerpiece) */}
       <form onSubmit={handleSubmit} role="search" aria-label="Pencarian Cepat PMBGM" className="w-full">
-        <div className="group relative flex h-14 sm:h-15 w-full items-center rounded-full border border-border/80 bg-card px-4 sm:px-6 shadow-md transition-all hover:border-primary/40 hover:shadow-lg focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20">
+        <div className="group relative flex h-14 sm:h-16 w-full items-center rounded-2xl sm:rounded-full border border-border/80 bg-card/95 backdrop-blur-md px-4 sm:px-6 shadow-lg shadow-primary/5 transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20">
           <Search className="size-5 shrink-0 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden />
 
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ketik kode tiket (cth: MBG-2026-...) atau cari sekolah..."
-            className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
+            placeholder="Cari sekolah, dapur SPPG, atau nomor tiket aduan..."
+            className="h-full min-w-0 flex-1 bg-transparent px-3.5 text-sm sm:text-base text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
             aria-label="Cari tiket pengaduan atau nama sekolah"
           />
 
@@ -57,7 +69,7 @@ export function GoogleSearchBar() {
 
           <button
             type="submit"
-            className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm transition hover:bg-primary/90 hover:scale-105 active:scale-95"
+            className="flex size-9 sm:size-10 items-center justify-center rounded-xl sm:rounded-full bg-primary text-primary-foreground shadow-sm transition hover:bg-primary/90 hover:scale-105 active:scale-95 cursor-pointer"
             aria-label="Kirim pencarian"
           >
             <ArrowRight className="size-4.5" />
@@ -65,17 +77,17 @@ export function GoogleSearchBar() {
         </div>
       </form>
 
-      {/* 2 Tombol Aksi Langsung Gaya Google: Lapor & Lacak */}
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+      {/* 2 Tombol Aksi Langsung: Lapor & Lacak */}
+      <div className="flex flex-wrap items-center justify-center gap-3">
         <Link
           href="/lapor"
           className={cn(
             buttonVariants({ size: "default" }),
-            "h-11 sm:h-12 rounded-2xl px-6 sm:px-7 font-extrabold text-sm sm:text-base bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 gap-2 transition hover:-translate-y-0.5 active:translate-y-0"
+            "h-11 sm:h-12 rounded-xl px-6 sm:px-7 font-extrabold text-sm sm:text-base bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 gap-2 transition hover:-translate-y-0.5 active:translate-y-0"
           )}
         >
           <Megaphone className="size-4.5" aria-hidden />
-          <span>Lapor Masalah</span>
+          <span>Lapor Masalah MBG</span>
         </Link>
 
         <button
@@ -89,12 +101,47 @@ export function GoogleSearchBar() {
           }}
           className={cn(
             buttonVariants({ variant: "outline", size: "default" }),
-            "h-11 sm:h-12 rounded-2xl px-6 sm:px-7 font-bold text-sm sm:text-base bg-card hover:bg-muted border-border/80 shadow-xs gap-2 transition hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+            "h-11 sm:h-12 rounded-xl px-6 sm:px-7 font-bold text-sm sm:text-base bg-card hover:bg-muted/80 border-border/80 shadow-xs gap-2 transition hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           )}
         >
           <Search className="size-4.5 text-muted-foreground" aria-hidden />
           <span>Lacak Kasus & Tiket</span>
         </button>
+      </div>
+
+      {/* Quick Chips Pintasan */}
+      <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs">
+        <span className="text-muted-foreground font-medium hidden sm:inline">Pencarian Cepat:</span>
+        {PINTASAN_CARI.map((chip) => {
+          const Ikon = chip.ikon;
+          if ("href" in chip && chip.href) {
+            return (
+              <Link
+                key={chip.label}
+                href={chip.href}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-3 py-1 text-xs font-semibold text-foreground/80 hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition shadow-2xs"
+              >
+                <Ikon className="size-3 text-muted-foreground" />
+                <span>{chip.label}</span>
+              </Link>
+            );
+          }
+          const queryPintas = chip.q;
+          return (
+            <button
+              key={chip.label}
+              type="button"
+              onClick={() => {
+                setQuery(queryPintas);
+                router.push(`/cari-sekolah?q=${encodeURIComponent(queryPintas)}`);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-3 py-1 text-xs font-semibold text-foreground/80 hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition shadow-2xs cursor-pointer"
+            >
+              <Ikon className="size-3 text-muted-foreground" />
+              <span>{chip.label}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

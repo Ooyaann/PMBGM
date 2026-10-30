@@ -38,19 +38,14 @@ import { keluar } from "@/lib/aksi/auth";
 import type { Peran } from "@/lib/sesi";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -72,39 +67,42 @@ export interface InfoAkunNavbar {
   } | null;
 }
 
-interface ItemSubmenu {
-  href: string;
-  judul: string;
-  deskripsi: string;
-  ikon: LucideIcon;
-  aksenIkon?: string;
-  badge?: string;
-}
-
-interface MenuNavigasi {
+interface MenuNavigasiGrup {
   label: string;
-  href?: string;
-  submenus?: ItemSubmenu[];
+  submenus?: {
+    href: string;
+    judul: string;
+    deskripsi: string;
+    ikon: LucideIcon;
+    badge?: string;
+    aksenIkon?: string;
+  }[];
 }
 
-const MENU_NAVIGASI: MenuNavigasi[] = [
+interface MenuItemPeran {
+  href: string;
+  label: string;
+  ikon: LucideIcon;
+}
+
+// 1. MENU UNTUK PUBLIK / WARGA
+const MENU_PUBLIK: MenuNavigasiGrup[] = [
   {
     label: "Lacak",
     submenus: [
       {
         href: "/lacak",
-        judul: "Lacak Tiket",
-        deskripsi: "Pantau perkembangan aduan via kode tiket unik",
+        judul: "Lacak Tiket Aduan",
+        deskripsi: "Pantau progres investigasi dan bukti tindak lanjut terbuka",
         ikon: Search,
-        aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       },
       {
         href: "/lacak/akuntabilitas",
         judul: "Akuntabilitas SLA",
-        deskripsi: "Kepatuhan batas waktu respon dapur & instansi",
-        ikon: Scale,
-        aksenIkon: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-        badge: "SLA",
+        deskripsi: "Rekam jejak batas waktu tindak lanjut per SPPG & dinas",
+        ikon: Timer,
+        aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
       },
     ],
   },
@@ -113,24 +111,17 @@ const MENU_NAVIGASI: MenuNavigasi[] = [
     submenus: [
       {
         href: "/cari-sekolah",
-        judul: "Cari Sekolah Anak",
-        deskripsi: "Cek penerima MBG & status dapur penanggung jawab",
+        judul: "Pencarian Sekolah & Dapur",
+        deskripsi: "Cek sekolah anak Anda dan SPPG penanggung jawabnya",
         ikon: School,
-        aksenIkon: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+        aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
       },
       {
         href: "/data/sppg",
-        judul: "Dapur SPPG",
-        deskripsi: "Profil dapur, sertifikat SLHS, dan kapasitas porsi",
-        ikon: UtensilsCrossed,
+        judul: "Daftar Dapur SPPG",
+        deskripsi: "Status sertifikat higienitas (SLHS) dan kepatuhan dapur",
+        ikon: Utensils,
         aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-      },
-      {
-        href: "/data/wilayah",
-        judul: "Wilayah Kecamatan",
-        deskripsi: "Sebaran operasional MBG se-Kota Semarang",
-        ikon: MapPin,
-        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       },
     ],
   },
@@ -138,41 +129,34 @@ const MENU_NAVIGASI: MenuNavigasi[] = [
     label: "Insight",
     submenus: [
       {
-        href: "/data/kasus",
-        judul: "Kasus Terbuka",
-        deskripsi: "Rekap aduan terverifikasi & status penyelesaian",
-        ikon: FolderOpen,
-        aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-      },
-      {
         href: "/insight",
-        judul: "Peta Risiko SPPG",
-        deskripsi: "Skor risiko komposit dapur metode SAW",
+        judul: "Peta Risiko Wilayah",
+        deskripsi: "Analisis spasial SAW (Simple Additive Weighting) per kecamatan",
         ikon: Radar,
-        aksenIkon: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
         badge: "SAW",
+        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       },
       {
         href: "/insight/peringatan",
         judul: "Peringatan Dini",
-        deskripsi: "Deteksi anomali keluhan 24 jam cegah KLB",
+        deskripsi: "Deteksi anomali lonjakan keluhan sebelum menjadi KLB",
         ikon: Siren,
-        aksenIkon: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
         badge: "24 Jam",
+        aksenIkon: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
       },
       {
         href: "/insight/prioritas",
-        judul: "Prioritas Inspeksi",
-        deskripsi: "Sasaran audit lapangan Dinas Kesehatan",
+        judul: "Prioritas Investigasi",
+        deskripsi: "Peringkat kasus yang paling mendesak diaudit lapangan",
         ikon: ShieldAlert,
-        aksenIkon: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+        aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
       },
       {
-        href: "/data/unduh",
-        judul: "Unduh Dataset",
-        deskripsi: "Akses data format CSV & JSON untuk penelitian",
-        ikon: Download,
-        aksenIkon: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
+        href: "/data/kasus",
+        judul: "Eksplorasi Data Terbuka",
+        deskripsi: "Arsip kasus dan data pengawasan MBG yang dapat diunduh",
+        ikon: FolderOpen,
+        aksenIkon: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
       },
     ],
   },
@@ -181,80 +165,69 @@ const MENU_NAVIGASI: MenuNavigasi[] = [
     submenus: [
       {
         href: "/panduan",
-        judul: "Panduan Sistem",
-        deskripsi: "Alur peran warga, verifikator, dan dapur",
+        judul: "Panduan & Simulator DSS",
+        deskripsi: "Cara melapor, simulasi perhitungan SAW, dan kriteria bobot",
         ikon: BookOpen,
         aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
       },
       {
-        href: "/panduan#simulator-dss",
-        judul: "Simulator DSS SAW",
-        deskripsi: "Kalkulator simulasi risiko & Level A/B/C",
-        ikon: SlidersHorizontal,
-        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-        badge: "Interaktif",
-      },
-      {
         href: "/metodologi",
-        judul: "Metodologi Terbuka",
-        deskripsi: "Formula SAW, eskalasi SLA, & model ANN",
-        ikon: ShieldCheck,
-        aksenIkon: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+        judul: "Metodologi & SLA",
+        deskripsi: "Kriteria penilaian, bobot SAW, dan batas waktu tindak lanjut",
+        ikon: Scale,
+        aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
       },
       {
         href: "/faq",
         judul: "Tanya Jawab (FAQ)",
-        deskripsi: "Pertanyaan yang sering diajukan masyarakat",
+        deskripsi: "Pertanyaan yang sering diajukan seputar program MBG",
         ikon: HelpCircle,
-        aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        aksenIkon: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
       },
     ],
   },
 ];
 
-function lencanaPeran(peran: Peran, instansi: InfoAkunNavbar["instansi"]) {
-  if (instansi?.jenis === "sppg") {
-    return {
-      label: "Dapur SPPG",
-      sub: instansi.nama,
-      klas: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
-      ikon: Utensils,
-    };
-  }
-  if (instansi?.jenis === "dinas_kesehatan") {
-    return {
-      label: "Dinas Kesehatan",
-      sub: "Kota Semarang",
-      klas: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30",
-      ikon: ShieldAlert,
-    };
-  }
-  if (instansi?.jenis === "korwil_bgn") {
-    return {
-      label: "Korwil BGN",
-      sub: "Kota Semarang",
-      klas: "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
-      ikon: Scale,
-    };
-  }
-  if (peran === "verifikator") {
-    return {
-      label: "Verifikator",
-      sub: "Wilayah Mandiri",
-      klas: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
-      ikon: ShieldCheck,
-    };
-  }
-  if (peran === "admin") {
-    return {
-      label: "Administrator",
-      sub: "Sistem PMBGM",
-      klas: "bg-slate-500/15 text-slate-700 dark:text-slate-300 border-slate-500/30",
-      ikon: Building2,
-    };
-  }
-  return null;
-}
+// 2. MENU KHUSUS PERAN STAF (Top Navbar langsung berfungsi sebagai menu kerja)
+const MENU_VERIFIKATOR: MenuItemPeran[] = [
+  { href: "/panel/verifikasi", label: "Antrean Verifikasi", ikon: ShieldCheck },
+  { href: "/panel/kasus", label: "Kasus Berjalan", ikon: ClipboardList },
+  { href: "/insight", label: "Analisis Risiko (SAW)", ikon: Radar },
+  { href: "/data/sppg", label: "Data SPPG & Dapur", ikon: Utensils },
+  { href: "/panduan", label: "Panduan", ikon: HelpCircle },
+];
+
+const MENU_DAPUR: MenuItemPeran[] = [
+  { href: "/panel", label: "Dasbor Dapur", ikon: LayoutDashboard },
+  { href: "/panel/kasus", label: "Aduan Masuk", ikon: Utensils },
+  { href: "/data/sppg", label: "Rapor & SLHS", ikon: ShieldCheck },
+  { href: "/cari-sekolah", label: "Sekolah Mitra", ikon: School },
+  { href: "/panduan", label: "Panduan Higiene", ikon: HelpCircle },
+];
+
+const MENU_DINKES: MenuItemPeran[] = [
+  { href: "/panel", label: "Dasbor Medis", ikon: LayoutDashboard },
+  { href: "/panel/kasus", label: "Investigasi & KLB", ikon: ShieldAlert },
+  { href: "/panel/prioritas", label: "Prioritas Inspeksi", ikon: Radar },
+  { href: "/panel/peringatan", label: "Peringatan Dini", ikon: Siren },
+  { href: "/data/sppg", label: "Evaluasi SPPG", ikon: Utensils },
+];
+
+const MENU_KORWIL: MenuItemPeran[] = [
+  { href: "/panel", label: "Pengawasan Kota", ikon: LayoutDashboard },
+  { href: "/panel/akuntabilitas", label: "Akuntabilitas SLA", ikon: Scale },
+  { href: "/insight", label: "Peta Risiko Kota", ikon: Radar },
+  { href: "/panel/kasus", label: "Kasus Wilayah", ikon: ClipboardList },
+  { href: "/data/sppg", label: "Data Dapur SPPG", ikon: Utensils },
+];
+
+const MENU_ADMIN: MenuItemPeran[] = [
+  { href: "/panel", label: "Dasbor Admin", ikon: LayoutDashboard },
+  { href: "/panel/admin/pengguna", label: "Kelola Pengguna", ikon: Users },
+  { href: "/panel/admin/sla", label: "Aturan SLA", ikon: Timer },
+  { href: "/panel/kasus", label: "Semua Kasus", ikon: ClipboardList },
+  { href: "/data", label: "Master Data", ikon: Building2 },
+];
 
 export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
   const pathname = usePathname();
@@ -268,12 +241,6 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
     });
   };
 
-  // Jika sedang di dalam panel kerja staf, TopNavbar publik disembunyikan agar layout panel utuh
-  if (pathname?.startsWith("/panel")) {
-    return null;
-  }
-
-  const peranStaf = akun && akun.peran !== "pelapor" ? lencanaPeran(akun.peran, akun.instansi) : null;
   const inisial = akun
     ? akun.nama
         .split(/\s+/)
@@ -283,122 +250,201 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
         .toUpperCase()
     : "";
 
+  // Tentukan apakah pengguna adalah staf & jenis stafnya
+  const adalahVerifikator = akun?.peran === "verifikator";
+  const jenisInstansi = akun?.instansi?.jenis;
+  const adalahDapur = jenisInstansi === "sppg";
+  const adalahDinkes = jenisInstansi === "dinas_kesehatan";
+  const adalahKorwil = jenisInstansi === "korwil_bgn";
+  const adalahAdmin = akun?.peran === "admin";
+  const adalahStaf = adalahVerifikator || adalahDapur || adalahDinkes || adalahKorwil || adalahAdmin;
+  const adalahGuru = akun?.peran === "pelapor" && Boolean(akun.sekolahId);
+
+  // Ambil daftar menu kerja staf jika staf, atau null jika pelapor/publik
+  let menuStaf: MenuItemPeran[] | null = null;
+  let badgePeranStaf: { label: string; klas: string; ikon: LucideIcon } | null = null;
+
+  if (adalahVerifikator) {
+    menuStaf = MENU_VERIFIKATOR;
+    badgePeranStaf = {
+      label: "Tim Verifikator",
+      klas: "bg-teal-500/10 text-teal-700 dark:text-teal-300 border-teal-500/30",
+      ikon: ShieldCheck,
+    };
+  } else if (adalahDapur) {
+    menuStaf = MENU_DAPUR;
+    badgePeranStaf = {
+      label: "Dapur SPPG",
+      klas: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30",
+      ikon: Utensils,
+    };
+  } else if (adalahDinkes) {
+    menuStaf = MENU_DINKES;
+    badgePeranStaf = {
+      label: "Dinas Kesehatan",
+      klas: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30",
+      ikon: ShieldAlert,
+    };
+  } else if (adalahKorwil) {
+    menuStaf = MENU_KORWIL;
+    badgePeranStaf = {
+      label: "Korwil BGN",
+      klas: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
+      ikon: Scale,
+    };
+  } else if (adalahAdmin) {
+    menuStaf = MENU_ADMIN;
+    badgePeranStaf = {
+      label: "Administrator",
+      klas: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30",
+      ikon: Building2,
+    };
+  }
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur-md transition-all">
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/95 backdrop-blur-md transition-all shadow-2xs">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Sisi Kiri: Logo Resmi PMBGM */}
         <div className="flex items-center shrink-0">
           <Logo />
         </div>
 
-        {/* Sisi Tengah: Navigasi Menu Desktop Tepat di Tengah (Center Aligned) */}
+        {/* Sisi Tengah: Navigasi Desktop Terpusat Simetris (mx-auto) */}
         <nav className="hidden lg:flex items-center gap-1.5 mx-auto" aria-label="Navigasi Utama">
-          <Link
-            href="/"
-            className={cn(
-              "rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
-              pathname === "/"
-                ? "bg-primary/10 text-primary font-bold"
-                : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
-            )}
-          >
-            Beranda
-          </Link>
-
-          {MENU_NAVIGASI.map((menu) => (
-            <DropdownMenu key={menu.label}>
-              <DropdownMenuTrigger
+          {menuStaf ? (
+            // NAVIGASI LANGSUNG KERJA KHUSUS STAF (Navbar Top Bersih)
+            menuStaf.map((item) => {
+              const aktif = pathname === item.href || (item.href !== "/panel" && pathname?.startsWith(item.href));
+              const Ikon = item.ikon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
+                    aktif
+                      ? "bg-primary/10 text-primary font-bold shadow-2xs"
+                      : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
+                  )}
+                >
+                  <Ikon className="size-4" aria-hidden />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })
+          ) : (
+            // NAVIGASI PUBLIK UNTUK WARGA / TAMU / GURU
+            <>
+              <Link
+                href="/"
                 className={cn(
-                  "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0",
-                  "text-foreground/80 hover:bg-muted/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                  "rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
+                  pathname === "/"
+                    ? "bg-primary/10 text-primary font-bold shadow-2xs"
+                    : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
                 )}
               >
-                <span className="whitespace-nowrap">{menu.label}</span>
-                <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="center"
-                sideOffset={8}
-                className="w-88 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
-              >
-                <div className="space-y-1">
-                  {menu.submenus?.map((item) => {
-                    const Ikon = item.ikon;
-                    const aktif = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={cn(
-                          "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
-                          aktif
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "hover:bg-muted/80 text-foreground"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
-                            item.aksenIkon || "bg-primary/10 text-primary"
-                          )}
-                        >
-                          <Ikon className="size-4.5" aria-hidden />
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
-                              {item.judul}
-                            </span>
-                            {item.badge && (
-                              <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
-                                {item.badge}
-                              </span>
+                Beranda
+              </Link>
+
+              {MENU_PUBLIK.map((menu) => (
+                <DropdownMenu key={menu.label}>
+                  <DropdownMenuTrigger
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0",
+                      "text-foreground/80 hover:bg-muted/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                    )}
+                  >
+                    <span className="whitespace-nowrap">{menu.label}</span>
+                    <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="center"
+                    sideOffset={8}
+                    className="w-88 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
+                  >
+                    <div className="space-y-1">
+                      {menu.submenus?.map((item) => {
+                        const Ikon = item.ikon;
+                        const aktif = pathname === item.href;
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className={cn(
+                              "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
+                              aktif
+                                ? "bg-primary/10 text-primary font-semibold"
+                                : "hover:bg-muted/80 text-foreground"
                             )}
-                          </div>
-                          <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
-                            {item.deskripsi}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ))}
+                          >
+                            <span
+                              className={cn(
+                                "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
+                                item.aksenIkon || "bg-primary/10 text-primary"
+                              )}
+                            >
+                              <Ikon className="size-4.5" aria-hidden />
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
+                                  {item.judul}
+                                </span>
+                                {item.badge && (
+                                  <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
+                                {item.deskripsi}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ))}
+            </>
+          )}
         </nav>
 
-        {/* Sisi Kanan: Pintasan Panel Peran, Tombol Lapor, & Profil Akun */}
+        {/* Sisi Kanan: Status Staf / Tombol CTA Lapor / Profil Akun */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {/* Pintasan Khusus Staf: Tampil mencolok jika staf sedang berada di halaman publik */}
-          {peranStaf && (
-            <Link
-              href="/panel"
+          {/* Badge Peran Staf (Tampil rapi tanpa tombol panel mengambang) */}
+          {badgePeranStaf && (
+            <div
               className={cn(
-                "hidden sm:inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-extrabold transition hover:shadow-xs whitespace-nowrap shrink-0",
-                peranStaf.klas
+                "hidden sm:inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold whitespace-nowrap shrink-0",
+                badgePeranStaf.klas
               )}
-              title={`Kembali ke Panel Kerja ${peranStaf.label}`}
             >
-              <peranStaf.ikon className="size-3.5" aria-hidden />
-              <span>Panel {peranStaf.label}</span>
+              <badgePeranStaf.ikon className="size-3.5" aria-hidden />
+              <span>{badgePeranStaf.label}</span>
+            </div>
+          )}
+
+          {/* Tombol Utama: Lapor Masalah (Hanya tampil untuk Warga / Tamu / Guru) */}
+          {!adalahStaf && (
+            <Link
+              href={adalahGuru ? `/lapor?sekolahId=${akun.sekolahId}` : "/lapor"}
+              className={cn(
+                buttonVariants({ size: "default" }),
+                "rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm shadow-primary/20 gap-1.5 h-10 px-4 whitespace-nowrap shrink-0"
+              )}
+            >
+              <Megaphone className="size-4" aria-hidden />
+              <span className="hidden sm:inline">
+                {adalahGuru ? "Lapor MBG Sekolah" : "Lapor Masalah"}
+              </span>
+              <span className="sm:hidden">Lapor</span>
             </Link>
           )}
 
-          {/* Tombol Utama: Lapor Masalah (CTA Utama Warga) */}
-          <Link
-            href="/lapor"
-            className={cn(
-              buttonVariants({ size: "default" }),
-              "rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm shadow-primary/20 gap-1.5 h-10 px-4 whitespace-nowrap shrink-0"
-            )}
-          >
-            <Megaphone className="size-4" aria-hidden />
-            <span className="hidden sm:inline">Lapor Masalah</span>
-            <span className="sm:hidden">Lapor</span>
-          </Link>
-
-          {/* Profil / Masuk Pengguna */}
+          {/* Profil Akun / Masuk Pengguna */}
           {akun ? (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -413,8 +459,13 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 </span>
                 <ChevronDown className="size-3.5 opacity-60 shrink-0" aria-hidden />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" sideOffset={8} className="w-72 rounded-2xl p-2 shadow-xl">
-                <DropdownMenuLabel className="p-2.5">
+              <DropdownMenuContent
+                align="end"
+                sideOffset={8}
+                className="w-72 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
+              >
+                {/* Header Profil */}
+                <div className="p-2.5 border-b border-border/60">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-extrabold text-sm truncate">{akun.nama}</span>
                     {akun.terverifikasi && (
@@ -431,238 +482,91 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                       🏢 {akun.instansi.nama}
                     </p>
                   )}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  {/* Menu Khusus Staf / Petugas Instansi, Verifikator, & Admin */}
-                  {akun.peran !== "pelapor" && (
+                </div>
+
+                {/* Daftar Menu Dropdown Menggunakan Link Murni (Bebas Error & Langsung Navigasi) */}
+                <div className="p-1 space-y-1">
+                  {adalahStaf ? (
+                    // Menu Profil untuk Staf / Petugas
                     <>
-                      <DropdownMenuItem
-                        render={
-                          <Link
-                            href="/panel"
-                            className="flex items-center gap-2 rounded-lg p-2 font-bold text-primary hover:bg-primary/10 cursor-pointer text-xs"
-                          />
-                        }
+                      <Link
+                        href="/panel"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-primary hover:bg-primary/10 transition"
                       >
-                        <LayoutDashboard className="size-4" /> Buka Panel Kerja
-                      </DropdownMenuItem>
-
-                      {/* Khusus Dapur SPPG */}
-                      {akun.instansi?.jenis === "sppg" && (
-                        <DropdownMenuItem
-                          render={
-                            <Link
-                              href="/panel/kasus"
-                              className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                            />
-                          }
-                        >
-                          <Utensils className="size-4 text-muted-foreground" /> Aduan Masuk Dapur
-                        </DropdownMenuItem>
-                      )}
-
-                      {/* Khusus Dinas Kesehatan */}
-                      {akun.instansi?.jenis === "dinas_kesehatan" && (
-                        <>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/kasus"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <ShieldAlert className="size-4 text-muted-foreground" /> Investigasi Medis & KLB
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/prioritas"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Radar className="size-4 text-muted-foreground" /> Prioritas Inspeksi Lapangan
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/peringatan"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Siren className="size-4 text-muted-foreground" /> Sinyal Peringatan Dini
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      {/* Khusus Korwil BGN */}
-                      {akun.instansi?.jenis === "korwil_bgn" && (
-                        <>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/akuntabilitas"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Scale className="size-4 text-muted-foreground" /> Papan Akuntabilitas SLA
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/kasus"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <ClipboardList className="size-4 text-muted-foreground" /> Kasus Wilayah Kota
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      {/* Khusus Verifikator */}
-                      {akun.peran === "verifikator" && (
-                        <DropdownMenuItem
-                          render={
-                            <Link
-                              href="/panel/verifikasi"
-                              className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                            />
-                          }
-                        >
-                          <ShieldCheck className="size-4 text-muted-foreground" /> Antrean Verifikasi Aduan
-                        </DropdownMenuItem>
-                      )}
-
-                      {/* Khusus Admin Sistem */}
-                      {akun.peran === "admin" && (
-                        <>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/admin/pengguna"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Users className="size-4 text-muted-foreground" /> Manajemen Pengguna & Guru
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/panel/admin/sla"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Timer className="size-4 text-muted-foreground" /> Konfigurasi Aturan SLA
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      <DropdownMenuItem
-                        render={
-                          <Link
-                            href="/akun"
-                            className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                          />
-                        }
+                        <LayoutDashboard className="size-4 shrink-0" />
+                        <span>Buka Dasbor Panel Kerja</span>
+                      </Link>
+                      <Link
+                        href="/akun"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
                       >
-                        <User className="size-4 text-muted-foreground" /> Profil Pengguna
-                      </DropdownMenuItem>
+                        <User className="size-4 text-muted-foreground shrink-0" />
+                        <span>Profil & Pengaturan Akun</span>
+                      </Link>
+                    </>
+                  ) : adalahGuru ? (
+                    // Menu Profil untuk Guru Sekolah Binaan (Pak Budi)
+                    <>
+                      <Link
+                        href="/akun"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/10 transition"
+                      >
+                        <School className="size-4 shrink-0" />
+                        <span>Laporan & Sekolah Saya</span>
+                      </Link>
+                      <Link
+                        href={`/lapor?sekolahId=${akun.sekolahId}`}
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
+                      >
+                        <Megaphone className="size-4 text-muted-foreground shrink-0" />
+                        <span>Lapor Masalah MBG Sekolah</span>
+                      </Link>
+                      <Link
+                        href="/cari-sekolah"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
+                      >
+                        <Search className="size-4 text-muted-foreground shrink-0" />
+                        <span>Pantau Sekolah Binaan</span>
+                      </Link>
+                    </>
+                  ) : (
+                    // Menu Profil untuk Warga / Orang Tua (Ibu Rina)
+                    <>
+                      <Link
+                        href="/akun"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/10 transition"
+                      >
+                        <User className="size-4 shrink-0" />
+                        <span>Laporan Saya & Riwayat</span>
+                      </Link>
+                      <Link
+                        href="/lapor"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
+                      >
+                        <Megaphone className="size-4 text-muted-foreground shrink-0" />
+                        <span>Buat Laporan Aduan Baru</span>
+                      </Link>
+                      <Link
+                        href="/cari-sekolah"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
+                      >
+                        <School className="size-4 text-muted-foreground shrink-0" />
+                        <span>Cari Sekolah & Dapur Anak</span>
+                      </Link>
                     </>
                   )}
+                </div>
 
-                  {/* Menu Khusus Pelapor: Dibedakan antara Guru Sekolah vs Warga Umum */}
-                  {akun.peran === "pelapor" && (
-                    <>
-                      {Boolean(akun.sekolahId) ? (
-                        <>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/akun"
-                                className="flex items-center gap-2 rounded-lg p-2 font-semibold text-primary cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <School className="size-4 text-primary" /> Laporan & Sekolah Saya
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href={`/lapor?sekolahId=${akun.sekolahId}`}
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Megaphone className="size-4 text-muted-foreground" /> Lapor Masalah MBG Sekolah
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/cari-sekolah"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Search className="size-4 text-muted-foreground" /> Cari & Pantau Sekolah
-                          </DropdownMenuItem>
-                        </>
-                      ) : (
-                        <>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/akun"
-                                className="flex items-center gap-2 rounded-lg p-2 font-semibold text-primary cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <User className="size-4 text-primary" /> Laporan Saya & Profil
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/lapor"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <Megaphone className="size-4 text-muted-foreground" /> Buat Laporan Baru
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            render={
-                              <Link
-                                href="/cari-sekolah"
-                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                              />
-                            }
-                          >
-                            <School className="size-4 text-muted-foreground" /> Cari Sekolah Anak
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </>
-                  )}
-                </DropdownMenuGroup>
-
-                <DropdownMenuSeparator />
-
-                {/* Tombol Logout: Handled via Server Action useTransition, responsif & andal */}
-                <div className="p-1">
-                  <DropdownMenuItem
+                <div className="border-t border-border/60 p-1">
+                  <button
+                    type="button"
                     onClick={tanganiKeluar}
                     disabled={sedangKeluar}
-                    className="flex w-full items-center gap-2 rounded-lg p-2 font-bold text-destructive hover:bg-destructive/10 focus:bg-destructive/10 focus:text-destructive cursor-pointer text-xs transition"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 transition cursor-pointer disabled:opacity-50"
                   >
                     <LogOut className="size-4 shrink-0" />
                     <span>{sedangKeluar ? "Mengeluarkan akun..." : "Keluar dari Akun"}</span>
-                  </DropdownMenuItem>
+                  </button>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -717,7 +621,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                       </p>
                     )}
                     <div className="pt-1 flex flex-col gap-1.5">
-                      {akun.peran !== "pelapor" ? (
+                      {adalahStaf ? (
                         <Link
                           href="/panel"
                           onClick={() => setMobileBuka(false)}
@@ -755,42 +659,68 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
 
                 {/* Navigasi Mobile Terstruktur */}
                 <div className="space-y-4">
-                  <Link
-                    href="/"
-                    onClick={() => setMobileBuka(false)}
-                    className={cn(
-                      "block px-3 py-2 rounded-xl text-sm font-bold",
-                      pathname === "/" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
-                    )}
-                  >
-                    Beranda
-                  </Link>
-
-                  {MENU_NAVIGASI.map((group) => (
-                    <div key={group.label} className="space-y-1 pt-2">
+                  {menuStaf ? (
+                    // Menu Mobile untuk Staf
+                    <div className="space-y-1">
                       <span className="px-3 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-                        {group.label}
+                        Modul Panel Kerja
                       </span>
-                      <div className="space-y-0.5 mt-1">
-                        {group.submenus?.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            onClick={() => setMobileBuka(false)}
-                            className={cn(
-                              "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold transition",
-                              pathname === item.href
-                                ? "bg-primary/10 text-primary font-bold"
-                                : "text-foreground/90 hover:bg-muted"
-                            )}
-                          >
-                            <item.ikon className="size-4 text-muted-foreground shrink-0" />
-                            <span className="truncate">{item.judul}</span>
-                          </Link>
-                        ))}
-                      </div>
+                      {menuStaf.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileBuka(false)}
+                          className={cn(
+                            "flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition",
+                            pathname === item.href ? "bg-primary/10 text-primary font-bold" : "text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <item.ikon className="size-4 text-muted-foreground shrink-0" />
+                          <span>{item.label}</span>
+                        </Link>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    // Menu Mobile Publik
+                    <>
+                      <Link
+                        href="/"
+                        onClick={() => setMobileBuka(false)}
+                        className={cn(
+                          "block px-3 py-2 rounded-xl text-sm font-bold",
+                          pathname === "/" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+                        )}
+                      >
+                        Beranda
+                      </Link>
+
+                      {MENU_PUBLIK.map((group) => (
+                        <div key={group.label} className="space-y-1 pt-2">
+                          <span className="px-3 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
+                            {group.label}
+                          </span>
+                          <div className="space-y-0.5 mt-1">
+                            {group.submenus?.map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setMobileBuka(false)}
+                                className={cn(
+                                  "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold transition",
+                                  pathname === item.href
+                                    ? "bg-primary/10 text-primary font-bold"
+                                    : "text-foreground/90 hover:bg-muted"
+                                )}
+                              >
+                                <item.ikon className="size-4 text-muted-foreground shrink-0" />
+                                <span className="truncate">{item.judul}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
 

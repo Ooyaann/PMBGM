@@ -59,11 +59,13 @@ const STATUS_TAMPIL: Record<StatusAlur, { ikon: typeof Circle; kelas: string }> 
 };
 
 export function BadgeStatus({ status, className }: { status: StatusAlur; className?: string }) {
-  const { ikon: Ikon, kelas } = STATUS_TAMPIL[status];
+  const konfigurasi = STATUS_TAMPIL[status] ?? STATUS_TAMPIL.diterima;
+  const Ikon = konfigurasi.ikon;
+  const labelStatus = STATUS[status]?.label ?? status;
   return (
-    <span className={cn("inline-flex h-6 shrink-0 items-center gap-1 rounded-full px-2 text-xs font-medium whitespace-nowrap", kelas, className)}>
+    <span className={cn("inline-flex h-6 shrink-0 items-center gap-1 rounded-full px-2 text-xs font-medium whitespace-nowrap", konfigurasi.kelas, className)}>
       <Ikon className="size-3.5 shrink-0" aria-hidden />
-      {STATUS[status].label}
+      {labelStatus}
     </span>
   );
 }

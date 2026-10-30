@@ -72,7 +72,7 @@ async function Isi() {
               </span>
               <div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary uppercase">
-                  Sekolah yang Didampingi (Akun Guru)
+                  {profil?.jenis_pelapor === "guru" ? "Sekolah yang Didampingi (Akun Guru)" : "Sekolah Anak Tercatat"}
                 </span>
                 <h3 className="font-extrabold text-lg">{infoSekolah.nama}</h3>
                 {infoSekolah.sppgNama && (
@@ -95,7 +95,7 @@ async function Isi() {
                 href={`/lapor?sekolahId=${p.sekolahId}`}
                 className="rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition"
               >
-                Lapor untuk Sekolah
+                {profil?.jenis_pelapor === "guru" ? "Lapor untuk Sekolah" : "Lapor untuk Sekolah Anak"}
               </Link>
             </div>
           </div>
@@ -108,7 +108,8 @@ async function Isi() {
           {laporan.length ? (
             <ul className="space-y-3">
               {laporan.map((l) => {
-                const Ikon = IKON_KATEGORI[l.kategori];
+                const Ikon = IKON_KATEGORI[l.kategori] ?? Megaphone;
+                const namaKategori = KATEGORI[l.kategori]?.label ?? "Laporan MBG";
                 const selesai = l.status === "selesai";
                 return (
                   <li key={l.id} className={cn("rounded-3xl border bg-card p-4", selesai && !l.rating && "border-primary/40")}>
@@ -116,7 +117,7 @@ async function Isi() {
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary"><Ikon className="size-5" aria-hidden /></span>
                       <div className="min-w-0 flex-1">
                         <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                          <span className="font-semibold">{KATEGORI[l.kategori].label}</span>
+                          <span className="font-semibold">{namaKategori}</span>
                           <BadgeStatus status={l.status} />
                         </p>
                         <p className="mt-0.5 flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground">
