@@ -25,8 +25,10 @@ import {
   ShieldCheck,
   Siren,
   SlidersHorizontal,
+  Timer,
   Truck,
   User,
+  Users,
   Utensils,
   UtensilsCrossed,
   X,
@@ -262,6 +264,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
   const tanganiKeluar = () => {
     startKeluar(async () => {
       await keluar();
+      window.location.href = "/";
     });
   };
 
@@ -405,7 +408,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-black shrink-0">
                   {inisial}
                 </span>
-                <span className="hidden xl:inline text-xs font-bold text-foreground max-w-24 truncate">
+                <span className="hidden sm:inline text-xs font-bold text-foreground max-w-28 truncate">
                   {akun.nama.split(" ")[0]}
                 </span>
                 <ChevronDown className="size-3.5 opacity-60 shrink-0" aria-hidden />
@@ -431,47 +434,98 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  {/* Menu Khusus Staf / Petugas */}
+                  {/* Menu Khusus Staf / Petugas Instansi, Verifikator, & Admin */}
                   {akun.peran !== "pelapor" && (
                     <>
                       <DropdownMenuItem
                         render={
                           <Link
                             href="/panel"
-                            className="flex items-center gap-2 rounded-lg p-2 font-bold text-primary hover:bg-primary/10 cursor-pointer"
+                            className="flex items-center gap-2 rounded-lg p-2 font-bold text-primary hover:bg-primary/10 cursor-pointer text-xs"
                           />
                         }
                       >
                         <LayoutDashboard className="size-4" /> Buka Panel Kerja
                       </DropdownMenuItem>
 
+                      {/* Khusus Dapur SPPG */}
                       {akun.instansi?.jenis === "sppg" && (
                         <DropdownMenuItem
                           render={
                             <Link
-                              href="/panel/distribusi"
+                              href="/panel/kasus"
                               className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
                             />
                           }
                         >
-                          <Truck className="size-4 text-muted-foreground" /> Distribusi & Menu Dapur
+                          <Utensils className="size-4 text-muted-foreground" /> Aduan Masuk Dapur
                         </DropdownMenuItem>
                       )}
 
-                      {Boolean(akun.sekolahId) && (
-                        <DropdownMenuItem
-                          render={
-                            <Link
-                              href="/panel/penerimaan"
-                              className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                            />
-                          }
-                        >
-                          <ClipboardList className="size-4 text-muted-foreground" /> Penerimaan MBG Siswa
-                        </DropdownMenuItem>
+                      {/* Khusus Dinas Kesehatan */}
+                      {akun.instansi?.jenis === "dinas_kesehatan" && (
+                        <>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/kasus"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <ShieldAlert className="size-4 text-muted-foreground" /> Investigasi Medis & KLB
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/prioritas"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Radar className="size-4 text-muted-foreground" /> Prioritas Inspeksi Lapangan
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/peringatan"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Siren className="size-4 text-muted-foreground" /> Sinyal Peringatan Dini
+                          </DropdownMenuItem>
+                        </>
                       )}
 
-                      {(akun.peran === "verifikator" || akun.instansi?.jenis === "dinas_kesehatan" || akun.instansi?.jenis === "korwil_bgn") && (
+                      {/* Khusus Korwil BGN */}
+                      {akun.instansi?.jenis === "korwil_bgn" && (
+                        <>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/akuntabilitas"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Scale className="size-4 text-muted-foreground" /> Papan Akuntabilitas SLA
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/kasus"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <ClipboardList className="size-4 text-muted-foreground" /> Kasus Wilayah Kota
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
+                      {/* Khusus Verifikator */}
+                      {akun.peran === "verifikator" && (
                         <DropdownMenuItem
                           render={
                             <Link
@@ -480,49 +534,120 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                             />
                           }
                         >
-                          <ShieldCheck className="size-4 text-muted-foreground" /> Antrean Verifikasi
+                          <ShieldCheck className="size-4 text-muted-foreground" /> Antrean Verifikasi Aduan
                         </DropdownMenuItem>
                       )}
-                    </>
-                  )}
 
-                  {/* Menu Khusus Pelapor / Warga */}
-                  {akun.peran === "pelapor" && (
-                    <>
+                      {/* Khusus Admin Sistem */}
+                      {akun.peran === "admin" && (
+                        <>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/admin/pengguna"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Users className="size-4 text-muted-foreground" /> Manajemen Pengguna & Guru
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/panel/admin/sla"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Timer className="size-4 text-muted-foreground" /> Konfigurasi Aturan SLA
+                          </DropdownMenuItem>
+                        </>
+                      )}
+
                       <DropdownMenuItem
                         render={
                           <Link
                             href="/akun"
-                            className="flex items-center gap-2 rounded-lg p-2 font-semibold text-primary cursor-pointer text-xs"
-                          />
-                        }
-                      >
-                        <User className="size-4 text-primary" /> Laporan Saya & Profil
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        render={
-                          <Link
-                            href="/cari-sekolah"
                             className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
                           />
                         }
                       >
-                        <School className="size-4 text-muted-foreground" /> Cari Sekolah Anak
+                        <User className="size-4 text-muted-foreground" /> Profil Pengguna
                       </DropdownMenuItem>
                     </>
                   )}
 
-                  {akun.peran !== "pelapor" && (
-                    <DropdownMenuItem
-                      render={
-                        <Link
-                          href="/akun"
-                          className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
-                        />
-                      }
-                    >
-                      <User className="size-4 text-muted-foreground" /> Profil Pengguna
-                    </DropdownMenuItem>
+                  {/* Menu Khusus Pelapor: Dibedakan antara Guru Sekolah vs Warga Umum */}
+                  {akun.peran === "pelapor" && (
+                    <>
+                      {Boolean(akun.sekolahId) ? (
+                        <>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/akun"
+                                className="flex items-center gap-2 rounded-lg p-2 font-semibold text-primary cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <School className="size-4 text-primary" /> Laporan & Sekolah Saya
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href={`/lapor?sekolahId=${akun.sekolahId}`}
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Megaphone className="size-4 text-muted-foreground" /> Lapor Masalah MBG Sekolah
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/cari-sekolah"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Search className="size-4 text-muted-foreground" /> Cari & Pantau Sekolah
+                          </DropdownMenuItem>
+                        </>
+                      ) : (
+                        <>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/akun"
+                                className="flex items-center gap-2 rounded-lg p-2 font-semibold text-primary cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <User className="size-4 text-primary" /> Laporan Saya & Profil
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/lapor"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <Megaphone className="size-4 text-muted-foreground" /> Buat Laporan Baru
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            render={
+                              <Link
+                                href="/cari-sekolah"
+                                className="flex items-center gap-2 rounded-lg p-2 font-medium cursor-pointer text-xs"
+                              />
+                            }
+                          >
+                            <School className="size-4 text-muted-foreground" /> Cari Sekolah Anak
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </>
                   )}
                 </DropdownMenuGroup>
 
@@ -578,23 +703,45 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 {akun ? (
                   <div className="rounded-2xl border bg-muted/40 p-3.5 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-extrabold text-sm">{akun.nama}</span>
+                      <span className="font-extrabold text-sm truncate">{akun.nama}</span>
                       {akun.terverifikasi && (
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0">
                           Terverifikasi
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground">{akun.peranLabel}</p>
-                    {akun.peran !== "pelapor" && (
-                      <Link
-                        href="/panel"
-                        onClick={() => setMobileBuka(false)}
-                        className="mt-2 flex items-center justify-center gap-1.5 w-full rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground"
-                      >
-                        <LayoutDashboard className="size-3.5" /> Buka Panel Kerja
-                      </Link>
+                    {akun.instansi && (
+                      <p className="text-[11px] text-primary font-semibold truncate">
+                        🏢 {akun.instansi.nama}
+                      </p>
                     )}
+                    <div className="pt-1 flex flex-col gap-1.5">
+                      {akun.peran !== "pelapor" ? (
+                        <Link
+                          href="/panel"
+                          onClick={() => setMobileBuka(false)}
+                          className="flex items-center justify-center gap-1.5 w-full rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground"
+                        >
+                          <LayoutDashboard className="size-3.5" /> Buka Panel Kerja
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/akun"
+                          onClick={() => setMobileBuka(false)}
+                          className="flex items-center justify-center gap-1.5 w-full rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground"
+                        >
+                          <User className="size-3.5" /> Laporan Saya & Profil
+                        </Link>
+                      )}
+                      <Link
+                        href="/akun"
+                        onClick={() => setMobileBuka(false)}
+                        className="flex items-center justify-center gap-1.5 w-full rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
+                      >
+                        Pengaturan Profil
+                      </Link>
+                    </div>
                   </div>
                 ) : (
                   <Link

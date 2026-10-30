@@ -1,48 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   Clock,
   Phone,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { GoogleSearchBar } from "@/components/beranda/google-search-bar";
-import { ambilKasusSorotan } from "@/lib/data/publik";
 
-export default async function Beranda() {
-  const sorotan = await ambilKasusSorotan();
-
+export default function Beranda() {
   return (
     <main className="relative h-[calc(100vh-4.5rem)] max-h-[calc(100vh-4.5rem)] overflow-hidden flex flex-col justify-center items-center px-4 bg-[radial-gradient(ellipse_70%_50%_at_50%_35%,rgba(16,185,129,0.08),transparent)]">
       {/* Container Utama Berpusat Penuh (Google-Style Centerpiece) */}
-      <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-6 -mt-6">
-        {/* 1. Ticker Kasus Baru: Terpusat Tepat di Atas Logo */}
-        {sorotan?.kasus && (
-          <Link
-            href={`/lacak?tiket=${sorotan.kasus.kode_kasus}`}
-            className="group inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs font-bold text-rose-700 dark:text-rose-300 backdrop-blur-md transition hover:bg-rose-500/20 hover:scale-102 shadow-xs"
-            title="Klik untuk memantau kasus ini secara terbuka"
-          >
-            <span className="relative flex size-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-rose-500" />
-            </span>
-            <span className="font-extrabold uppercase tracking-wider text-[10px] text-rose-600 dark:text-rose-400 shrink-0">
-              Kasus Terkini:
-            </span>
-            <span className="truncate max-w-[14rem] sm:max-w-xs font-semibold text-foreground group-hover:text-primary transition-colors">
-              {sorotan.kasus.judul}
-            </span>
-            <span className="text-[10px] bg-background/90 px-2 py-0.5 rounded-full text-muted-foreground border shrink-0">
-              {sorotan.kasus.status?.replace("_", " ") ?? "Proses"}
-            </span>
-            <ArrowRight className="size-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition shrink-0" />
-          </Link>
-        )}
-
-        {/* 2. Logo Resmi PMBGM & Slogan Ringkas */}
-        <div className="flex flex-col items-center justify-center space-y-2">
+      <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-6 -mt-4">
+        {/* Logo Resmi PMBGM & Slogan Ringkas */}
+        <div className="flex flex-col items-center justify-center space-y-2.5">
           <Image
             src="/logo-pmbgm.png"
             alt="PMBGM - Pemantau MBG Masyarakat"
