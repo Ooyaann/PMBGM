@@ -222,19 +222,19 @@ export default function HalamanMetodologi() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <div className="rounded-xl border bg-card p-3 text-center">
               <span className="block text-[10px] uppercase font-bold text-darurat">Keracunan</span>
-              <span className="text-sm font-black text-foreground">Maks 2 Jam</span>
+              <span className="text-sm font-black text-foreground">Verifikasi ≤ 6 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-risiko-sedang">Kebersihan</span>
-              <span className="text-sm font-black text-foreground">Maks 24 Jam</span>
+              <span className="block text-[10px] uppercase font-bold text-risiko-sedang">Makanan & Distribusi</span>
+              <span className="text-sm font-black text-foreground">Verifikasi ≤ 24 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-primary">Gizi / Menu</span>
-              <span className="text-sm font-black text-foreground">Maks 48 Jam</span>
+              <span className="block text-[10px] uppercase font-bold text-primary">Kebersihan & Gizi</span>
+              <span className="text-sm font-black text-foreground">Verifikasi ≤ 48 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-muted-foreground">Distribusi</span>
-              <span className="text-sm font-black text-foreground">Maks 72 Jam</span>
+              <span className="block text-[10px] uppercase font-bold text-muted-foreground">Pengadaan & Lainnya</span>
+              <span className="text-sm font-black text-foreground">Verifikasi ≤ 72 Jam</span>
             </div>
           </div>
 

@@ -45,9 +45,10 @@ async function Isi({ params }: { params: PageProps<"/panel/kasus/[id]">["params"
   if (!d) notFound();
   const { kasus: k, laporan, foto, peristiwa, instansi } = d;
   const staf = pengguna.peran !== "instansi";
-  // Instansi hanya menangani kasus yang diteruskan kepadanya; admin bisa mewakili.
+  // Instansi menangani kasus yang diteruskan kepadanya; SPPG juga dapat memantau kasus di dapurnya.
   const instansiKasus = pengguna.peran === "admin" || (pengguna.peran === "instansi" && pengguna.instansiId === k.instansi_id);
-  if (pengguna.peran === "instansi" && !instansiKasus) notFound();
+  const sppgTerkait = pengguna.peran === "instansi" && instansi.some((i) => i.id === pengguna.instansiId);
+  if (pengguna.peran === "instansi" && !instansiKasus && !sppgTerkait) notFound();
   const status = k.status as StatusAlur;
   const Ikon = IKON_KATEGORI[k.kategori!];
   // Laporan per kasus hanya tampil sekali per verifikasi: ringkas peristiwa level laporan.

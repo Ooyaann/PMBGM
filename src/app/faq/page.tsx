@@ -21,7 +21,7 @@ const KELOMPOK = [
   {
     id: "lacak", judul: "Melacak", ikon: ClipboardList, tanya: [
       ["Bagaimana mengetahui perkembangan laporan?", "Gunakan kode tiket di halaman Lacak, buka Laporan saya, atau tunggu notifikasi dan email setiap ada perubahan status."],
-      ["Berapa lama laporan diproses?", "Setiap kategori punya batas waktu per tahap. Dugaan keracunan diverifikasi paling lambat 2 jam (prioritas darurat), sedangkan aduan reguler maksimal 6 jam. Lihat tabel lengkapnya di Metodologi."],
+      ["Berapa lama laporan diproses?", "Setiap kategori punya batas waktu resmi (SLA) per tahap. Dugaan keracunan wajib diverifikasi dan ditanggapi instansi paling lambat 6 jam (diteruskan ≤ 2 jam), makanan tidak layak & distribusi ≤ 24 jam, serta kebersihan & gizi ≤ 48 jam. Lihat tabel lengkapnya di Metodologi."],
       ["Bagaimana bila instansi tidak menanggapi?", "Setelah batas waktu lewat, kasus otomatis ditandai “Tidak ditanggapi”, prioritasnya naik, dan tampil di Papan Akuntabilitas."],
       ["Masalahnya belum tuntas padahal kasus selesai.", "Buka ulang kasus dari Laporan saya paling lambat 14 hari setelah selesai, lalu jelaskan bagian yang belum tuntas."],
       ["Mengapa laporan saya ditolak?", "Alasannya selalu ditampilkan, misalnya bukti tidak relevan atau di luar lingkup MBG. Anda bisa melapor lagi dengan informasi yang lebih lengkap."],

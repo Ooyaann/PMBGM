@@ -428,6 +428,16 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
 
   // Pola 1 (lanjutan): kasus yang belum ditanggapi instansi melewati SLA → label "Tidak Ditanggapi".
   const sppgUtara = sppgGen.find((s) => s.profil === "bermasalah" && s.kecamatan === "Semarang Utara")!;
+  // Lonjakan laporan terverifikasi aktif dalam 24 jam terakhir di SPPG Semarang Utara 02 (agar peringatan_dini aktif).
+  for (let i = 0; i < 4; i++) {
+    const kategori: Kategori = i === 0 ? "keracunan" : "makanan_tidak_layak";
+    kejadian.push({
+      sppg: sppgUtara, sekolah: sppgUtara.sekolah[i % sppgUtara.sekolah.length], kategori,
+      waktu: bulatMenit(acuan - (18 - i * 3) * JAM), terdampak: a.int(8, 25), valid: true,
+      pelapor: pilihPelapor(1), jedaLapor: [0.5],
+      paksa: { verifikasi: 1, teruskan: 0.5, tanggapan: 48, bukaUlang: false },
+    });
+  }
   const belumDitanggapi: [SppgGen, Kategori, number][] = [
     [sppgUtara, "distribusi", 3], [sppgLonjakanBaru, "kebersihan", 5], [sppgDemo, "kebersihan", 6],
   ];
@@ -536,15 +546,27 @@ export function buatDataSeed(acuanMentah: number): DataSeed {
         ? "rahasia"
         : a.berbobot({ rahasia: 0.55, publik: 0.25, anonim: 0.2 });
       const adaLokasi = a.peluang(0.7);
+      const deskripsi = isiDeskripsi(k.kategori, terdampak);
+      const urgensi = k.kategori === "keracunan" && terdampak >= 5 ? "darurat" : k.kategori === "keracunan" || terdampak >= 25 ? "tinggi" : "normal";
       laporan.push({
         id, kode_tiket: a.kode("MBG-", 6), pelapor_id: pelapor.id, kategori: k.kategori,
         sekolah_id: k.sekolah.id,
         waktu_kejadian: iso(bulatMenit(k.waktu + a.int(-20, 20) * MENIT)),
         jumlah_terdampak: terdampak,
-        deskripsi: isiDeskripsi(k.kategori, terdampak),
+        deskripsi,
         lokasi_lat: adaLokasi ? k.sekolah.lat + a.antara(-0.002, 0.002) : null,
         lokasi_lng: adaLokasi ? k.sekolah.lng + a.antara(-0.002, 0.002) : null,
         mode_identitas: modeIdentitas,
+        klasifikasi_otomatis: {
+          kategori_saran: k.kategori,
+          urgensi,
+          yakin: 0.92,
+          alasan: `Klasifikasi ML Privat (NB+MLP): terdeteksi pola ${LABEL_KATEGORI[k.kategori].toLowerCase()}.`,
+          metode: "ai",
+          model: "pmbgm-ml-nb-mlp-v1",
+          diperiksa_ulang: urgensi === "darurat",
+          cocok: [k.kategori.replace(/_/g, " ")],
+        },
         dibuat_pada: iso(dibuat),
         diperbarui_pada: iso(dibuat),
       });

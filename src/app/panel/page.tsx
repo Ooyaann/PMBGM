@@ -127,10 +127,10 @@ async function Isi() {
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">{instansi.nama}</h1>
 
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <Ubin href="/panel/kasus" ikon={ShieldAlert} label="Kasus aktif" nilai={r.menungguInstansi} />
-          <Ubin href="/panel/kasus" ikon={CircleAlert} label="Belum ditanggapi" nilai={r.tidakDitanggapi} awas />
-          <Ubin href="/panel/peringatan" ikon={Siren} label="Sinyal 24 jam" nilai={r.ditindaklanjuti} />
-          <Ubin href="/panel/prioritas" ikon={Radar} label="Prioritas inspeksi" nilai={r.perluDiteruskan} />
+          <Ubin href="/panel/kasus" ikon={ShieldAlert} label="Perlu ditanggapi" nilai={r.menungguInstansi} />
+          <Ubin href="/panel/kasus" ikon={CircleAlert} label="Lewat batas (SLA)" nilai={r.tidakDitanggapi} awas />
+          <Ubin href="/panel/peringatan" ikon={Siren} label="Peringatan aktif" nilai={r.peringatanAktif} awas />
+          <Ubin href="/panel/prioritas" ikon={Radar} label="SPPG risiko tinggi" nilai={r.sppgRisikoTinggi} />
         </div>
 
         <section className="space-y-3">
@@ -163,9 +163,9 @@ async function Isi() {
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">{instansi.nama}</h1>
 
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-          <Ubin href="/panel/kasus" ikon={FolderKanban} label="Kasus wilayah" nilai={r.menungguInstansi} />
+          <Ubin href="/panel/kasus" ikon={FolderKanban} label="Perlu ditanggapi" nilai={r.menungguInstansi} />
           <Ubin href="/panel/kasus?status=menunggu" ikon={CircleAlert} label="Lewat batas (SLA)" nilai={r.tidakDitanggapi} awas />
-          <Ubin href="/panel/akuntabilitas" ikon={Scale} label="Akuntabilitas" nilai={r.ditindaklanjuti} />
+          <Ubin href="/panel/akuntabilitas" ikon={Scale} label="SPPG dipantau" nilai={r.totalSppg} />
         </div>
 
         <section className="space-y-3">
@@ -228,9 +228,9 @@ async function Isi() {
       <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Administrasi Sistem</h1>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Ubin href="/panel/admin/pengguna" ikon={Users} label="Pengguna" nilai={r.antrean + 12} />
-        <Ubin href="/panel/admin/sla" ikon={Timer} label="Aturan SLA" nilai={7} />
-        <Ubin href="/panel/kasus" ikon={FolderKanban} label="Total kasus" nilai={r.menungguInstansi + r.ditindaklanjuti} />
+        <Ubin href="/panel/admin/pengguna" ikon={Users} label="Pengguna" nilai={r.totalPengguna} />
+        <Ubin href="/panel/admin/sla" ikon={Timer} label="Aturan SLA" nilai={35} />
+        <Ubin href="/panel/kasus" ikon={FolderKanban} label="Kasus aktif" nilai={r.menungguInstansi + r.ditindaklanjuti} />
         <Ubin href="/panel/kasus?status=menunggu" ikon={CircleAlert} label="Lewat batas" nilai={r.tidakDitanggapi} awas />
       </div>
     </div>

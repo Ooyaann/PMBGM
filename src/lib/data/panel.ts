@@ -294,26 +294,43 @@ export async function ambilRingkasanPanel(instansiId: string | null) {
   const supabase = await buatKlienServer();
   const hitung = (q: PromiseLike<{ count: number | null }>) => q.then((r) => r.count ?? 0);
 
-  let sppgId: string | null = null;
-  if (instansiId) {
-    const { data: inst } = await supabase.from("instansi").select("sppg_id").eq("id", instansiId).single();
-    sppgId = inst?.sppg_id ?? null;
-  }
-
   const kasus = () => {
     const q = supabase.from("kasus").select("id", { count: "exact", head: true });
-    if (instansiId && sppgId) {
-      return q.or(`instansi_id.eq.${instansiId},sppg_id.eq.${sppgId}`);
-    }
     return instansiId ? q.eq("instansi_id", instansiId) : q;
   };
-  const [antrean, antreanTerlambat, perluDiteruskan, menungguInstansi, tidakDitanggapi, ditindaklanjuti] = await Promise.all([
+  const [
+    antrean,
+    antreanTerlambat,
+    perluDiteruskan,
+    menungguInstansi,
+    tidakDitanggapi,
+    ditindaklanjuti,
+    peringatanAktif,
+    sppgRisikoTinggi,
+    totalPengguna,
+    totalSppg,
+  ] = await Promise.all([
     instansiId ? 0 : hitung(supabase.from("laporan").select("id", { count: "exact", head: true }).eq("status", "diterima")),
     instansiId ? 0 : hitung(supabase.from("laporan").select("id", { count: "exact", head: true }).eq("status", "diterima").eq("terlambat", true)),
     instansiId ? 0 : hitung(kasus().eq("status", "diverifikasi")),
     hitung(kasus().in("status", ["diteruskan", "dibuka_ulang"])),
     hitung(kasus().in("status", ["diteruskan", "dibuka_ulang"]).eq("terlambat", true)),
     hitung(kasus().eq("status", "ditindaklanjuti")),
+    hitung(supabase.from("peringatan_dini").select("id", { count: "exact", head: true }).eq("basis", "terverifikasi").eq("aktif", true)),
+    hitung(supabase.from("indeks_risiko").select("sppg_id", { count: "exact", head: true }).eq("kategori_risiko", "tinggi")),
+    instansiId ? 0 : hitung(supabase.from("profil_pengguna").select("id", { count: "exact", head: true })),
+    hitung(supabase.from("sppg").select("id", { count: "exact", head: true })),
   ]);
-  return { antrean, antreanTerlambat, perluDiteruskan, menungguInstansi, tidakDitanggapi, ditindaklanjuti };
+  return {
+    antrean,
+    antreanTerlambat,
+    perluDiteruskan,
+    menungguInstansi,
+    tidakDitanggapi,
+    ditindaklanjuti,
+    peringatanAktif,
+    sppgRisikoTinggi,
+    totalPengguna,
+    totalSppg,
+  };
 }

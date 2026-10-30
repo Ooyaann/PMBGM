@@ -100,7 +100,7 @@ export function DasborPanduan() {
           <div className="rounded-xl border border-darurat/30 bg-darurat-lembut p-3 flex items-center gap-2.5">
             <Siren className="size-4 text-darurat shrink-0" />
             <p className="text-xs font-medium">
-              <strong>Keracunan:</strong> Hubungi <strong>119</strong> dulu, lalu lapor untuk prioritas 2 jam.
+              <strong>Keracunan:</strong> Hubungi <strong>119</strong> dulu, lalu lapor untuk prioritas darurat (≤ 6 jam).
             </p>
           </div>
         </div>
@@ -273,11 +273,11 @@ export function DasborPanduan() {
             </p>
           </div>
           {[
-            ["1. Diterima", "Maks. 6 jam (Darurat: 2 jam)"],
-            ["2. Diverifikasi", "Maks. 2 jam penerusan"],
-            ["3. Diteruskan", "Maks. 6 jam tanggapan awal"],
-            ["4. Ditindaklanjuti", "Maks. 72 jam perbaikan"],
-            ["5. Selesai", "Dapat dinilai / dibuka ulang"],
+            ["1. Diterima (Verifikasi)", "Maks. 6 jam (Darurat) – 72 jam"],
+            ["2. Diverifikasi (Penerusan)", "Maks. 2 jam (Darurat) – 48 jam"],
+            ["3. Diteruskan (Tanggapan)", "Maks. 6 jam (Darurat) – 7 hari"],
+            ["4. Ditindaklanjuti (Selesai)", "Maks. 3 hari (Darurat) – 30 hari"],
+            ["5. Selesai / Buka Ulang", "Dapat dinilai atau dibuka ulang (14 hari)"],
           ].map(([tahap, batas]) => (
             <div key={tahap} className="flex items-center justify-between rounded-xl border bg-card p-2.5">
               <span className="font-bold">{tahap}</span>
@@ -304,7 +304,7 @@ export function DasborPanduan() {
             ["SLHS (Izin Sanitasi)", "Sertifikat Laik Higiene Sanitasi dari Dinas Kesehatan yang menyatakan dapur bersih dan layak."],
             ["SAW (Hitung Risiko)", "Rumus penjumlahan berbobot (0–100) untuk menentukan dapur mana yang paling butuh disidak lebih dulu."],
             ["ML / ANN (Deteksi Bukti)", "Algoritma pemeriksa otomatis yang mengecek kecocokan teks laporan, waktu foto, dan lokasi GPS."],
-            ["SLA (Batas Waktu)", "Standar waktu maksimal instansi wajib menanggapi laporan (misal: keracunan maks. 2 jam)."],
+            ["SLA (Batas Waktu)", "Standar waktu maksimal instansi wajib memverifikasi dan menanggapi laporan (misal: keracunan maks. 6 jam)."],
             ["EXIF & GPS Foto", "Catatan waktu dan lokasi otomatis pada foto kamera untuk memvalidasi keaslian kejadian (dihapus sebelum tampil ke publik)."],
           ].map(([istilah, arti]) => (
             <div key={istilah} className="rounded-xl border bg-card p-3 space-y-0.5">
