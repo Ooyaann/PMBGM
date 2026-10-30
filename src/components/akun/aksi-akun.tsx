@@ -151,7 +151,7 @@ const JENIS = [
 ] as const;
 type Jenis = (typeof JENIS)[number][0];
 
-export function FormProfil({ nama, jenis }: { nama: string; jenis: Jenis | null }) {
+export function FormProfil({ nama, jenis, hanyaNama = false }: { nama: string; jenis: Jenis | null; hanyaNama?: boolean }) {
   const router = useRouter();
   const [sibuk, mulai] = useTransition();
   const [buka, setBuka] = useState(false);
@@ -173,16 +173,18 @@ export function FormProfil({ nama, jenis }: { nama: string; jenis: Jenis | null 
         <input value={n} onChange={(e) => setN(e.target.value)} maxLength={60}
           className="h-10 w-full rounded-xl border bg-background px-3 outline-none focus-visible:ring-3 focus-visible:ring-ring/50" />
       </label>
-      <div role="radiogroup" aria-label="Saya melapor sebagai" className="flex flex-wrap gap-1.5">
-        {JENIS.map(([k, l]) => (
-          <button key={k} type="button" role="radio" aria-checked={j === k} onClick={() => setJ(k)}
-            className={cn("rounded-full border px-3 py-1 text-xs transition hover:bg-muted", j === k && "border-primary bg-secondary font-semibold")}>
-            {l}
-          </button>
-        ))}
-      </div>
+      {!hanyaNama && (
+        <div role="radiogroup" aria-label="Saya melapor sebagai" className="flex flex-wrap gap-1.5">
+          {JENIS.map(([k, l]) => (
+            <button key={k} type="button" role="radio" aria-checked={j === k} onClick={() => setJ(k)}
+              className={cn("rounded-full border px-3 py-1 text-xs transition hover:bg-muted", j === k && "border-primary bg-secondary font-semibold")}>
+              {l}
+            </button>
+          ))}
+        </div>
+      )}
       <Button size="lg" disabled={sibuk} onClick={() => mulai(async () => {
-        const r = await ubahProfil({ nama: n, jenis: j });
+        const r = await ubahProfil({ nama: n, jenis: hanyaNama ? null : j });
         if (!r.ok) { toast.error(r.pesan); return; }
         toast.success("Profil tersimpan");
         setBuka(false);

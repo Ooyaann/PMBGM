@@ -22,10 +22,12 @@ import {
   Scale,
   School,
   Search,
+  Settings,
   ShieldAlert,
   ShieldCheck,
   Siren,
   SlidersHorizontal,
+  Sparkles,
   Timer,
   Truck,
   User,
@@ -210,13 +212,11 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
   },
 ];
 
-// 2. MENU KHUSUS PERAN STAF (Top Navbar langsung berfungsi sebagai menu tugas inti mereka)
+// 2. MENU KHUSUS PERAN STAF (Top Navbar murni modul tugas operasional mereka)
 const MENU_VERIFIKATOR: MenuItemPeran[] = [
+  { href: "/panel", label: "Dasbor Panel", ikon: LayoutDashboard },
   { href: "/panel/verifikasi", label: "Antrean Verifikasi", ikon: ShieldCheck },
   { href: "/panel/kasus", label: "Kasus Berjalan", ikon: ClipboardList },
-  { href: "/insight", label: "Analisis Risiko (SAW)", ikon: Radar },
-  { href: "/data/sppg", label: "Data SPPG & Dapur", ikon: Utensils },
-  { href: "/panduan", label: "Panduan", ikon: HelpCircle },
 ];
 
 const MENU_DAPUR: MenuItemPeran[] = [
@@ -224,7 +224,6 @@ const MENU_DAPUR: MenuItemPeran[] = [
   { href: "/panel/kasus", label: "Aduan Masuk", ikon: Utensils },
   { href: "/data/sppg", label: "Rapor & SLHS", ikon: ShieldCheck },
   { href: "/cari-sekolah", label: "Sekolah Mitra", ikon: School },
-  { href: "/panduan", label: "Panduan Higiene", ikon: HelpCircle },
 ];
 
 const MENU_DINKES: MenuItemPeran[] = [
@@ -232,15 +231,13 @@ const MENU_DINKES: MenuItemPeran[] = [
   { href: "/panel/kasus", label: "Investigasi & KLB", ikon: ShieldAlert },
   { href: "/panel/prioritas", label: "Prioritas Inspeksi", ikon: Radar },
   { href: "/panel/peringatan", label: "Peringatan Dini", ikon: Siren },
-  { href: "/data/sppg", label: "Evaluasi SPPG", ikon: Utensils },
 ];
 
 const MENU_KORWIL: MenuItemPeran[] = [
-  { href: "/panel", label: "Pengawasan Wilayah", ikon: LayoutDashboard },
+  { href: "/panel", label: "Dasbor Wilayah", ikon: LayoutDashboard },
+  { href: "/panel/kasus", label: "Kasus Wilayah", ikon: ClipboardList },
   { href: "/panel/akuntabilitas", label: "Akuntabilitas SLA", ikon: Scale },
   { href: "/insight", label: "Peta Risiko Wilayah", ikon: Radar },
-  { href: "/panel/kasus", label: "Kasus Wilayah", ikon: ClipboardList },
-  { href: "/data/sppg", label: "Data Dapur SPPG", ikon: Utensils },
 ];
 
 const MENU_ADMIN: MenuItemPeran[] = [
@@ -248,13 +245,11 @@ const MENU_ADMIN: MenuItemPeran[] = [
   { href: "/panel/admin/pengguna", label: "Kelola Pengguna", ikon: Users },
   { href: "/panel/admin/sla", label: "Aturan SLA", ikon: Timer },
   { href: "/panel/kasus", label: "Semua Kasus", ikon: ClipboardList },
-  { href: "/data", label: "Master Data", ikon: Building2 },
 ];
 
 export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
   const pathname = usePathname();
   const [mobileBuka, setMobileBuka] = useState(false);
-  const [modeBiasa, setModeBiasa] = useState(false);
   const [sedangKeluar, startKeluar] = useTransition();
 
   const tanganiKeluar = () => {
@@ -334,7 +329,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
 
         {/* Sisi Tengah: Navigasi Desktop Terpusat Simetris (mx-auto) */}
         <nav className="hidden lg:flex items-center gap-1.5 mx-auto" aria-label="Navigasi Utama">
-          {menuStaf && !modeBiasa ? (
+          {menuStaf ? (
             // NAVIGASI LANGSUNG TUGAS INTI STAF (Navbar Top Bersih Spesifik Tugas)
             menuStaf.map((item) => {
               const aktif = pathname === item.href || (item.href !== "/panel" && pathname?.startsWith(item.href));
@@ -356,20 +351,8 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
               );
             })
           ) : (
-            // NAVIGASI PUBLIK / MODE MENU BIASA
+            // NAVIGASI PUBLIK UNTUK WARGA / TAMU / GURU
             <>
-              {adalahStaf && modeBiasa && (
-                <button
-                  type="button"
-                  onClick={() => setModeBiasa(false)}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 px-3 py-1.5 text-xs font-bold mr-1 cursor-pointer hover:bg-amber-500/25 transition"
-                  title="Kembali ke navigasi tugas panel kerja"
-                >
-                  <LayoutDashboard className="size-3.5" />
-                  <span>Kembali ke Tugas</span>
-                </button>
-              )}
-
               <Link
                 href="/"
                 className={cn(
@@ -525,38 +508,18 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 {/* Daftar Menu Dropdown Menggunakan Link Murni (Bebas Error & Langsung Navigasi) */}
                 <div className="p-1 space-y-1">
                   {adalahStaf ? (
-                    // Menu Profil untuk Staf / Petugas
+                    // Menu Profil Khusus Staf Operasional (Murni Tugas & Bantuan)
                     <>
                       <Link
-                        href="/panel"
-                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-primary hover:bg-primary/10 transition"
+                        href="/panduan"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted transition"
                       >
-                        <LayoutDashboard className="size-4 shrink-0" />
-                        <span>Buka Dasbor Panel Kerja</span>
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => setModeBiasa((m) => !m)}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-foreground hover:bg-muted transition text-left cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <Globe className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                          <span>{modeBiasa ? "Kembali ke Menu Tugas" : "Lihat Menu Biasa (Menu Lainnya)"}</span>
-                        </div>
-                        <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                          {modeBiasa ? "Tugas" : "Warga"}
-                        </span>
-                      </button>
-                      <Link
-                        href="/"
-                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
-                      >
-                        <BookOpen className="size-4 text-muted-foreground shrink-0" />
-                        <span>Buka Beranda Publik</span>
+                        <BookOpen className="size-4 text-primary shrink-0" />
+                        <span>Panduan Operasional</span>
                       </Link>
                       <Link
                         href="/akun"
-                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-muted transition"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted transition"
                       >
                         <User className="size-4 text-muted-foreground shrink-0" />
                         <span>Profil & Pengaturan Akun</span>
@@ -717,20 +680,13 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
 
                 {/* Navigasi Mobile Terstruktur */}
                 <div className="space-y-4">
-                  {menuStaf && !modeBiasa ? (
+                  {menuStaf ? (
                     // Menu Mobile untuk Staf (Hanya Tugas Inti)
                     <div className="space-y-1">
-                      <div className="flex items-center justify-between px-3 pb-1">
+                      <div className="px-3 pb-1">
                         <span className="text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-                          Modul Tugas Staf
+                          Modul Tugas {badgePeranStaf?.label ?? "Staf"}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => setModeBiasa(true)}
-                          className="text-xs font-bold text-primary hover:underline cursor-pointer"
-                        >
-                          Menu Biasa →
-                        </button>
                       </div>
                       {menuStaf.map((item) => (
                         <Link
@@ -746,22 +702,34 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                           <span>{item.label}</span>
                         </Link>
                       ))}
+                      <div className="pt-2 border-t mt-2">
+                        <Link
+                          href="/panduan"
+                          onClick={() => setMobileBuka(false)}
+                          className={cn(
+                            "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold transition",
+                            pathname === "/panduan" ? "bg-primary/10 text-primary font-bold" : "text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <Sparkles className="size-4 text-muted-foreground shrink-0" />
+                          <span>Panduan Operasional</span>
+                        </Link>
+                        <Link
+                          href="/akun"
+                          onClick={() => setMobileBuka(false)}
+                          className={cn(
+                            "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-semibold transition",
+                            pathname === "/akun" ? "bg-primary/10 text-primary font-bold" : "text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <Settings className="size-4 text-muted-foreground shrink-0" />
+                          <span>Profil & Pengaturan Akun</span>
+                        </Link>
+                      </div>
                     </div>
                   ) : (
-                    // Menu Mobile Publik / Mode Menu Biasa
+                    // Menu Mobile Publik
                     <>
-                      {adalahStaf && modeBiasa && (
-                        <div className="px-3 pb-1">
-                          <button
-                            type="button"
-                            onClick={() => setModeBiasa(false)}
-                            className="flex items-center gap-1.5 w-full justify-center rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 py-2 text-xs font-bold"
-                          >
-                            <LayoutDashboard className="size-3.5" /> Kembali ke Tugas Staf
-                          </button>
-                        </div>
-                      )}
-
                       <Link
                         href="/"
                         onClick={() => setMobileBuka(false)}

@@ -17,9 +17,6 @@ export default function Beranda() {
           <p className="text-xs sm:text-sm font-extrabold tracking-[0.24em] sm:tracking-[0.32em] text-foreground/85 uppercase">
             Pemantau MBG Masyarakat
           </p>
-          <p className="text-xs sm:text-sm text-muted-foreground font-medium max-w-lg mx-auto pt-1 leading-relaxed">
-            Pengawasan Partisipatif Kualitas, Porsi & Keamanan Pangan Program Makan Bergizi Gratis
-          </p>
         </div>
 
         {/* Smart Search Bar & Tombol Aksi Langsung */}
