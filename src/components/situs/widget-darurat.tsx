@@ -22,7 +22,7 @@ export function WidgetDarurat() {
   const [buka, setBuka] = useState(false);
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/panel")) return null;
+  if (pathname === "/" || pathname?.startsWith("/panel")) return null;
 
   return (
     <aside

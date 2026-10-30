@@ -284,89 +284,89 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur-md transition-all">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Sisi Kiri: Logo Resmi PMBGM */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center shrink-0">
           <Logo />
-
-          {/* Navigasi Desktop (> lg): 1 baris utuh, tidak pernah ter-enter */}
-          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navigasi Utama">
-            <Link
-              href="/"
-              className={cn(
-                "rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
-                pathname === "/"
-                  ? "bg-primary/10 text-primary font-bold"
-                  : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
-              )}
-            >
-              Beranda
-            </Link>
-
-            {MENU_NAVIGASI.map((menu) => (
-              <DropdownMenu key={menu.label}>
-                <DropdownMenuTrigger
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0",
-                    "text-foreground/80 hover:bg-muted/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
-                  )}
-                >
-                  <span className="whitespace-nowrap">{menu.label}</span>
-                  <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  sideOffset={8}
-                  className="w-88 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
-                >
-                  <div className="space-y-1">
-                    {menu.submenus?.map((item) => {
-                      const Ikon = item.ikon;
-                      const aktif = pathname === item.href;
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className={cn(
-                            "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
-                            aktif
-                              ? "bg-primary/10 text-primary font-semibold"
-                              : "hover:bg-muted/80 text-foreground"
-                          )}
-                        >
-                          <span
-                            className={cn(
-                              "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
-                              item.aksenIkon || "bg-primary/10 text-primary"
-                            )}
-                          >
-                            <Ikon className="size-4.5" aria-hidden />
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
-                                {item.judul}
-                              </span>
-                              {item.badge && (
-                                <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
-                                  {item.badge}
-                                </span>
-                              )}
-                            </div>
-                            <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
-                              {item.deskripsi}
-                            </p>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ))}
-          </nav>
         </div>
 
+        {/* Sisi Tengah: Navigasi Menu Desktop Tepat di Tengah (Center Aligned) */}
+        <nav className="hidden lg:flex items-center gap-1.5 mx-auto" aria-label="Navigasi Utama">
+          <Link
+            href="/"
+            className={cn(
+              "rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
+              pathname === "/"
+                ? "bg-primary/10 text-primary font-bold"
+                : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
+            )}
+          >
+            Beranda
+          </Link>
+
+          {MENU_NAVIGASI.map((menu) => (
+            <DropdownMenu key={menu.label}>
+              <DropdownMenuTrigger
+                className={cn(
+                  "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0",
+                  "text-foreground/80 hover:bg-muted/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
+                )}
+              >
+                <span className="whitespace-nowrap">{menu.label}</span>
+                <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="center"
+                sideOffset={8}
+                className="w-88 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
+              >
+                <div className="space-y-1">
+                  {menu.submenus?.map((item) => {
+                    const Ikon = item.ikon;
+                    const aktif = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
+                          aktif
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "hover:bg-muted/80 text-foreground"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
+                            item.aksenIkon || "bg-primary/10 text-primary"
+                          )}
+                        >
+                          <Ikon className="size-4.5" aria-hidden />
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
+                              {item.judul}
+                            </span>
+                            {item.badge && (
+                              <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
+                            {item.deskripsi}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ))}
+        </nav>
+
         {/* Sisi Kanan: Pintasan Panel Peran, Tombol Lapor, & Profil Akun */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           {/* Pintasan Khusus Staf: Tampil mencolok jika staf sedang berada di halaman publik */}
           {peranStaf && (
             <Link
