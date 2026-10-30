@@ -6,6 +6,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
+  BookOpen,
   Building2,
   CheckCircle2,
   ClipboardCheck,
@@ -18,7 +19,6 @@ import {
   Settings,
   ShieldAlert,
   ShieldCheck,
-  Sparkles,
   Users,
   Utensils,
 } from "lucide-react";
@@ -109,28 +109,28 @@ async function Isi() {
           deskripsi: "Periksa foto bukti dan laporan masuk warga untuk validasi kelayakan kasus.",
           href: "/panel/verifikasi",
           ikon: ClipboardCheck,
-          warna: "text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Kasus Berjalan",
           deskripsi: "Pantau perkembangan kasus yang telah diteruskan ke dapur SPPG atau instansi pengawas.",
           href: "/panel/kasus",
           ikon: FileText,
-          warna: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+          warna: "text-info bg-info-lembut border-info/20",
         },
         {
           judul: "Dasbor Panel Kerja",
           deskripsi: "Tinjau rekap beban kerja harian, kecepatan respons verifikasi, dan performa SLA.",
           href: "/panel",
           ikon: LayoutDashboard,
-          warna: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Panduan Operasional",
           deskripsi: "Pelajari SOP verifikasi bukti, pedoman etika, dan cara kerja algoritma DSS SAW.",
           href: "/panduan",
-          ikon: Sparkles,
-          warna: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/20",
+          ikon: BookOpen,
+          warna: "text-info bg-info-lembut border-info/20",
         },
       ];
     } else if (peranKunci === "admin") {
@@ -144,28 +144,28 @@ async function Isi() {
           deskripsi: "Tinjau metrik agregat nasional, tren laporan, dan status keseluruhan modul.",
           href: "/panel",
           ikon: LayoutDashboard,
-          warna: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Kelola Pengguna",
           deskripsi: "Manajemen akun petugas, verifikator wilayah, dan instansi penanggung jawab.",
-          href: "/panel/pengguna",
+          href: "/panel/admin/pengguna",
           ikon: Users,
-          warna: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+          warna: "text-info bg-info-lembut border-info/20",
         },
         {
           judul: "Antrean Verifikasi",
           deskripsi: "Tinjau atau ambil alih verifikasi kasus darurat yang membutuhkan percepatan.",
           href: "/panel/verifikasi",
           ikon: ClipboardCheck,
-          warna: "text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Peta Analisis Risiko",
           deskripsi: "Pantau sebaran risiko wilayah dan evaluasi bobot SAW antar dapur dan sekolah.",
-          href: "/analisis-risiko",
+          href: "/insight",
           ikon: ShieldAlert,
-          warna: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20",
+          warna: "text-risiko-tinggi bg-risiko-tinggi-lembut border-risiko-tinggi/20",
         },
       ];
     } else if (instansiJenis === "sppg" || p.nama.toLowerCase().includes("dapur") || p.nama.toLowerCase().includes("sppg")) {
@@ -179,21 +179,21 @@ async function Isi() {
           deskripsi: "Tinjau keluhan mutu atau distribusi dari sekolah dan unggah bukti perbaikan dapur.",
           href: "/panel/kasus",
           ikon: FileText,
-          warna: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+          warna: "text-risiko-sedang bg-risiko-sedang-lembut border-risiko-sedang/20",
         },
         {
           judul: "Dasbor Kinerja Dapur",
           deskripsi: "Pantau rekap kepatuhan SLA, rating kepuasan sekolah, dan histori tindakan.",
           href: "/panel",
           ikon: LayoutDashboard,
-          warna: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Panduan Standar Higiene",
           deskripsi: "Pelajari protokol kepatuhan SLHS dan SOP sanitasi pangan bergizi anak.",
           href: "/panduan",
-          ikon: Sparkles,
-          warna: "text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20",
+          ikon: BookOpen,
+          warna: "text-info bg-info-lembut border-info/20",
         },
       ];
     } else if (instansiJenis === "dinas_kesehatan" || p.nama.toLowerCase().includes("dinkes") || p.nama.toLowerCase().includes("hendra")) {
@@ -207,21 +207,21 @@ async function Isi() {
           deskripsi: "Tindak lanjuti kasus keluhan kesehatan anak dan pencatatan hasil laboratorium.",
           href: "/panel/kasus",
           ikon: FileText,
-          warna: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20",
+          warna: "text-risiko-tinggi bg-risiko-tinggi-lembut border-risiko-tinggi/20",
         },
         {
           judul: "Peta Analisis Risiko",
           deskripsi: "Pantau klaster kerawanan pangan dan riwayat temuan insidental di wilayah binaan.",
-          href: "/analisis-risiko",
+          href: "/insight",
           ikon: ShieldAlert,
-          warna: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+          warna: "text-risiko-sedang bg-risiko-sedang-lembut border-risiko-sedang/20",
         },
         {
           judul: "Dasbor Pengawasan",
           deskripsi: "Tinjau statistik kepatuhan SLHS dan pemantauan cepat batas waktu penanganan.",
           href: "/panel",
           ikon: LayoutDashboard,
-          warna: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
       ];
     } else {
@@ -235,21 +235,21 @@ async function Isi() {
           deskripsi: "Pantau kecepatan respons instansi dan eskalasikan kasus yang melewati ambang batas SLA.",
           href: "/panel/kasus",
           ikon: FileText,
-          warna: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+          warna: "text-info bg-info-lembut border-info/20",
         },
         {
           judul: "Peta Analisis Risiko",
           deskripsi: "Pantau sebaran sekolah dan beban layanan SPPG di seluruh kecamatan binaan.",
-          href: "/analisis-risiko",
+          href: "/insight",
           ikon: ShieldAlert,
-          warna: "text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20",
+          warna: "text-primary bg-secondary border-primary/20",
         },
         {
           judul: "Dasbor Pengawasan Kota",
           deskripsi: "Tinjau ringkasan performa pemenuhan standar program MBG tingkat kota.",
           href: "/panel",
           ikon: LayoutDashboard,
-          warna: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+          warna: "text-info bg-info-lembut border-info/20",
         },
       ];
     }
@@ -259,13 +259,13 @@ async function Isi() {
         {/* Header Profil Staf */}
         <header className="flex flex-wrap items-start justify-between gap-4 rounded-3xl border bg-card/60 p-6 backdrop-blur-sm">
           <div className="flex items-start gap-4">
-            <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary">
               <IkonPeran className="size-7" />
             </span>
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">{p.nama}</h1>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-risiko-rendah-lembut px-2.5 py-0.5 text-xs font-bold text-risiko-rendah">
                   <CheckCircle2 className="size-3.5" /> Terverifikasi
                 </span>
               </div>
@@ -369,7 +369,7 @@ async function Isi() {
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-border/50">
                   <span className="text-muted-foreground">Status Autentikasi</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">Aktif & Terverifikasi</span>
+                  <span className="font-semibold text-risiko-rendah">Aktif & Terverifikasi</span>
                 </div>
               </div>
             </div>

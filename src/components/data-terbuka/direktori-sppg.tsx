@@ -79,7 +79,7 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
                 <span className="inline-flex shrink-0 items-center gap-1"><Users className="size-3.5 text-primary" aria-hidden />{angka(s.penerima)} Siswa</span>
                 <span className="inline-flex shrink-0 items-center gap-1"><FolderOpen className="size-3.5 text-primary" aria-hidden />{s.kasus} Kasus</span>
                 <InfoMetrik jenis="slhs" className="shrink-0">
-                  <span className={cn("inline-flex shrink-0 items-center gap-1 font-semibold rounded-md px-1.5 py-0.5 whitespace-nowrap", s.statusSlhs === "berlaku" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-amber-500/10 text-amber-700 dark:text-amber-400")}>
+                  <span className={cn("inline-flex shrink-0 items-center gap-1 font-semibold rounded-md px-1.5 py-0.5 whitespace-nowrap", s.statusSlhs === "berlaku" ? "bg-risiko-rendah-lembut text-risiko-rendah" : "bg-risiko-sedang-lembut text-risiko-sedang")}>
                     {s.statusSlhs === "berlaku" ? <ShieldCheck className="size-3.5 shrink-0" aria-hidden /> : <ShieldOff className="size-3.5 shrink-0" aria-hidden />}
                     {s.statusSlhs === "berlaku" ? "SLHS Aktif" : "Tanpa SLHS"}
                   </span>
@@ -87,7 +87,7 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
               </span>
               {s.statusOperasional !== "beroperasi" && (
                 <InfoMetrik jenis="status_operasional" className="shrink-0">
-                  <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-lg bg-rose-500/15 px-2.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
+                  <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-lg bg-risiko-tinggi-lembut px-2.5 py-1 text-xs font-bold text-risiko-tinggi">
                     {s.statusOperasional === "ditutup_sementara" ? "Ditutup Sementara" : s.statusOperasional}
                   </span>
                 </InfoMetrik>

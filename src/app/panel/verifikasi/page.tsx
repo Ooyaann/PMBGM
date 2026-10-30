@@ -5,9 +5,9 @@ import {
   ArrowDownUp,
   CalendarClock,
   Clock,
+  Flame,
   History,
   Inbox,
-  Sparkles,
   Timer,
   type LucideIcon,
 } from "lucide-react";
@@ -24,7 +24,7 @@ export const metadata: Metadata = { title: "Antrean verifikasi" };
 const SARING: (TingkatPrioritas | "semua")[] = ["semua", "darurat", "tinggi", "sedang", "rendah"];
 
 const PILIHAN_URUT: { kunci: string; label: string; ikon: LucideIcon }[] = [
-  { kunci: "mendesak", label: "Prioritas", ikon: Sparkles },
+  { kunci: "mendesak", label: "Prioritas", ikon: Flame },
   { kunci: "terbaru", label: "Terbaru", ikon: Clock },
   { kunci: "terlama", label: "Terlama", ikon: History },
   { kunci: "mepet", label: "Waktu Paling Mepet", ikon: Timer },

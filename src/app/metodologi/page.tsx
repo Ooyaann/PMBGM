@@ -16,7 +16,6 @@ import {
   ShieldCheck,
   Siren,
   Sliders,
-  Sparkles,
   Timer,
   TriangleAlert,
   Utensils,
@@ -44,11 +43,11 @@ const ISI = [
 ];
 
 const BOBOT_SAW = [
-  { nama: "Laporan Warga 30 Hari", bobot: "35%", skor: 35, warna: "bg-emerald-600", desc: "Frekuensi keluhan terverifikasi per 1.000 porsi" },
-  { nama: "Kasus Dugaan Keracunan", bobot: "25%", skor: 25, warna: "bg-rose-600", desc: "Insiden gangguan kesehatan terverifikasi medis" },
-  { nama: "Sertifikat SLHS Kemenkes", bobot: "15%", skor: 15, warna: "bg-indigo-600", desc: "Kepatuhan laik higiene sanitasi dapur SPPG" },
-  { nama: "Keterlambatan Respon SLA", bobot: "15%", skor: 15, warna: "bg-amber-600", desc: "Persentase aduan melewati batas waktu resmi" },
-  { nama: "Penilaian Kepuasan Konsumen", bobot: "10%", skor: 10, warna: "bg-sky-600", desc: "Rata-rata rating kepuasan orang tua / guru" },
+  { nama: "Laporan Warga 30 Hari", bobot: "35%", skor: 35, warna: "var(--chart-1)", desc: "Frekuensi keluhan terverifikasi per 1.000 porsi" },
+  { nama: "Kasus Dugaan Keracunan", bobot: "25%", skor: 25, warna: "var(--chart-2)", desc: "Insiden gangguan kesehatan terverifikasi medis" },
+  { nama: "Sertifikat SLHS Kemenkes", bobot: "15%", skor: 15, warna: "var(--chart-3)", desc: "Kepatuhan laik higiene sanitasi dapur SPPG" },
+  { nama: "Keterlambatan Respon SLA", bobot: "15%", skor: 15, warna: "var(--chart-4)", desc: "Persentase aduan melewati batas waktu resmi" },
+  { nama: "Penilaian Kepuasan Konsumen", bobot: "10%", skor: 10, warna: "var(--chart-5)", desc: "Rata-rata rating kepuasan orang tua / guru" },
 ];
 
 const BOBOT_KREDIBILITAS = [
@@ -84,13 +83,13 @@ async function TabelSlaRingkas() {
             const Ikon = IKON_KATEGORI[k];
             const isKeracunan = k === "keracunan";
             return (
-              <tr key={k} className={isKeracunan ? "bg-rose-500/5 font-semibold text-rose-700 dark:text-rose-400" : ""}>
+              <tr key={k} className={isKeracunan ? "bg-darurat-lembut/60 font-semibold text-darurat" : ""}>
                 <th scope="row" className="p-3 text-left font-semibold">
                   <span className="flex items-center gap-2">
                     <Ikon className="size-4 shrink-0" aria-hidden />
                     {KATEGORI[k].label}
                     {isKeracunan && (
-                      <span className="rounded bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-black uppercase text-rose-600">
+                      <span className="rounded bg-darurat-lembut px-1.5 py-0.5 text-[10px] font-black uppercase text-darurat">
                         Darurat
                       </span>
                     )}
@@ -113,8 +112,8 @@ async function TabelSlaRingkas() {
 export default function HalamanMetodologi() {
   return (
     <HalamanInfo
-      judul="Metodologi Terbuka"
-      pengantar="Standar ilmiah, formula matematis, dan pembobotan objektif yang diterapkan pada sistem PMBGM."
+      judul="Metodologi"
+      pengantar="Rumus Indeks Risiko SAW, bobot kredibilitas, dan standar waktu SLA."
       isi={ISI}
     >
       {/* 1. INDEKS RISIKO SAW */}
@@ -123,11 +122,11 @@ export default function HalamanMetodologi() {
           <Rumus
             hasil="Skor Risiko"
             suku={[
-              { label: "Laporan", bobot: "0,35", warna: "#059669" },
-              { label: "Keracunan", bobot: "0,25", warna: "#e11d48" },
-              { label: "SLHS", bobot: "0,15", warna: "#4f46e5" },
-              { label: "SLA", bobot: "0,15", warna: "#d97706" },
-              { label: "Kepuasan", bobot: "0,10", warna: "#0284c7" },
+              { label: "Laporan", bobot: "0,35", warna: "var(--chart-1)" },
+              { label: "Keracunan", bobot: "0,25", warna: "var(--chart-2)" },
+              { label: "SLHS", bobot: "0,15", warna: "var(--chart-3)" },
+              { label: "SLA", bobot: "0,15", warna: "var(--chart-4)" },
+              { label: "Kepuasan", bobot: "0,10", warna: "var(--chart-5)" },
             ]}
           />
 
@@ -140,7 +139,7 @@ export default function HalamanMetodologi() {
                   <span className="font-black text-primary text-sm">{b.bobot}</span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-                  <div className={`h-full rounded-full ${b.warna}`} style={{ width: `${b.skor * 2.5}%` }} />
+                  <div className="h-full rounded-full" style={{ width: `${b.skor * 2.5}%`, background: b.warna }} />
                 </div>
                 <p className="text-[11px] text-muted-foreground">{b.desc}</p>
               </div>
@@ -153,28 +152,28 @@ export default function HalamanMetodologi() {
               Tingkat Pengawasan & Target Audit Dinas Kesehatan:
             </span>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 space-y-1">
+              <div className="rounded-2xl border border-risiko-rendah/30 bg-risiko-rendah-lembut p-4 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-black text-emerald-700 dark:text-emerald-300">Level A</span>
-                  <span className="text-xs font-mono font-bold">0 – 34,9</span>
+                  <span className="text-base font-black text-risiko-rendah">Level A</span>
+                  <span className="text-xs font-mono font-bold">0 – 39</span>
                 </div>
                 <p className="text-xs font-bold text-foreground">Risiko Rendah</p>
                 <p className="text-[11px] text-muted-foreground">Inspeksi berkala 6 bulan sekali.</p>
               </div>
 
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-1">
+              <div className="rounded-2xl border border-risiko-sedang/30 bg-risiko-sedang-lembut p-4 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-black text-amber-700 dark:text-amber-300">Level B</span>
-                  <span className="text-xs font-mono font-bold">35,0 – 59,9</span>
+                  <span className="text-base font-black text-risiko-sedang">Level B</span>
+                  <span className="text-xs font-mono font-bold">40 – 69</span>
                 </div>
                 <p className="text-xs font-bold text-foreground">Risiko Sedang (Waspada)</p>
                 <p className="text-[11px] text-muted-foreground">Pembinaan sanitasi rutin 1 bulan sekali.</p>
               </div>
 
-              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 space-y-1">
+              <div className="rounded-2xl border border-risiko-tinggi/30 bg-risiko-tinggi-lembut p-4 space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-black text-rose-700 dark:text-rose-300">Level C</span>
-                  <span className="text-xs font-mono font-bold">60,0 – 100</span>
+                  <span className="text-base font-black text-risiko-tinggi">Level C</span>
+                  <span className="text-xs font-mono font-bold">70 – 100</span>
                 </div>
                 <p className="text-xs font-bold text-foreground">Risiko Tinggi (Kritis)</p>
                 <p className="text-[11px] text-muted-foreground">Inspeksi mendadak Dinkes 1×24 jam.</p>
@@ -185,7 +184,7 @@ export default function HalamanMetodologi() {
           <div className="pt-1">
             <Link
               href="/panduan#simulator-dss"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary/10 px-4 py-2 text-xs font-bold text-primary hover:bg-primary/20 transition"
+              className="inline-flex items-center gap-2 rounded-xl bg-secondary px-4 py-2 text-xs font-bold text-primary hover:bg-primary/15 transition"
             >
               <Sliders className="size-4" /> Uji Coba Simulator DSS SAW Interaktif →
             </Link>
@@ -205,10 +204,10 @@ export default function HalamanMetodologi() {
               <div key={k.label} className="rounded-2xl border bg-card p-3.5 space-y-2 shadow-2xs">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-foreground">{k.label}</span>
-                  <span className="font-black text-emerald-600 dark:text-emerald-400">+{k.poin} Poin</span>
+                  <span className="font-black text-primary">+{k.poin} Poin</span>
                 </div>
                 <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-                  <div className="h-full rounded-full bg-emerald-600" style={{ width: `${(k.poin / 30) * 100}%` }} />
+                  <div className="h-full rounded-full bg-primary" style={{ width: `${(k.poin / 30) * 100}%` }} />
                 </div>
                 <p className="text-[11px] text-muted-foreground">{k.desc}</p>
               </div>
@@ -222,11 +221,11 @@ export default function HalamanMetodologi() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-rose-600">Keracunan</span>
+              <span className="block text-[10px] uppercase font-bold text-darurat">Keracunan</span>
               <span className="text-sm font-black text-foreground">Maks 2 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-amber-600">Kebersihan</span>
+              <span className="block text-[10px] uppercase font-bold text-risiko-sedang">Kebersihan</span>
               <span className="text-sm font-black text-foreground">Maks 24 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
@@ -248,15 +247,15 @@ export default function HalamanMetodologi() {
       {/* 4. PERINGATAN DINI CEGAH KLB */}
       <BagianInfo id="peringatan" judul="Deteksi Dini Anomali (Cegah KLB)" ikon={Siren}>
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border bg-rose-500/5 border-rose-500/20 p-4 space-y-1.5">
-            <span className="flex items-center gap-2 text-xs font-bold text-rose-700 dark:text-rose-400">
+          <div className="rounded-2xl border bg-risiko-tinggi-lembut border-risiko-tinggi/25 p-4 space-y-1.5">
+            <span className="flex items-center gap-2 text-xs font-bold text-risiko-tinggi">
               <ShieldAlert className="size-4" /> Ambang Batas Peringatan:
             </span>
             <p className="text-xs text-foreground font-semibold">
               Lonjakan aduan ≥ 3 laporan terverifikasi pada 1 SPPG dalam 24 jam melebihi 3× lipat rata-rata harian.
             </p>
           </div>
-          <div className="rounded-2xl border bg-primary/5 border-primary/20 p-4 space-y-1.5">
+          <div className="rounded-2xl border bg-secondary border-primary/20 p-4 space-y-1.5">
             <span className="flex items-center gap-2 text-xs font-bold text-primary">
               <Clock className="size-4" /> Frekuensi Pemindaian:
             </span>

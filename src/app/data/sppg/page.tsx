@@ -13,8 +13,7 @@ export default async function HalamanDirektori() {
   return (
     <div className="space-y-5">
       <header className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-extrabold">SPPG</h1>
-        <span className="text-sm text-muted-foreground">Kota Semarang</span>
+        <h1 className="text-3xl font-extrabold">Direktori SPPG</h1>
         <LabelSumber jenis="simulasi" />
       </header>
       <DirektoriSppg data={data.map((s) => ({

@@ -41,17 +41,17 @@ async function KartuKepatuhanDapur({ wilayahId }: { wilayahId: string }) {
     >
       <div className="space-y-4">
         <div className="grid grid-cols-3 gap-2 text-center text-xs">
-          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2.5">
-            <span className="block text-lg font-bold text-emerald-700 dark:text-emerald-400">{data.slhsBerlaku}</span>
-            <span className="font-semibold text-emerald-800 dark:text-emerald-300">SLHS Berlaku</span>
+          <div className="rounded-xl border border-risiko-rendah/25 bg-risiko-rendah-lembut p-2.5">
+            <span className="block text-lg font-bold text-risiko-rendah">{data.slhsBerlaku}</span>
+            <span className="font-semibold text-risiko-rendah">SLHS Berlaku</span>
           </div>
-          <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-2.5">
-            <span className="block text-lg font-bold text-amber-700 dark:text-amber-400">{data.slhsProses}</span>
-            <span className="font-semibold text-amber-800 dark:text-amber-300">Proses Uji</span>
+          <div className="rounded-xl border border-risiko-sedang/25 bg-risiko-sedang-lembut p-2.5">
+            <span className="block text-lg font-bold text-risiko-sedang">{data.slhsProses}</span>
+            <span className="font-semibold text-risiko-sedang">Proses Uji</span>
           </div>
-          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-2.5">
-            <span className="block text-lg font-bold text-rose-700 dark:text-rose-400">{data.slhsTanpa}</span>
-            <span className="font-semibold text-rose-800 dark:text-rose-300">Tanpa SLHS</span>
+          <div className="rounded-xl border border-risiko-tinggi/25 bg-risiko-tinggi-lembut p-2.5">
+            <span className="block text-lg font-bold text-risiko-tinggi">{data.slhsTanpa}</span>
+            <span className="font-semibold text-risiko-tinggi">Tanpa SLHS</span>
           </div>
         </div>
 

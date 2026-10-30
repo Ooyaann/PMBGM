@@ -29,9 +29,9 @@ export const KAMUS_METRIK: Record<
     deskripsi:
       "Skor kepatuhan dapur MBG. Makin rendah nilainya, makin aman. Dihitung otomatis dari 5 aspek: jumlah aduan warga, kasus keracunan, izin sanitasi resmi Dinkes, ketepatan waktu perbaikan, dan kepuasan orang tua.",
     panduan: [
-      { label: "0–39: Rendah (Aman)", kelas: "text-emerald-700 dark:text-emerald-400 font-semibold" },
-      { label: "40–69: Sedang (Waspada)", kelas: "text-amber-700 dark:text-amber-400 font-semibold" },
-      { label: "70+: Tinggi (Prioritas Evaluasi)", kelas: "text-rose-700 dark:text-rose-400 font-semibold" },
+      { label: "0–39: Rendah (Aman)", kelas: "text-risiko-rendah font-semibold" },
+      { label: "40–69: Sedang (Waspada)", kelas: "text-risiko-sedang font-semibold" },
+      { label: "70–100: Tinggi (Prioritas Evaluasi)", kelas: "text-risiko-tinggi font-semibold" },
     ],
   },
   slhs: {
@@ -40,8 +40,8 @@ export const KAMUS_METRIK: Record<
     deskripsi:
       "Sertifikat resmi dari Dinas Kesehatan yang membuktikan sumber air, tempat masak, dan peralatan dapur telah lolos uji laboratorium dan memenuhi standar kebersihan pangan.",
     panduan: [
-      { label: "Berlaku: Memenuhi standar Dinkes", kelas: "text-emerald-700 dark:text-emerald-400 font-semibold" },
-      { label: "Tanpa SLHS: Dikenakan sanksi & risiko tinggi", kelas: "text-rose-700 dark:text-rose-400 font-semibold" },
+      { label: "Berlaku: Memenuhi standar Dinkes", kelas: "text-risiko-rendah font-semibold" },
+      { label: "Tanpa SLHS: Perlu pembinaan & pengawasan", kelas: "text-risiko-sedang font-semibold" },
     ],
   },
   tanggap: {
@@ -66,7 +66,7 @@ export const KAMUS_METRIK: Record<
     judul: "Kepuasan Pelapor (Skala 1–5)",
     subjudul: "Penilaian langsung dari orang tua siswa",
     deskripsi:
-      "Nilai bintang kepuasan yang diberikan langsung oleh orang tua siswa atau guru pelapor setelah makanan selesai diperbaiki dalam masa sanggah 3 hari.",
+      "Nilai bintang kepuasan yang diberikan langsung oleh orang tua siswa atau guru pelapor setelah masalah selesai ditindaklanjuti (masa buka ulang 14 hari).",
   },
   sinyal: {
     judul: "Sinyal Lonjakan Peringatan Dini",
@@ -193,16 +193,16 @@ export function InfoMetrik({
         <TooltipContent
           side={side}
           sideOffset={8}
-          className="z-50 w-72 sm:w-80 rounded-2xl border-2 border-emerald-200/90 dark:border-emerald-800/80 bg-card p-4 text-card-foreground shadow-xl shadow-emerald-950/10 dark:shadow-black/40 backdrop-blur-md"
+          className="z-50 w-72 sm:w-80 rounded-2xl border border-border bg-popover p-4 text-popover-foreground shadow-xl backdrop-blur-md"
         >
           <div className="space-y-2 text-left">
             <div className="flex items-start gap-2.5 border-b border-border/80 pb-2.5">
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 mt-0.5">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary mt-0.5">
                 <Info className="size-4" aria-hidden />
               </span>
               <div className="min-w-0">
                 <h4 className="text-xs sm:text-sm font-bold leading-tight text-foreground">{info.judul}</h4>
-                <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400">{info.subjudul}</p>
+                <p className="text-[11px] font-medium text-primary">{info.subjudul}</p>
               </div>
             </div>
 

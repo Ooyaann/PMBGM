@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Lock, ShieldAlert, Sparkles, UserPlus } from "lucide-react";
+import { BookOpen, Lock } from "lucide-react";
 import { FormLapor } from "@/components/lapor/form-lapor";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ambilAturanSla } from "@/lib/data/publik";
 import { ambilSekolahPilihan } from "@/lib/data/sekolah";
@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
 export const maxDuration = 120;
 
 export const metadata: Metadata = {
-  title: "Lapor Masalah MBG",
-  description: "Formulir resmi pelaporan masalah Makan Bergizi Gratis di sekolah. Identitas terlindungi, wajib bukti autentik, dan diteruskan berbatas waktu.",
+  title: "Lapor Masalah",
+  description: "Formulir pelaporan masalah Makan Bergizi Gratis disertai foto bukti.",
 };
 
 async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">["searchParams"] }) {
@@ -28,47 +28,44 @@ async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">[
 
   const pengguna = await ambilPengguna();
 
-  // 1. Auth Guard: Wajib login sebelum mengakses pengisian form lapor
   if (!pengguna) {
     const urlLanjut = `/lapor${paramSekolah ? `?sekolah=${encodeURIComponent(paramSekolah)}` : ""}`;
     return (
-      <div className="mx-auto max-w-lg rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-md text-center space-y-5">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-          <Lock className="size-7" aria-hidden />
+      <div className="mx-auto max-w-md rounded-3xl border bg-card p-6 sm:p-8 text-center space-y-5">
+        <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+          <Lock className="size-6" aria-hidden />
         </div>
-        <div className="space-y-1.5">
-          <h2 className="text-2xl font-black tracking-tight">Masuk untuk Melapor</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            Aduan resmi memerlukan verifikasi akun demi validitas data. Identitas Anda tetap dapat disamarkan (Anonim).
+        <div className="space-y-1">
+          <h2 className="text-xl font-extrabold tracking-tight">Masuk untuk Melapor</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Identitas Anda tetap dapat disamarkan (Rahasia atau Anonim).
           </p>
         </div>
 
-        <div className="pt-2 space-y-2.5">
+        <div className="space-y-2">
           <Link
             href={`/masuk?lanjut=${encodeURIComponent(urlLanjut)}`}
             className={cn(
               buttonVariants({ size: "default" }),
-              "w-full rounded-2xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground h-11 text-sm flex items-center justify-center gap-2 shadow-xs"
+              "w-full rounded-xl font-bold h-11 text-sm flex items-center justify-center"
             )}
           >
-            Masuk ke Akun Anda
+            Masuk
           </Link>
           <Link
             href={`/masuk?mode=daftar&lanjut=${encodeURIComponent(urlLanjut)}`}
             className={cn(
               buttonVariants({ size: "default", variant: "outline" }),
-              "w-full rounded-2xl font-semibold bg-card border-border/80 h-11 text-sm flex items-center justify-center gap-2 hover:bg-muted"
+              "w-full rounded-xl font-semibold bg-card h-11 text-sm flex items-center justify-center"
             )}
           >
-            Daftar Akun Pelapor Baru
+            Daftar Akun Baru
           </Link>
         </div>
       </div>
     );
   }
 
-  // 2. Otomatisasi Input Sekolah:
-  // Utamakan sekolah dari query string (ID UUID atau nama), jika tidak ada fallback ke profil akun pengguna
   const kunciSekolah = paramSekolah ?? pengguna.sekolahId ?? null;
 
   const [sla, sekolahAwal] = await Promise.all([
@@ -81,28 +78,21 @@ async function BagianForm({ searchParams }: { searchParams: PageProps<"/lapor">[
       pengguna={{ id: pengguna.id, nama: pengguna.nama }}
       sla={sla}
       sekolahAwal={sekolahAwal}
+      langsungKeMasalah={Boolean(paramSekolah && sekolahAwal)}
     />
   );
 }
 
 export default function HalamanLapor({ searchParams }: PageProps<"/lapor">) {
   return (
-    <div className="kontainer py-8 sm:py-12 max-w-5xl">
-      <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-            <Sparkles className="size-3.5" aria-hidden /> Layanan Aduan Partisipatif MBG
-          </span>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight">Formulir Laporan Masalah</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Sampaikan kejadian secara objektif disertai foto bukti untuk ditindaklanjuti secara resmi.
-          </p>
-        </div>
+    <div className="kontainer py-8 sm:py-10 max-w-5xl">
+      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Lapor Masalah</h1>
         <Link
           href="/panduan?buka=cara-melapor"
-          className="inline-flex h-10 items-center gap-1.5 rounded-xl border bg-card px-4 text-xs sm:text-sm font-semibold hover:bg-muted transition"
+          className="inline-flex h-9 items-center gap-1.5 rounded-xl border bg-card px-3.5 text-xs font-semibold hover:bg-muted transition"
         >
-          <BookOpen className="size-4 text-primary" aria-hidden /> Panduan Melapor
+          <BookOpen className="size-3.5 text-primary" aria-hidden /> Panduan
         </Link>
       </header>
 

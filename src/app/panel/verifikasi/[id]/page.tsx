@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft, BadgeCheck, CalendarClock, Camera, CircleCheck, CircleX, ExternalLink, MapPin, School, Sparkles, Users,
+  ArrowLeft, BadgeCheck, CalendarClock, Camera, CircleCheck, CircleX, Cpu, ExternalLink, MapPin, School, Users,
   Utensils,
 } from "lucide-react";
 import { BadgePrioritas, BadgeRisiko, BadgeStatus } from "@/components/data/badge";
@@ -151,16 +151,16 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
             <div className="mt-5 rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-3.5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-                  <Sparkles className="size-3.5" aria-hidden /> Model Machine Learning Multimodal ANN (Feedforward MLP)
+                  <Cpu className="size-3.5" aria-hidden /> Evaluasi ML Multimodal (Feedforward MLP)
                 </span>
                 <span
                   className={cn(
                     "rounded-full px-2.5 py-0.5 text-xs font-black border",
                     evaluasiAnn.skorOtentisitas >= 70
-                      ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-700 dark:text-emerald-300"
+                      ? "bg-risiko-rendah-lembut border-risiko-rendah/30 text-risiko-rendah"
                       : evaluasiAnn.skorOtentisitas >= 40
-                      ? "bg-amber-500/15 border-amber-500/30 text-amber-700 dark:text-amber-300"
-                      : "bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-300"
+                      ? "bg-risiko-sedang-lembut border-risiko-sedang/30 text-risiko-sedang"
+                      : "bg-risiko-tinggi-lembut border-risiko-tinggi/30 text-risiko-tinggi"
                   )}
                 >
                   Keaslian: {evaluasiAnn.skorOtentisitas}% · {evaluasiAnn.klasifikasiKeaslian}
@@ -189,7 +189,7 @@ async function Isi({ params }: { params: PageProps<"/panel/verifikasi/[id]">["pa
 
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>
-                  <strong className="text-foreground">Saran Klasifikasi:</strong> {KATEGORI[evaluasiAnn.kategoriSaran].label} · Urgensi: <strong className={evaluasiAnn.urgensi !== "normal" ? "text-rose-600 dark:text-rose-400" : ""}>{evaluasiAnn.urgensi}</strong>
+                  <strong className="text-foreground">Saran Klasifikasi:</strong> {KATEGORI[evaluasiAnn.kategoriSaran].label} · Urgensi: <strong className={evaluasiAnn.urgensi !== "normal" ? "text-risiko-tinggi" : ""}>{evaluasiAnn.urgensi}</strong>
                 </p>
                 <p className="text-[11px] leading-relaxed italic">
                   &ldquo;{evaluasiAnn.rekomendasiVerifikator}&rdquo;

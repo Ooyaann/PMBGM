@@ -5,30 +5,21 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
-  BarChart3,
+  BookOpen,
   Building2,
   Camera,
-  CheckCircle2,
   Clock,
-  Compass,
-  EyeOff,
-  Globe,
+  Cpu,
   HelpCircle,
   Lock,
   Megaphone,
-  Radar,
   RotateCcw,
   Scale,
-  School,
   Search,
-  ShieldAlert,
   ShieldCheck,
   Siren,
-  Sliders,
-  Sparkles,
   Users,
   Utensils,
-  UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -43,14 +34,12 @@ import { cn } from "@/lib/utils";
 
 interface ItemPanduan {
   id: string;
-  kategori: "lapor" | "aktor" | "metrik" | "keamanan" | "status" | "pintasan";
+  kategori: "lapor" | "aktor" | "metrik" | "keamanan" | "status" | "istilah";
   judul: string;
   ringkasan: string;
-  badgeRingkas: string[];
   ikon: LucideIcon;
   warnaAksen: string;
   warnaBg: string;
-  warnaBorder: string;
   kontenModal: React.ReactNode;
   tautanAksi?: { href: string; label: string };
   kataKunci: string[];
@@ -58,12 +47,12 @@ interface ItemPanduan {
 
 const KATEGORI = [
   { id: "semua", label: "Semua" },
-  { id: "lapor", label: "Alur Lapor" },
+  { id: "istilah", label: "Istilah Teknis" },
+  { id: "lapor", label: "Lapor" },
   { id: "aktor", label: "Instansi" },
-  { id: "metrik", label: "Indeks Risiko" },
-  { id: "keamanan", label: "Anti-Manipulasi" },
-  { id: "status", label: "Status & SLA" },
-  { id: "pintasan", label: "Pintasan" },
+  { id: "metrik", label: "Risiko & SAW" },
+  { id: "keamanan", label: "ML & Bukti" },
+  { id: "status", label: "SLA" },
 ] as const;
 
 export function DasborPanduan() {
@@ -78,374 +67,256 @@ export function DasborPanduan() {
   useEffect(() => {
     if (kartuTerpilih) {
       const timer = setTimeout(() => {
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = 0;
-        }
+        if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
       }, 10);
       return () => clearTimeout(timer);
     }
   }, [kartuTerpilih]);
 
   const DAFTAR_KARTU: ItemPanduan[] = [
-    // 1. CARA MELAPOR
     {
       id: "cara-melapor",
       kategori: "lapor",
       judul: "Alur Pelaporan",
-      ringkasan: "4 langkah mudah melapor dengan foto bukti & kode tiket unik.",
-      badgeRingkas: ["4 Langkah", "Kode Tiket"],
+      ringkasan: "Langkah melapor dan mendapatkan kode tiket.",
       ikon: Megaphone,
-      warnaAksen: "text-emerald-700 dark:text-emerald-400",
-      warnaBg: "bg-emerald-500/10",
-      warnaBorder: "hover:border-emerald-500/50 hover:shadow-emerald-500/10",
+      warnaAksen: "text-primary",
+      warnaBg: "bg-secondary",
       kataKunci: ["lapor", "foto", "bukti", "anonim", "rahasia", "tiket", "keracunan", "darurat"],
-      tautanAksi: { href: "/lapor", label: "Formulir Lapor" },
+      tautanAksi: { href: "/lapor", label: "Buka Form Lapor" },
       kontenModal: (
-        <div className="space-y-3 text-foreground">
-          {/* LANGKAH 1 */}
-          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
-              1
-            </span>
-            <div className="space-y-0.5">
-              <h4 className="font-bold text-sm text-foreground">Buka Menu Lapor</h4>
-              <p className="text-xs text-muted-foreground">
-                Klik tombol &quot;Lapor Masalah&quot; di navigasi atas atau beranda.
-              </p>
+        <div className="space-y-2.5 text-foreground">
+          {[
+            ["1. Pilih Masalah & Sekolah", "Tentukan kategori masalah dan sekolah penerima."],
+            ["2. Unggah Bukti Foto", "Lampirkan minimal 1 foto kondisi makanan/kejadian."],
+            ["3. Pilih Privasi", "Rahasia (bawaan), Publik, atau Anonim."],
+            ["4. Simpan Kode Tiket", "Gunakan kode tiket untuk melacak progres."],
+          ].map(([judul, sub]) => (
+            <div key={judul} className="rounded-xl border bg-card p-3">
+              <p className="font-bold text-sm">{judul}</p>
+              <p className="text-xs text-muted-foreground">{sub}</p>
             </div>
-          </div>
-
-          {/* LANGKAH 2 */}
-          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
-              2
-            </span>
-            <div className="space-y-0.5">
-              <h4 className="font-bold text-sm text-foreground">Unggah Foto & Pilih Sekolah</h4>
-              <p className="text-xs text-muted-foreground">
-                Sertakan dokumentasi menu bermasalah dan pilih sekolah penerima MBG.
-              </p>
-            </div>
-          </div>
-
-          {/* LANGKAH 3 */}
-          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
-              3
-            </span>
-            <div className="space-y-1">
-              <h4 className="font-bold text-sm text-foreground">Pilih Mode Privasi</h4>
-              <p className="text-xs text-muted-foreground">
-                Pilih identitas: <strong>Nama Terbuka</strong>, <strong>Rahasia</strong> (hanya verifikator), atau <strong>Anonim</strong>.
-              </p>
-            </div>
-          </div>
-
-          {/* LANGKAH 4 */}
-          <div className="rounded-2xl border bg-card p-3.5 flex items-start gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-xs font-black text-white">
-              4
-            </span>
-            <div className="space-y-0.5">
-              <h4 className="font-bold text-sm text-foreground">Simpan Kode Tiket</h4>
-              <p className="text-xs text-muted-foreground">
-                Gunakan kode tiket unik (misal #MBG-7821) untuk memantau proses tindak lanjut.
-              </p>
-            </div>
-          </div>
-
-          {/* Banner Darurat */}
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3.5 flex items-center gap-3 text-rose-950 dark:text-rose-200">
-            <Siren className="size-5 text-rose-600 shrink-0" />
-            <div className="text-xs">
-              <strong className="block text-foreground">Dugaan Keracunan Pangan?</strong>
-              <span className="text-muted-foreground">Pilih kategori keracunan untuk penanganan medis darurat prioritas 2 jam.</span>
-            </div>
+          ))}
+          <div className="rounded-xl border border-darurat/30 bg-darurat-lembut p-3 flex items-center gap-2.5">
+            <Siren className="size-4 text-darurat shrink-0" />
+            <p className="text-xs font-medium">
+              <strong>Keracunan:</strong> Hubungi <strong>119</strong> dulu, lalu lapor untuk prioritas 2 jam.
+            </p>
           </div>
         </div>
       ),
     },
-
-    // 2. PIHAK PENANGGUNG JAWAB
     {
       id: "pihak-penanggung-jawab",
       kategori: "aktor",
-      judul: "Peran & Instansi",
-      ringkasan: "Pembagian tugas Verifikator, Dapur SPPG, Dinkes, dan Korwil BGN.",
-      badgeRingkas: ["4 Instansi", "Otomatis"],
+      judul: "Peran Instansi",
+      ringkasan: "Tugas Verifikator, SPPG, Dinkes, dan BGN.",
       ikon: Users,
-      warnaAksen: "text-teal-700 dark:text-teal-400",
-      warnaBg: "bg-teal-500/10",
-      warnaBorder: "hover:border-teal-500/50 hover:shadow-teal-500/10",
+      warnaAksen: "text-primary",
+      warnaBg: "bg-secondary",
       kataKunci: ["aktor", "pihak", "verifikator", "sppg", "dinkes", "bgn", "wewenang", "instansi"],
-      tautanAksi: { href: "/tentang", label: "Tentang Tata Kelola" },
+      tautanAksi: { href: "/tentang", label: "Tentang" },
       kontenModal: (
         <div className="grid gap-2.5 sm:grid-cols-2 text-foreground">
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-teal-600" />
-              <h4 className="font-bold text-sm">Verifikator Wilayah</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Memvalidasi foto bukti dan memastikan laporan bebas dari hoaks/spam sebelum diteruskan.
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm flex items-center gap-1.5">
+              <ShieldCheck className="size-4 text-primary" /> Verifikator
             </p>
+            <p className="text-xs text-muted-foreground">Memeriksa keaslian bukti sebelum diteruskan.</p>
           </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Utensils className="size-4 text-amber-600" />
-              <h4 className="font-bold text-sm">Dapur Mitra SPPG</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Memperbaiki menu makanan dan mengunggah foto bukti perbaikan fisik ke sistem.
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm flex items-center gap-1.5">
+              <Utensils className="size-4 text-risiko-sedang" /> Dapur SPPG
             </p>
+            <p className="text-xs text-muted-foreground">Memperbaiki layanan dan mengunggah bukti perbaikan.</p>
           </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Building2 className="size-4 text-rose-600" />
-              <h4 className="font-bold text-sm">Dinas Kesehatan</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Investigasi medis dugaan keracunan, pengujian laboratorium, dan penerbitan izin SLHS.
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm flex items-center gap-1.5">
+              <Building2 className="size-4 text-risiko-tinggi" /> Dinas Kesehatan
             </p>
+            <p className="text-xs text-muted-foreground">Investigasi keracunan, uji lab, dan izin SLHS.</p>
           </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Clock className="size-4 text-indigo-600" />
-              <h4 className="font-bold text-sm">Korwil BGN</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Mengawasi kepatuhan batas waktu respon (SLA) dan koordinasi antarinstansi.
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm flex items-center gap-1.5">
+              <Clock className="size-4 text-info" /> Korwil BGN
             </p>
+            <p className="text-xs text-muted-foreground">Mengawasi batas waktu (SLA) seluruh SPPG.</p>
           </div>
         </div>
       ),
     },
-
-    // 3. KAMUS ANGKA & LABEL
     {
       id: "arti-angka-label",
       kategori: "metrik",
-      judul: "Indeks Risiko & Label",
-      ringkasan: "Arti skor risiko 0–100, sertifikat SLHS, dan sinyal lonjakan kasus.",
-      badgeRingkas: ["Skor 0–100", "Izin SLHS"],
+      judul: "Indeks Risiko (SAW)",
+      ringkasan: "Cara hitung skor 0–100 penentu urutan sidak dapur.",
       ikon: HelpCircle,
-      warnaAksen: "text-blue-700 dark:text-blue-400",
-      warnaBg: "bg-blue-500/10",
-      warnaBorder: "hover:border-blue-500/50 hover:shadow-blue-500/10",
-      kataKunci: ["metrik", "skor", "risiko", "slhs", "saw", "arti", "kamus"],
-      tautanAksi: { href: "/metodologi", label: "Rumus Metodologi" },
+      warnaAksen: "text-info",
+      warnaBg: "bg-info-lembut",
+      kataKunci: ["metrik", "skor", "risiko", "slhs", "saw", "arti", "kamus", "bobot"],
+      tautanAksi: { href: "/metodologi", label: "Detail Rumus" },
       kontenModal: (
-        <div className="space-y-3 text-foreground">
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
-            <h4 className="font-bold text-sm flex items-center justify-between">
-              <span>Indeks Risiko SPPG (Skor 0–100)</span>
-              <span className="text-xs text-muted-foreground font-normal">Metode SAW</span>
-            </h4>
-            <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-emerald-700 dark:text-emerald-400">
-                0–34,9 · Rendah (Aman)
-              </span>
-              <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-amber-700 dark:text-amber-400">
-                35–59,9 · Sedang (Waspada)
-              </span>
-              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-rose-700 dark:text-rose-400">
-                60–100 · Tinggi (Evaluasi)
-              </span>
+        <div className="space-y-2.5 text-foreground">
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm">Apa itu Metode SAW?</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong>Simple Additive Weighting (SAW)</strong> menjumlahkan 5 kriteria masalah untuk memberi skor 0–100 pada tiap dapur SPPG. Makin tinggi skornya, makin diprioritaskan untuk disidak.
+            </p>
+          </div>
+          <div className="rounded-xl border bg-card p-3 space-y-2">
+            <p className="font-bold text-sm">5 Bobot Penilaian SAW</p>
+            <div className="grid grid-cols-2 gap-1.5 text-xs">
+              <div className="rounded-lg bg-muted/60 px-2.5 py-1.5 flex justify-between">
+                <span>Laporan Warga</span>
+                <strong className="text-primary">35%</strong>
+              </div>
+              <div className="rounded-lg bg-muted/60 px-2.5 py-1.5 flex justify-between">
+                <span>Kasus Keracunan</span>
+                <strong className="text-risiko-tinggi">25%</strong>
+              </div>
+              <div className="rounded-lg bg-muted/60 px-2.5 py-1.5 flex justify-between">
+                <span>Izin SLHS</span>
+                <strong className="text-info">15%</strong>
+              </div>
+              <div className="rounded-lg bg-muted/60 px-2.5 py-1.5 flex justify-between">
+                <span>Terlambat SLA</span>
+                <strong className="text-risiko-sedang">15%</strong>
+              </div>
+              <div className="rounded-lg bg-muted/60 px-2.5 py-1.5 flex justify-between col-span-2">
+                <span>Kepuasan Sekolah / Orang Tua</span>
+                <strong className="text-primary">10%</strong>
+              </div>
             </div>
           </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
-            <h4 className="font-bold text-sm">Sertifikat SLHS (Dinkes)</h4>
-            <p className="text-xs text-muted-foreground">
-              Sertifikat Laik Higiene Sanitasi resmi untuk memastikan standar kebersihan dapur dan peralatan makan.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1.5">
-            <h4 className="font-bold text-sm">Sinyal Peringatan Dini</h4>
-            <p className="text-xs text-muted-foreground">
-              Aktif jika ada lonjakan aduan &gt;3× rata-rata harian dalam 24 jam untuk mendeteksi wabah insidental secara dini.
-            </p>
+          <div className="rounded-xl border bg-card p-3 space-y-2">
+            <p className="font-bold text-sm">Kategori Skor Risiko (0–100)</p>
+            <div className="flex flex-wrap gap-1.5 text-xs font-semibold">
+              <span className="rounded-md bg-risiko-rendah-lembut px-2 py-0.5 text-risiko-rendah">
+                0–39 Rendah (Aman)
+              </span>
+              <span className="rounded-md bg-risiko-sedang-lembut px-2 py-0.5 text-risiko-sedang">
+                40–69 Sedang (Waspada)
+              </span>
+              <span className="rounded-md bg-risiko-tinggi-lembut px-2 py-0.5 text-risiko-tinggi">
+                70–100 Tinggi (Sidak Cepat)
+              </span>
+            </div>
           </div>
         </div>
       ),
     },
-
-    // 4. JAMINAN ANTI-MANIPULASI
     {
       id: "jaminan-anti-manipulasi",
       kategori: "keamanan",
-      judul: "Anti-Manipulasi",
-      ringkasan: "Validasi foto wajib, masa sanggah 3 hari, dan kunci BAP Dinkes.",
-      badgeRingkas: ["Foto Fisik", "Kunci BAP"],
-      ikon: ShieldCheck,
-      warnaAksen: "text-purple-700 dark:text-purple-400",
-      warnaBg: "bg-purple-500/10",
-      warnaBorder: "hover:border-purple-500/50 hover:shadow-purple-500/10",
-      kataKunci: ["manipulasi", "foto", "sanggah", "bap", "dinkes", "rating", "keamanan"],
-      tautanAksi: { href: "/lacak/akuntabilitas", label: "Papan Akuntabilitas" },
+      judul: "Verifikasi ML & Bukti",
+      ringkasan: "Cara kerja deteksi keaslian laporan dan bukti foto.",
+      ikon: Cpu,
+      warnaAksen: "text-primary",
+      warnaBg: "bg-secondary",
+      kataKunci: ["manipulasi", "foto", "sanggah", "bap", "dinkes", "rating", "keamanan", "ml", "ai", "ann", "exif", "gps"],
+      tautanAksi: { href: "/metodologi#kredibilitas", label: "Skor Kredibilitas" },
       kontenModal: (
-        <div className="grid gap-2.5 sm:grid-cols-2 text-foreground">
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Camera className="size-4 text-primary" />
-              <h4 className="font-bold text-sm">Foto Fisik Wajib</h4>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Dapur wajib mengunggah foto perbaikan nyata sebelum status kasus dapat diselesaikan.
+        <div className="space-y-2.5 text-foreground">
+          <div className="rounded-xl border bg-card p-3 space-y-1">
+            <p className="font-bold text-sm flex items-center gap-1.5">
+              <Cpu className="size-4 text-primary" /> Apa fungsi ML (Machine Learning)?
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Model jaringan saraf tiruan (<strong>ANN</strong>) memeriksa kecocokan isi keluhan, waktu pengambilan foto, dan titik GPS sekolah untuk memberi skor keaslian awal bagi petugas verifikator.
             </p>
           </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <RotateCcw className="size-4 text-primary" />
-              <h4 className="font-bold text-sm">Masa Sanggah 3 Hari</h4>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            <div className="rounded-xl border bg-card p-3 space-y-1">
+              <p className="font-bold text-sm flex items-center gap-1.5">
+                <Camera className="size-4 text-primary" /> Bukti Foto Wajib
+              </p>
+              <p className="text-xs text-muted-foreground">Wajib ada foto saat melapor & saat dapur menutup kasus.</p>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Pelapor berhak mengonfirmasi kepuasan atau membuka sanggahan jika masalah belum tuntas.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Lock className="size-4 text-primary" />
-              <h4 className="font-bold text-sm">Kunci BAP Dinkes</h4>
+            <div className="rounded-xl border bg-card p-3 space-y-1">
+              <p className="font-bold text-sm flex items-center gap-1.5">
+                <RotateCcw className="size-4 text-primary" /> Buka Ulang Kasus
+              </p>
+              <p className="text-xs text-muted-foreground">Pelapor bisa membuka ulang dalam 14 hari jika belum tuntas.</p>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Kasus keracunan hanya dapat ditutup setelah Berita Acara Pemeriksaan (BAP) resmi diterbitkan.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-3.5 space-y-1">
-            <div className="flex items-center gap-2">
-              <Scale className="size-4 text-primary" />
-              <h4 className="font-bold text-sm">Audit Trail Permanen</h4>
+            <div className="rounded-xl border bg-card p-3 space-y-1">
+              <p className="font-bold text-sm flex items-center gap-1.5">
+                <Lock className="size-4 text-primary" /> Kunci Kasus Darurat
+              </p>
+              <p className="text-xs text-muted-foreground">Kasus keracunan wajib melalui pemeriksaan Dinkes.</p>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Setiap catatan waktu dan perubahan status tersimpan otomatis tanpa bisa dimanipulasi.
-            </p>
+            <div className="rounded-xl border bg-card p-3 space-y-1">
+              <p className="font-bold text-sm flex items-center gap-1.5">
+                <Scale className="size-4 text-primary" /> Jejak Audit
+              </p>
+              <p className="text-xs text-muted-foreground">Semua perubahan status tercatat permanen di timeline.</p>
+            </div>
           </div>
         </div>
       ),
     },
-
-    // 5. STATUS TIKET & SLA
     {
       id: "status-tiket-sla",
       kategori: "status",
-      judul: "Status Tiket & SLA",
-      ringkasan: "5 fase penanganan tiket dan batas waktu standar layanan resmi.",
-      badgeRingkas: ["5 Status", "Batas SLA"],
+      judul: "Status & Batas Waktu (SLA)",
+      ringkasan: "5 tahap penanganan dan batas waktu wajib instansi.",
       ikon: Clock,
-      warnaAksen: "text-amber-700 dark:text-amber-400",
-      warnaBg: "bg-amber-500/10",
-      warnaBorder: "hover:border-amber-500/50 hover:shadow-amber-500/10",
+      warnaAksen: "text-risiko-sedang",
+      warnaBg: "bg-risiko-sedang-lembut",
       kataKunci: ["status", "sla", "tiket", "lacak", "diterima", "diverifikasi", "selesai"],
       tautanAksi: { href: "/lacak", label: "Lacak Tiket" },
       kontenModal: (
-        <div className="space-y-2 text-foreground">
-          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
-            <span className="font-bold">1. Diterima</span>
-            <span className="text-muted-foreground font-mono">Maks. 6 Jam (Darurat: 2 Jam)</span>
+        <div className="space-y-2 text-foreground text-xs sm:text-sm">
+          <div className="rounded-xl border bg-card p-3 space-y-0.5">
+            <p className="font-bold text-sm">Apa itu SLA?</p>
+            <p className="text-xs text-muted-foreground">
+              <strong>Service Level Agreement (SLA)</strong> adalah batas waktu maksimal bagi petugas untuk merespons. Jika lewat, kasus otomatis ditandai merah di Papan Akuntabilitas.
+            </p>
           </div>
-          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
-            <span className="font-bold">2. Diverifikasi</span>
-            <span className="text-muted-foreground font-mono">Maks. 2 Jam (Oleh Tim Netral)</span>
-          </div>
-          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
-            <span className="font-bold">3. Diteruskan</span>
-            <span className="text-muted-foreground font-mono">Maks. 6 Jam ke SPPG / Dinkes</span>
-          </div>
-          <div className="flex items-center justify-between rounded-xl border bg-card p-3 text-xs sm:text-sm">
-            <span className="font-bold">4. Ditindaklanjuti</span>
-            <span className="text-muted-foreground font-mono">Maks. 3 Hari Perbaikan Dapur</span>
-          </div>
-          <div className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 p-3 text-xs sm:text-sm font-bold text-primary">
-            <span>5. Selesai</span>
-            <span className="font-mono">3 Hari Hak Sanggah Pelapor</span>
-          </div>
+          {[
+            ["1. Diterima", "Maks. 6 jam (Darurat: 2 jam)"],
+            ["2. Diverifikasi", "Maks. 2 jam penerusan"],
+            ["3. Diteruskan", "Maks. 6 jam tanggapan awal"],
+            ["4. Ditindaklanjuti", "Maks. 72 jam perbaikan"],
+            ["5. Selesai", "Dapat dinilai / dibuka ulang"],
+          ].map(([tahap, batas]) => (
+            <div key={tahap} className="flex items-center justify-between rounded-xl border bg-card p-2.5">
+              <span className="font-bold">{tahap}</span>
+              <span className="text-muted-foreground font-mono text-xs">{batas}</span>
+            </div>
+          ))}
         </div>
       ),
     },
-
-    // 6. PETA FITUR
     {
-      id: "peta-fitur-situs",
-      kategori: "pintasan",
-      judul: "Pintasan Modul",
-      ringkasan: "Akses cepat ke pencarian sekolah, direktori SPPG, dan data terbuka.",
-      badgeRingkas: ["Data Terbuka", "Peta Risiko"],
-      ikon: Compass,
-      warnaAksen: "text-cyan-700 dark:text-cyan-400",
-      warnaBg: "bg-cyan-500/10",
-      warnaBorder: "hover:border-cyan-500/50 hover:shadow-cyan-500/10",
-      kataKunci: ["pintasan", "fitur", "cari", "sekolah", "data", "unduh"],
+      id: "kamus-istilah-teknis",
+      kategori: "istilah",
+      judul: "Kamus Istilah Singkat",
+      ringkasan: "Arti SPPG, SLHS, SAW, ML, SLA, dan GPS/EXIF.",
+      ikon: BookOpen,
+      warnaAksen: "text-primary",
+      warnaBg: "bg-secondary",
+      kataKunci: ["kamus", "istilah", "saw", "ml", "ai", "ann", "sppg", "slhs", "sla", "exif", "gps", "dss"],
+      tautanAksi: { href: "/metodologi", label: "Buka Metodologi" },
       kontenModal: (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <Link
-            href="/cari-sekolah"
-            onClick={() => setKartuTerpilih(null)}
-            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
-          >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <School className="size-4" />
-            </span>
-            <div>
-              <span className="block font-bold text-xs text-foreground">Cari Sekolah</span>
-              <span className="text-[11px] text-muted-foreground">Ketahui SPPG mitra penyuplai</span>
+        <div className="space-y-2 text-foreground">
+          {[
+            ["SPPG (Dapur MBG)", "Sentra Pelayanan Pemenuhan Gizi; dapur penyedia yang memasak dan mengirim paket makan ke sekolah."],
+            ["SLHS (Izin Sanitasi)", "Sertifikat Laik Higiene Sanitasi dari Dinas Kesehatan yang menyatakan dapur bersih dan layak."],
+            ["SAW (Hitung Risiko)", "Rumus penjumlahan berbobot (0–100) untuk menentukan dapur mana yang paling butuh disidak lebih dulu."],
+            ["ML / ANN (Deteksi Bukti)", "Algoritma pemeriksa otomatis yang mengecek kecocokan teks laporan, waktu foto, dan lokasi GPS."],
+            ["SLA (Batas Waktu)", "Standar waktu maksimal instansi wajib menanggapi laporan (misal: keracunan maks. 2 jam)."],
+            ["EXIF & GPS Foto", "Catatan waktu dan lokasi otomatis pada foto kamera untuk memvalidasi keaslian kejadian (dihapus sebelum tampil ke publik)."],
+          ].map(([istilah, arti]) => (
+            <div key={istilah} className="rounded-xl border bg-card p-3 space-y-0.5">
+              <p className="font-bold text-xs sm:text-sm text-primary">{istilah}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{arti}</p>
             </div>
-          </Link>
-
-          <Link
-            href="/data/sppg"
-            onClick={() => setKartuTerpilih(null)}
-            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
-          >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <UtensilsCrossed className="size-4" />
-            </span>
-            <div>
-              <span className="block font-bold text-xs text-foreground">Direktori Dapur SPPG</span>
-              <span className="text-[11px] text-muted-foreground">Cek izin sanitasi & skor risiko</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/insight"
-            onClick={() => setKartuTerpilih(null)}
-            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
-          >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Radar className="size-4" />
-            </span>
-            <div>
-              <span className="block font-bold text-xs text-foreground">Peta Risiko SAW</span>
-              <span className="text-[11px] text-muted-foreground">Analisis zonasi risiko wilayah</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/data/unduh"
-            onClick={() => setKartuTerpilih(null)}
-            className="flex items-center gap-3 rounded-2xl border bg-card p-3 transition hover:border-primary"
-          >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <BarChart3 className="size-4" />
-            </span>
-            <div>
-              <span className="block font-bold text-xs text-foreground">Unduh Data Terbuka</span>
-              <span className="text-[11px] text-muted-foreground">Ekspor dataset CSV & JSON</span>
-            </div>
-          </Link>
+          ))}
         </div>
       ),
     },
   ];
 
-  // Buka otomatis kartu panduan jika diakses lewat tautan eksternal
   useEffect(() => {
     if (bukaParam) {
       const target = DAFTAR_KARTU.find(
@@ -454,9 +325,7 @@ export function DasborPanduan() {
           (bukaParam === "lapor-masalah" && k.id === "cara-melapor") ||
           (bukaParam === "alur_lapor" && k.id === "cara-melapor")
       );
-      if (target) {
-        setKartuTerpilih(target);
-      }
+      if (target) setKartuTerpilih(target);
     }
   }, [bukaParam]);
 
@@ -475,30 +344,8 @@ export function DasborPanduan() {
   }, [kueri, kategoriAktif]);
 
   return (
-    <div className="space-y-6">
-      {/* Search Bar & Filter Pills Ringkas */}
-      <div className="space-y-3 rounded-3xl border bg-card/80 backdrop-blur-sm p-4 sm:p-5">
-        <label className="flex h-11 items-center gap-2.5 rounded-2xl border border-input bg-background px-3.5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition">
-          <Search className="size-4 text-muted-foreground shrink-0" aria-hidden />
-          <input
-            type="text"
-            value={kueri}
-            onChange={(e) => setKueri(e.target.value)}
-            placeholder="Cari panduan..."
-            className="h-full w-full bg-transparent text-sm placeholder:text-muted-foreground/60 focus:outline-none"
-          />
-          {kueri && (
-            <button
-              type="button"
-              onClick={() => setKueri("")}
-              className="text-xs text-muted-foreground hover:text-foreground font-medium px-2 py-0.5 rounded-md cursor-pointer"
-            >
-              Reset
-            </button>
-          )}
-        </label>
-
-        {/* Filter Tabs Singkat */}
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar" role="tablist">
           {KATEGORI.map((kat) => (
             <button
@@ -509,124 +356,89 @@ export function DasborPanduan() {
               className={cn(
                 "inline-flex h-8 items-center rounded-full px-3 text-xs font-semibold whitespace-nowrap transition cursor-pointer",
                 kategoriAktif === kat.id
-                  ? "bg-primary text-primary-foreground shadow-2xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
               {kat.label}
             </button>
           ))}
         </div>
+
+        <label className="flex h-9 w-full sm:w-64 items-center gap-2 rounded-xl border border-input bg-card px-3 focus-within:border-primary transition">
+          <Search className="size-3.5 text-muted-foreground shrink-0" aria-hidden />
+          <input
+            type="text"
+            value={kueri}
+            onChange={(e) => setKueri(e.target.value)}
+            placeholder="Cari topik..."
+            className="h-full w-full bg-transparent text-xs placeholder:text-muted-foreground/60 focus:outline-none"
+          />
+        </label>
       </div>
 
-      {/* Grid Kartu Panduan Bersih */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {hasilFilter.map((kartu) => {
           const Ikon = kartu.ikon;
           return (
-            <div
+            <button
               key={kartu.id}
+              type="button"
               onClick={() => setKartuTerpilih(kartu)}
-              className={cn(
-                "group cursor-pointer rounded-2xl border bg-card p-4 sm:p-5 transition-all hover:border-primary/50 hover:shadow-xs flex flex-col justify-between space-y-3",
-                kartu.warnaBorder
-              )}
+              className="group rounded-2xl border bg-card p-4 text-left transition-all hover:border-primary/50 hover:shadow-xs flex items-start gap-3.5 cursor-pointer"
             >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span
-                    className={cn(
-                      "flex size-10 items-center justify-center rounded-xl",
-                      kartu.warnaBg
-                    )}
-                  >
-                    <Ikon className={cn("size-5", kartu.warnaAksen)} aria-hidden />
-                  </span>
-                  <span className="flex size-6 items-center justify-center rounded-full bg-muted/60 text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <ArrowRight className="size-3" />
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+              <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", kartu.warnaBg)}>
+                <Ikon className={cn("size-5", kartu.warnaAksen)} aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                     {kartu.judul}
                   </h3>
-                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    {kartu.ringkasan}
-                  </p>
+                  <ArrowRight className="size-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition" />
                 </div>
+                <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1">{kartu.ringkasan}</p>
               </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1 border-t border-border/50">
-                {kartu.badgeRingkas.map((b) => (
-                  <span
-                    key={b}
-                    className="rounded-md bg-muted/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
-                  >
-                    {b}
-                  </span>
-                ))}
-              </div>
-            </div>
+            </button>
           );
         })}
       </div>
 
       {hasilFilter.length === 0 && (
-        <div className="rounded-2xl border border-dashed p-8 text-center text-muted-foreground">
-          <p className="text-sm font-semibold text-foreground">Topik tidak ditemukan</p>
-          <Button variant="outline" size="sm" className="mt-3" onClick={() => { setKueri(""); setKategoriAktif("semua"); }}>
-            Tampilkan Semua
-          </Button>
+        <div className="rounded-2xl border border-dashed p-6 text-center text-muted-foreground">
+          <p className="text-xs font-semibold text-foreground">Topik tidak ditemukan</p>
         </div>
       )}
 
-      {/* MODAL POP-UP DETAIL PANDUAN */}
       <Dialog open={!!kartuTerpilih} onOpenChange={(buka) => !buka && setKartuTerpilih(null)}>
         {kartuTerpilih && (
           <DialogContent
             initialFocus={false}
-            className="sm:max-w-xl max-h-[85vh] p-0 rounded-3xl overflow-hidden flex flex-col"
+            className="sm:max-w-lg max-h-[85vh] p-0 rounded-3xl overflow-hidden flex flex-col"
             showCloseButton={true}
           >
-            {/* Header Dialog */}
-            <DialogHeader className="p-5 sm:p-6 border-b bg-muted/15 shrink-0">
+            <DialogHeader className="p-5 border-b bg-muted/15 shrink-0">
               <div className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "flex size-10 items-center justify-center rounded-xl shrink-0",
-                    kartuTerpilih.warnaBg
-                  )}
-                >
-                  <kartuTerpilih.ikon className={cn("size-5", kartuTerpilih.warnaAksen)} aria-hidden />
+                <span className={cn("flex size-9 items-center justify-center rounded-xl shrink-0", kartuTerpilih.warnaBg)}>
+                  <kartuTerpilih.ikon className={cn("size-4.5", kartuTerpilih.warnaAksen)} aria-hidden />
                 </span>
                 <div>
-                  <DialogTitle className="text-lg sm:text-xl font-extrabold text-foreground">
+                  <DialogTitle className="text-base font-extrabold text-foreground">
                     {kartuTerpilih.judul}
                   </DialogTitle>
-                  <DialogDescription className="text-xs text-muted-foreground mt-0.5">
+                  <DialogDescription className="text-xs text-muted-foreground">
                     {kartuTerpilih.ringkasan}
                   </DialogDescription>
                 </div>
               </div>
             </DialogHeader>
 
-            {/* Container Konten Ringkas */}
-            <div
-              ref={scrollContainerRef}
-              className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3"
-            >
+            <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-5 space-y-2.5">
               {kartuTerpilih.kontenModal}
             </div>
 
-            {/* Footer Dialog */}
-            <div className="p-4 border-t bg-muted/10 shrink-0 flex items-center justify-between gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                className="rounded-xl font-semibold text-xs"
-                onClick={() => setKartuTerpilih(null)}
-              >
+            <div className="p-3.5 border-t bg-muted/10 shrink-0 flex items-center justify-between gap-3">
+              <Button variant="outline" size="sm" className="rounded-xl font-semibold text-xs" onClick={() => setKartuTerpilih(null)}>
                 Tutup
               </Button>
               {kartuTerpilih.tautanAksi && (

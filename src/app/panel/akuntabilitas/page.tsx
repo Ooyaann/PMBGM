@@ -65,11 +65,11 @@ async function Isi() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6 sm:p-7">
+      <div className="rounded-3xl border border-info/25 bg-info-lembut/40 p-6 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-700 dark:text-indigo-300">
-              <Scale className="size-3.5 text-indigo-600" aria-hidden /> Pengawasan Kinerja & SLA
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-info-lembut px-3 py-1 text-xs font-bold text-info">
+              <Scale className="size-3.5 text-info" aria-hidden /> Pengawasan Kinerja & SLA
             </span>
             <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight">Papan Akuntabilitas SPPG Wilayah</h1>
             <p className="mt-1 text-xs sm:text-sm text-muted-foreground max-w-2xl">
@@ -83,7 +83,7 @@ async function Isi() {
           {RINGKASAN.map((r, i) => (
             <div key={i} className="rounded-2xl border border-border/70 bg-card p-3.5">
               <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                <r.ikon className="size-4 text-indigo-600" aria-hidden /> {r.label}
+                <r.ikon className="size-4 text-primary" aria-hidden /> {r.label}
               </span>
               <p className="angka mt-1.5 text-2xl font-black">{r.nilai}</p>
             </div>

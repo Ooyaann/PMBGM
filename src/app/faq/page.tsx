@@ -13,7 +13,7 @@ const KELOMPOK = [
     id: "lapor", judul: "Melapor", ikon: Megaphone, tanya: [
       ["Siapa yang boleh melapor?", "Siapa saja: orang tua, siswa, guru, komite sekolah, kader posyandu, atau warga. Cukup daftar dengan email dan kata sandi."],
       ["Apa yang harus saya lakukan bila ada keracunan?", "Utamakan keselamatan: bawa korban ke puskesmas atau IGD terdekat dan hubungi 119. Setelah itu laporkan di PMBGM dengan kategori Keracunan agar langsung masuk antrean darurat."],
-      ["Apakah wajib melampirkan foto?", "Tidak wajib, tetapi foto menaikkan skor kredibilitas sehingga laporan lebih cepat diperiksa."],
+      ["Apakah wajib melampirkan foto?", "Wajib melampirkan minimal 1 foto bukti kondisi makanan atau kejadian agar laporan dapat diverifikasi dan ditindaklanjuti secara akurat."],
       ["Ada orang lain yang sudah melapor kejadian yang sama.", "Formulir akan menampilkan laporan serupa. Tekan “Saya juga mengalami” untuk mendukungnya, atau tetap kirim laporan Anda; verifikator akan menggabungkannya menjadi satu kasus."],
       ["Berapa banyak laporan yang bisa saya kirim?", "Maksimal 5 laporan dalam 24 jam per akun, untuk mencegah spam."],
     ],
@@ -21,7 +21,7 @@ const KELOMPOK = [
   {
     id: "lacak", judul: "Melacak", ikon: ClipboardList, tanya: [
       ["Bagaimana mengetahui perkembangan laporan?", "Gunakan kode tiket di halaman Lacak, buka Laporan saya, atau tunggu notifikasi dan email setiap ada perubahan status."],
-      ["Berapa lama laporan diproses?", "Setiap kategori punya batas waktu per tahap. Dugaan keracunan diverifikasi paling lambat 6 jam. Lihat tabel lengkapnya di Metodologi."],
+      ["Berapa lama laporan diproses?", "Setiap kategori punya batas waktu per tahap. Dugaan keracunan diverifikasi paling lambat 2 jam (prioritas darurat), sedangkan aduan reguler maksimal 6 jam. Lihat tabel lengkapnya di Metodologi."],
       ["Bagaimana bila instansi tidak menanggapi?", "Setelah batas waktu lewat, kasus otomatis ditandai “Tidak ditanggapi”, prioritasnya naik, dan tampil di Papan Akuntabilitas."],
       ["Masalahnya belum tuntas padahal kasus selesai.", "Buka ulang kasus dari Laporan saya paling lambat 14 hari setelah selesai, lalu jelaskan bagian yang belum tuntas."],
       ["Mengapa laporan saya ditolak?", "Alasannya selalu ditampilkan, misalnya bukti tidak relevan atau di luar lingkup MBG. Anda bisa melapor lagi dengan informasi yang lebih lengkap."],

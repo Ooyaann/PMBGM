@@ -36,7 +36,7 @@ export default async function HalamanData() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-center gap-3">
         <h1 className="text-3xl font-extrabold">Data Terbuka</h1>
-        <span className="text-sm text-muted-foreground">Jawa Tengah · 2026</span>
+        <span className="text-sm text-muted-foreground">Tahun Anggaran 2026</span>
         <LabelSumber jenis="simulasi" />
       </header>
 

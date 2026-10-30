@@ -11,7 +11,7 @@ import {
   ClipboardList,
   Download,
   FolderOpen,
-  Globe,
+  GitCompareArrows,
   HelpCircle,
   LayoutDashboard,
   LogOut,
@@ -26,15 +26,10 @@ import {
   ShieldAlert,
   ShieldCheck,
   Siren,
-  SlidersHorizontal,
-  Sparkles,
   Timer,
-  Truck,
   User,
   Users,
   Utensils,
-  UtensilsCrossed,
-  X,
   type LucideIcon,
 } from "lucide-react";
 import { keluar } from "@/lib/aksi/auth";
@@ -72,6 +67,7 @@ export interface InfoAkunNavbar {
 
 interface MenuNavigasiGrup {
   label: string;
+  prefixes: string[];
   submenus?: {
     href: string;
     judul: string;
@@ -92,72 +88,75 @@ interface MenuItemPeran {
 const MENU_PUBLIK: MenuNavigasiGrup[] = [
   {
     label: "Lacak",
+    prefixes: ["/lacak"],
     submenus: [
       {
         href: "/lacak",
         judul: "Lacak Tiket",
         deskripsi: "Pantau status & hasil investigasi laporan",
         ikon: Search,
-        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/lacak/akuntabilitas",
         judul: "Kepatuhan SLA",
         deskripsi: "Batas waktu respon instansi & SPPG",
         ikon: Timer,
-        aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+        aksenIkon: "bg-secondary text-primary",
       },
     ],
   },
   {
     label: "Data Terbuka",
+    prefixes: ["/data", "/cari-sekolah"],
     submenus: [
       {
         href: "/data",
         judul: "Ringkasan Data",
-        deskripsi: "Agregat nasional & tren laporan",
+        deskripsi: "Agregat anggaran & penerima manfaat",
         ikon: Building2,
-        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/data/wilayah",
         judul: "Sebaran Wilayah",
-        deskripsi: "Distribusi kasus & alokasi per wilayah",
+        deskripsi: "Distribusi kasus & alokasi 35 kab/kota",
         ikon: MapPin,
-        aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/data/sppg",
         judul: "Dapur Mitra SPPG",
         deskripsi: "Daftar dapur & status sertifikasi SLHS",
         ikon: Utensils,
-        aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/cari-sekolah",
         judul: "Cari Sekolah",
         deskripsi: "Daftar sekolah penerima & dapur mitra",
         ikon: School,
-        aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/data/kasus",
-        judul: "Arsip Kasus",
-        deskripsi: "Riwayat kasus tertangani & audit",
+        judul: "Kasus Pangan",
+        deskripsi: "Statistik insiden keamanan pangan",
         ikon: FolderOpen,
-        aksenIkon: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/data/unduh",
-        judul: "Unduh Data",
+        judul: "Unduh & API",
         deskripsi: "Ekspor dataset terbuka (CSV / JSON)",
         ikon: Download,
-        aksenIkon: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+        aksenIkon: "bg-secondary text-primary",
       },
     ],
   },
   {
     label: "Insight",
+    prefixes: ["/insight"],
     submenus: [
       {
         href: "/insight",
@@ -165,7 +164,14 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
         deskripsi: "Analisis spasial zonasi risiko SAW",
         ikon: Radar,
         badge: "SAW",
-        aksenIkon: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        aksenIkon: "bg-secondary text-primary",
+      },
+      {
+        href: "/insight/prioritas",
+        judul: "Prioritas Inspeksi",
+        deskripsi: "Urutan SPPG berdasarkan skor risiko",
+        ikon: ShieldAlert,
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/insight/peringatan",
@@ -173,40 +179,41 @@ const MENU_PUBLIK: MenuNavigasiGrup[] = [
         deskripsi: "Deteksi anomali & lonjakan keluhan",
         ikon: Siren,
         badge: "24 Jam",
-        aksenIkon: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+        aksenIkon: "bg-risiko-tinggi-lembut text-risiko-tinggi",
       },
       {
-        href: "/insight/prioritas",
-        judul: "Prioritas Investigasi",
-        deskripsi: "Antrean prioritas penanganan mendesak",
-        ikon: ShieldAlert,
-        aksenIkon: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        href: "/insight/banding",
+        judul: "Bandingkan",
+        deskripsi: "Perbandingan kinerja SPPG & wilayah",
+        ikon: GitCompareArrows,
+        aksenIkon: "bg-secondary text-primary",
       },
     ],
   },
   {
     label: "Panduan",
+    prefixes: ["/panduan", "/metodologi", "/faq", "/tentang", "/privasi"],
     submenus: [
       {
         href: "/panduan",
-        judul: "Panduan & Simulator DSS",
-        deskripsi: "Alur pelaporan & kalkulator risiko SAW",
+        judul: "Panduan & Kalkulator",
+        deskripsi: "Alur pelaporan & simulator risiko SAW",
         ikon: BookOpen,
-        aksenIkon: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/metodologi",
         judul: "Metodologi & SLA",
         deskripsi: "Bobot kriteria SAW & standar SLA",
         ikon: Scale,
-        aksenIkon: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+        aksenIkon: "bg-secondary text-primary",
       },
       {
         href: "/faq",
         judul: "Tanya Jawab (FAQ)",
         deskripsi: "Jawaban pertanyaan umum seputar MBG",
         ikon: HelpCircle,
-        aksenIkon: "bg-slate-500/10 text-slate-600 dark:text-slate-400",
+        aksenIkon: "bg-secondary text-primary",
       },
     ],
   },
@@ -286,49 +293,49 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
     menuStaf = MENU_VERIFIKATOR;
     badgePeranStaf = {
       label: "Tim Verifikator",
-      klas: "bg-teal-500/10 text-teal-700 dark:text-teal-300 border-teal-500/30",
+      klas: "bg-secondary text-primary border-primary/25",
       ikon: ShieldCheck,
     };
   } else if (adalahDapur) {
     menuStaf = MENU_DAPUR;
     badgePeranStaf = {
       label: "Dapur SPPG",
-      klas: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30",
+      klas: "bg-risiko-sedang-lembut text-risiko-sedang border-risiko-sedang/25",
       ikon: Utensils,
     };
   } else if (adalahDinkes) {
     menuStaf = MENU_DINKES;
     badgePeranStaf = {
       label: "Dinas Kesehatan",
-      klas: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30",
+      klas: "bg-risiko-tinggi-lembut text-risiko-tinggi border-risiko-tinggi/25",
       ikon: ShieldAlert,
     };
   } else if (adalahKorwil) {
     menuStaf = MENU_KORWIL;
     badgePeranStaf = {
       label: "Korwil BGN",
-      klas: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
+      klas: "bg-info-lembut text-info border-info/25",
       ikon: Scale,
     };
   } else if (adalahAdmin) {
     menuStaf = MENU_ADMIN;
     badgePeranStaf = {
       label: "Administrator",
-      klas: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30",
+      klas: "bg-secondary text-primary border-primary/25",
       ikon: Building2,
     };
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/95 backdrop-blur-md transition-all shadow-2xs">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/95 backdrop-blur-md transition-all">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Sisi Kiri: Logo Resmi PMBGM */}
         <div className="flex items-center shrink-0">
           <Logo />
         </div>
 
         {/* Sisi Tengah: Navigasi Desktop Terpusat Simetris (mx-auto) */}
-        <nav className="hidden lg:flex items-center gap-1.5 mx-auto" aria-label="Navigasi Utama">
+        <nav className="hidden lg:flex items-center gap-1 mx-auto" aria-label="Navigasi Utama">
           {menuStaf ? (
             // NAVIGASI LANGSUNG TUGAS INTI STAF (Navbar Top Bersih Spesifik Tugas)
             menuStaf.map((item) => {
@@ -341,7 +348,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
                     aktif
-                      ? "bg-primary/10 text-primary font-bold shadow-2xs"
+                      ? "bg-primary/10 text-primary font-bold"
                       : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
                   )}
                 >
@@ -358,74 +365,81 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                 className={cn(
                   "rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap shrink-0",
                   pathname === "/"
-                    ? "bg-primary/10 text-primary font-bold shadow-2xs"
+                    ? "bg-primary/10 text-primary font-bold"
                     : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
                 )}
               >
                 Beranda
               </Link>
 
-              {MENU_PUBLIK.map((menu) => (
-                <DropdownMenu key={menu.label}>
-                  <DropdownMenuTrigger
-                    className={cn(
-                      "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0",
-                      "text-foreground/80 hover:bg-muted/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
-                    )}
-                  >
-                    <span className="whitespace-nowrap">{menu.label}</span>
-                    <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    sideOffset={8}
-                    className="w-88 rounded-2xl border border-border/80 bg-popover/95 p-2 shadow-xl backdrop-blur-md"
-                  >
-                    <div className="space-y-1">
-                      {menu.submenus?.map((item) => {
-                        const Ikon = item.ikon;
-                        const aktif = pathname === item.href;
-                        return (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className={cn(
-                              "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
-                              aktif
-                                ? "bg-primary/10 text-primary font-semibold"
-                                : "hover:bg-muted/80 text-foreground"
-                            )}
-                          >
-                            <span
+              {MENU_PUBLIK.map((menu) => {
+                const grupAktif = menu.prefixes.some(
+                  (pref) => pathname === pref || pathname?.startsWith(`${pref}/`)
+                );
+                return (
+                  <DropdownMenu key={menu.label}>
+                    <DropdownMenuTrigger
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none whitespace-nowrap shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/40",
+                        grupAktif
+                          ? "bg-primary/10 text-primary font-bold"
+                          : "text-foreground/80 hover:bg-muted/70 hover:text-foreground"
+                      )}
+                    >
+                      <span className="whitespace-nowrap">{menu.label}</span>
+                      <ChevronDown className="size-3.5 opacity-60 transition-transform duration-200" aria-hidden />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="center"
+                      sideOffset={8}
+                      className="w-80 rounded-2xl border border-border/80 bg-popover/98 p-2 shadow-xl backdrop-blur-md"
+                    >
+                      <div className="space-y-0.5">
+                        {menu.submenus?.map((item) => {
+                          const Ikon = item.ikon;
+                          const aktif = pathname === item.href;
+                          return (
+                            <Link
+                              key={item.href}
+                              href={item.href}
                               className={cn(
-                                "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
-                                item.aksenIkon || "bg-primary/10 text-primary"
+                                "group flex items-start gap-3 rounded-xl p-2.5 transition-colors outline-none",
+                                aktif
+                                  ? "bg-primary/10 text-primary font-semibold"
+                                  : "hover:bg-muted/70 text-foreground"
                               )}
                             >
-                              <Ikon className="size-4.5" aria-hidden />
-                            </span>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
-                                  {item.judul}
-                                </span>
-                                {item.badge && (
-                                  <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
-                                    {item.badge}
-                                  </span>
+                              <span
+                                className={cn(
+                                  "flex size-9 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105",
+                                  item.aksenIkon || "bg-secondary text-primary"
                                 )}
+                              >
+                                <Ikon className="size-4" aria-hidden />
+                              </span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-sm font-bold leading-tight group-hover:text-primary transition-colors">
+                                    {item.judul}
+                                  </span>
+                                  {item.badge && (
+                                    <span className="rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-extrabold text-primary">
+                                      {item.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
+                                  {item.deskripsi}
+                                </p>
                               </div>
-                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1 leading-normal">
-                                {item.deskripsi}
-                              </p>
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ))}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                );
+              })}
             </>
           )}
         </nav>
@@ -713,7 +727,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                             pathname === "/panduan" ? "bg-primary/10 text-primary font-bold" : "text-foreground hover:bg-muted"
                           )}
                         >
-                          <Sparkles className="size-4 text-muted-foreground shrink-0" />
+                          <BookOpen className="size-4 text-muted-foreground shrink-0" />
                           <span>Panduan Operasional</span>
                         </Link>
                         <Link

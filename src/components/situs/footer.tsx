@@ -20,8 +20,8 @@ export function Footer() {
               Platform pengawasan partisipatif masyarakat untuk transparansi dan mutu Program Makan Bergizi Gratis.
             </p>
             <div className="flex items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
-                <FlaskConical className="size-3.5 text-emerald-600" aria-hidden /> Data Simulasi · MIA 2026
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground border border-primary/15">
+                <FlaskConical className="size-3.5 text-primary" aria-hidden /> Data Simulasi · MIA 2026
               </span>
             </div>
           </div>
@@ -108,7 +108,7 @@ export function Footer() {
               <li className="pt-1">
                 <a
                   href="tel:119"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-darurat hover:underline"
                 >
                   <PhoneCall className="size-3.5" /> Darurat Ambulans: 119
                 </a>

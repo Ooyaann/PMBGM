@@ -6,11 +6,10 @@ import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
-  History,
   Megaphone,
   School,
   Search,
-  Sparkles,
+  Ticket,
   Utensils,
   X,
 } from "lucide-react";
@@ -25,130 +24,135 @@ interface RekomendasiItem {
   jenis: "sekolah" | "sppg" | "tiket";
 }
 
-const REKOMENDASI_DEFAULT_SD: RekomendasiItem[] = [
-  { nama: "SD Tembalang 10", sub: "Sekolah Dasar · Tembalang", jenis: "sekolah" },
-  { nama: "SD Negeri 01 Semarang", sub: "Sekolah Dasar · Semarang Tengah", jenis: "sekolah" },
-  { nama: "SD Banyumanik 02", sub: "Sekolah Dasar · Banyumanik", jenis: "sekolah" },
-  { nama: "SD Sendangmulyo 04", sub: "Sekolah Dasar · Tembalang", jenis: "sekolah" },
-  { nama: "SD Palebon 01", sub: "Sekolah Dasar · Pedurungan", jenis: "sekolah" },
-];
-
-const REKOMENDASI_DEFAULT_SPPG: RekomendasiItem[] = [
-  { nama: "SPPG Tembalang 03", sub: "Dapur Pengolah MBG · SLHS Aktif", jenis: "sppg" },
-  { nama: "SPPG Candisari 01", sub: "Dapur Pengolah MBG · SLHS Aktif", jenis: "sppg" },
-  { nama: "SPPG Banyumanik 02", sub: "Dapur Pengolah MBG · SLHS Aktif", jenis: "sppg" },
-  { nama: "SPPG Pedurungan 01", sub: "Dapur Pengolah MBG · SLHS Aktif", jenis: "sppg" },
-];
-
-const REKOMENDASI_DEFAULT_SMP: RekomendasiItem[] = [
-  { nama: "SMP Negeri 01 Semarang", sub: "Sekolah Menengah Pertama · Semarang Tengah", jenis: "sekolah" },
-  { nama: "SMP Negeri 05 Semarang", sub: "Sekolah Menengah Pertama · Semarang Barat", jenis: "sekolah" },
-  { nama: "SMP Negeri 29 Semarang", sub: "Sekolah Menengah Pertama · Banyumanik", jenis: "sekolah" },
-];
-
 export function GoogleSearchBar() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [rekomendasi, setRekomendasi] = useState<RekomendasiItem[]>([]);
   const [bukaRekomendasi, setBukaRekomendasi] = useState(false);
+  const [indeksAktif, setIndeksAktif] = useState<number>(-1);
   const kontainerRef = useRef<HTMLDivElement>(null);
 
-  // Deteksi spasi: rekomendasi baru muncul jika string mengandung spasi
-  const adaSpasi = query.includes(" ");
+  const cukupHuruf = query.trim().length >= 2;
+  const daftarTampil = cukupHuruf ? rekomendasi : [];
 
-  // Handle klik di luar untuk menutup dropdown rekomendasi
+  // Tutup dropdown saat klik di luar
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (kontainerRef.current && !kontainerRef.current.contains(event.target as Node)) {
         setBukaRekomendasi(false);
+        setIndeksAktif(-1);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch rekomendasi saat user mengetik spasi
+  // Fetch rekomendasi sekolah & SPPG secara paralel saat mengetik >= 2 karakter
   useEffect(() => {
-    if (!adaSpasi) {
+    if (!cukupHuruf) {
       setRekomendasi([]);
-      setBukaRekomendasi(false);
+      setIndeksAktif(-1);
       return;
     }
 
     const bersih = query.trim().toLowerCase();
     let dibatalkan = false;
 
-    // Rekomendasi preset cepat jika baru ketik prefix + spasi (misal "SD ", "SPPG ", "SMP ")
-    if (bersih === "sd") {
-      setRekomendasi(REKOMENDASI_DEFAULT_SD);
-      setBukaRekomendasi(true);
-      return;
-    }
-    if (bersih === "sppg") {
-      setRekomendasi(REKOMENDASI_DEFAULT_SPPG);
-      setBukaRekomendasi(true);
-      return;
-    }
-    if (bersih === "smp") {
-      setRekomendasi(REKOMENDASI_DEFAULT_SMP);
-      setBukaRekomendasi(true);
-      return;
-    }
-
-    // Jika kata kunci lebih panjang dengan spasi, query langsung database Supabase
     const jeda = setTimeout(async () => {
       try {
         const supabase = buatKlienBrowser();
-        const { data: sekolahData } = await supabase
-          .from("sekolah")
-          .select("id, nama, jenjang, wilayah:wilayah_id (nama)")
-          .ilike("nama", `%${bersih}%`)
-          .limit(5);
+        const kataSppg = bersih.replace(/^sppg\s*/i, "").trim() || bersih;
+
+        const [resSekolah, resSppg] = await Promise.all([
+          supabase
+            .from("sekolah")
+            .select("id, nama, jenjang, wilayah:wilayah_id (nama)")
+            .ilike("nama", `%${bersih}%`)
+            .limit(4),
+          supabase
+            .from("sppg")
+            .select("id, nama, status_slhs, wilayah:wilayah_id (nama)")
+            .ilike("nama", `%${kataSppg}%`)
+            .limit(3),
+        ]);
 
         if (dibatalkan) return;
 
-        if (sekolahData && sekolahData.length > 0) {
-          const list: RekomendasiItem[] = sekolahData.map((s) => ({
-            id: s.id,
-            nama: s.nama,
-            sub: `${s.jenjang?.toUpperCase() || "Sekolah"} · ${(s.wilayah as { nama: string } | null)?.nama || "Nasional"}`,
-            jenis: "sekolah",
-          }));
-          setRekomendasi(list);
-          setBukaRekomendasi(true);
-        } else {
-          // Fallback rekomendasi berdasarkan awalan
-          if (bersih.startsWith("sd")) {
-            setRekomendasi(REKOMENDASI_DEFAULT_SD.filter((r) => r.nama.toLowerCase().includes(bersih)));
-          } else if (bersih.startsWith("sppg")) {
-            setRekomendasi(REKOMENDASI_DEFAULT_SPPG.filter((r) => r.nama.toLowerCase().includes(bersih)));
-          } else {
-            setRekomendasi([]);
+        const gabungan: RekomendasiItem[] = [];
+
+        if (resSekolah.data) {
+          for (const s of resSekolah.data) {
+            gabungan.push({
+              id: s.id,
+              nama: s.nama,
+              sub: `${s.jenjang?.toUpperCase() || "Sekolah"} · ${(s.wilayah as { nama: string } | null)?.nama || "Kota Semarang"}`,
+              jenis: "sekolah",
+            });
           }
-          setBukaRekomendasi(true);
         }
+
+        if (resSppg.data) {
+          for (const d of resSppg.data) {
+            gabungan.push({
+              id: d.id,
+              nama: d.nama,
+              sub: `Dapur SPPG · ${(d.wilayah as { nama: string } | null)?.nama || "Kota Semarang"}`,
+              jenis: "sppg",
+            });
+          }
+        }
+
+        if (/^[A-Za-z]{3}-[A-Za-z0-9]{2,10}$/i.test(bersih) || bersih.startsWith("mbg-")) {
+          gabungan.unshift({
+            nama: bersih.toUpperCase(),
+            sub: "Lacak status kode tiket laporan",
+            jenis: "tiket",
+          });
+        }
+
+        setRekomendasi(gabungan);
+        setIndeksAktif(-1);
+        setBukaRekomendasi(true);
       } catch {
-        // Fallback jika offline/error
         setRekomendasi([]);
       }
-    }, 180);
+    }, 140);
 
     return () => {
       dibatalkan = true;
       clearTimeout(jeda);
     };
-  }, [query, adaSpasi]);
+  }, [query, cukupHuruf]);
+
+  const pilihRekomendasi = (item: RekomendasiItem) => {
+    setQuery(item.nama);
+    setBukaRekomendasi(false);
+    setIndeksAktif(-1);
+    if (item.jenis === "tiket") {
+      router.push(`/lacak?tiket=${encodeURIComponent(item.nama.toUpperCase())}`);
+    } else if (item.jenis === "sppg" && item.id) {
+      router.push(`/data/sppg/${item.id}`);
+    } else if (item.jenis === "sppg") {
+      router.push(`/data/sppg`);
+    } else {
+      router.push(`/cari-sekolah?q=${encodeURIComponent(item.nama)}`);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setBukaRekomendasi(false);
-    const bersih = query.trim();
-    if (!bersih) {
-      router.push("/lacak");
+    if (bukaRekomendasi && indeksAktif >= 0 && indeksAktif < daftarTampil.length) {
+      pilihRekomendasi(daftarTampil[indeksAktif]);
       return;
     }
 
-    // Jika format kode tiket (MBG-xxxxxx atau serupa)
+    setBukaRekomendasi(false);
+    const bersih = query.trim();
+    if (!bersih) {
+      router.push("/cari-sekolah");
+      return;
+    }
+
     if (/^[A-Za-z]{3}-[A-Za-z0-9]{4,10}$/i.test(bersih) || bersih.toUpperCase().startsWith("MBG-")) {
       router.push(`/lacak?tiket=${encodeURIComponent(bersih.toUpperCase())}`);
     } else {
@@ -156,35 +160,55 @@ export function GoogleSearchBar() {
     }
   };
 
-  const pilihRekomendasi = (item: RekomendasiItem) => {
-    setQuery(item.nama);
-    setBukaRekomendasi(false);
-    if (item.jenis === "sppg") {
-      router.push(`/cari-sekolah?q=${encodeURIComponent(item.nama)}`);
-    } else if (item.id) {
-      router.push(`/cari-sekolah?q=${encodeURIComponent(item.nama)}`);
-    } else {
-      router.push(`/cari-sekolah?q=${encodeURIComponent(item.nama)}`);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!bukaRekomendasi || daftarTampil.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setIndeksAktif((prev) => (prev + 1) % daftarTampil.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setIndeksAktif((prev) => (prev <= 0 ? daftarTampil.length - 1 : prev - 1));
+    } else if (e.key === "Escape") {
+      setBukaRekomendasi(false);
+      setIndeksAktif(-1);
     }
   };
 
   return (
-    <div ref={kontainerRef} className="w-full max-w-2xl mx-auto space-y-4 relative">
-      {/* Search Bar Utama (Google-Style Centerpiece) */}
+    <div ref={kontainerRef} className="w-full max-w-2xl mx-auto space-y-4 relative z-20">
+      {/* Search Bar Utama */}
       <form onSubmit={handleSubmit} role="search" aria-label="Pencarian Cepat PMBGM" className="w-full relative">
-        <div className="group relative flex h-14 sm:h-16 w-full items-center rounded-2xl sm:rounded-full border border-border/80 bg-card/95 backdrop-blur-md px-4 sm:px-6 shadow-lg shadow-primary/5 transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20">
-          <Search className="size-5 shrink-0 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden />
+        <div
+          className={cn(
+            "group relative flex h-14 sm:h-15 w-full items-center rounded-2xl border bg-card/95 backdrop-blur-md px-4 sm:px-5 transition-all duration-200",
+            bukaRekomendasi
+              ? "border-primary ring-4 ring-primary/15 shadow-xl shadow-primary/10"
+              : "border-border/90 shadow-md shadow-primary/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+          )}
+        >
+          <Search
+            className={cn(
+              "size-5 shrink-0 transition-colors",
+              bukaRekomendasi ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+            )}
+            aria-hidden
+          />
 
           <input
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => {
-              if (adaSpasi && rekomendasi.length > 0) setBukaRekomendasi(true);
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setBukaRekomendasi(true);
             }}
-            placeholder="Cari sekolah, dapur SPPG, atau nomor tiket aduan..."
+            onFocus={() => {
+              if (cukupHuruf && rekomendasi.length > 0) setBukaRekomendasi(true);
+            }}
+            onKeyDown={handleKeyDown}
+            placeholder="Cari sekolah, dapur SPPG, atau kode tiket..."
             className="h-full min-w-0 flex-1 bg-transparent px-3.5 text-sm sm:text-base text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
-            aria-label="Cari tiket pengaduan atau nama sekolah"
+            aria-label="Cari tiket pengaduan, nama sekolah, atau SPPG"
+            autoComplete="off"
           />
 
           {query && (
@@ -193,6 +217,7 @@ export function GoogleSearchBar() {
               onClick={() => {
                 setQuery("");
                 setBukaRekomendasi(false);
+                setIndeksAktif(-1);
               }}
               className="mr-1.5 flex size-7 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition cursor-pointer"
               aria-label="Hapus kata kunci pencarian"
@@ -201,39 +226,46 @@ export function GoogleSearchBar() {
             </button>
           )}
 
-          {/* Tombol Panah Submit: HANYA MUNCUL JIKA USER SUDAH MENGETIK SESUATU */}
           {query.trim().length > 0 && (
             <button
               type="submit"
-              className="flex size-9 sm:size-10 items-center justify-center rounded-xl sm:rounded-full bg-primary text-primary-foreground shadow-sm transition hover:bg-primary/90 hover:scale-105 active:scale-95 cursor-pointer animate-in fade-in zoom-in-90 duration-150 shrink-0"
+              className="flex size-9 sm:size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-xs transition hover:bg-primary/90 active:scale-95 cursor-pointer shrink-0"
               aria-label="Kirim pencarian"
             >
-              <ArrowRight className="size-4.5" />
+              <ArrowRight className="size-4" />
             </button>
           )}
         </div>
 
-        {/* Dropdown Rekomendasi Pencarian Google-Style (Hanya muncul jika ada spasi) */}
-        {bukaRekomendasi && rekomendasi.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 z-50 overflow-hidden rounded-2xl border border-border/80 bg-popover/98 p-1.5 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-150 text-left">
-            <div className="px-3 py-1.5 flex items-center justify-between text-[11px] font-bold text-muted-foreground uppercase tracking-wider border-b border-border/50">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="size-3 text-primary" /> Rekomendasi Pencarian
-              </span>
-              <span className="text-[10px] lowercase text-muted-foreground/70">tekan enter untuk cari</span>
-            </div>
-            <div className="p-1 space-y-0.5">
-              {rekomendasi.map((item, index) => {
-                const Ikon = item.jenis === "sppg" ? Utensils : School;
+        {/* Dropdown Rekomendasi (Hanya muncul saat mengetik) */}
+        {bukaRekomendasi && daftarTampil.length > 0 && (
+          <div className="absolute top-full left-0 right-0 mt-2 z-50 overflow-hidden rounded-2xl border border-border/90 bg-popover/98 p-1.5 shadow-xl backdrop-blur-xl animate-in fade-in slide-in-from-top-1 duration-150 text-left">
+            <div className="p-0.5 space-y-0.5 max-h-64 overflow-y-auto">
+              {daftarTampil.map((item, index) => {
+                const Ikon = item.jenis === "sppg" ? Utensils : item.jenis === "tiket" ? Ticket : School;
+                const aktif = index === indeksAktif;
                 return (
-                  <button
-                    key={`${item.nama}-${index}`}
-                    type="button"
-                    onClick={() => pilihRekomendasi(item)}
-                    className="flex w-full items-center justify-between gap-3 rounded-xl p-2.5 text-left transition hover:bg-muted/80 group cursor-pointer"
+                  <div
+                    key={`${item.jenis}-${item.nama}-${index}`}
+                    onMouseEnter={() => setIndeksAktif(index)}
+                    className={cn(
+                      "flex w-full items-center justify-between gap-2 rounded-xl p-2 text-left transition group",
+                      aktif ? "bg-secondary/70" : "hover:bg-muted/70"
+                    )}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:scale-105 transition-transform">
+                    <button
+                      type="button"
+                      onClick={() => pilihRekomendasi(item)}
+                      className="flex flex-1 items-center gap-3 min-w-0 text-left cursor-pointer"
+                    >
+                      <span
+                        className={cn(
+                          "flex size-8 shrink-0 items-center justify-center rounded-lg transition-transform",
+                          item.jenis === "sppg"
+                            ? "bg-info-lembut text-info"
+                            : "bg-secondary text-primary"
+                        )}
+                      >
                         <Ikon className="size-4" />
                       </span>
                       <div className="min-w-0">
@@ -242,9 +274,26 @@ export function GoogleSearchBar() {
                         </p>
                         <p className="text-xs text-muted-foreground truncate">{item.sub}</p>
                       </div>
-                    </div>
-                    <ArrowUpRight className="size-4 text-muted-foreground/60 group-hover:text-primary shrink-0 transition-colors" />
-                  </button>
+                    </button>
+                    {item.jenis === "sekolah" ? (
+                      <Link
+                        href={`/lapor?sekolah=${encodeURIComponent(item.id || item.nama)}`}
+                        onClick={() => setBukaRekomendasi(false)}
+                        className="inline-flex h-7 items-center gap-1 rounded-lg bg-secondary px-2.5 text-xs font-bold text-primary hover:bg-primary hover:text-primary-foreground shrink-0 transition"
+                      >
+                        <Megaphone className="size-3" /> Lapor
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => pilihRekomendasi(item)}
+                        className="p-1.5 text-muted-foreground/60 group-hover:text-primary shrink-0 transition-colors cursor-pointer"
+                        aria-label={`Buka ${item.nama}`}
+                      >
+                        <ArrowUpRight className="size-4" />
+                      </button>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -252,36 +301,29 @@ export function GoogleSearchBar() {
         )}
       </form>
 
-      {/* 2 Tombol Aksi Langsung: Lapor & Lacak */}
-      <div className="flex flex-wrap items-center justify-center gap-3">
+      {/* Tombol Aksi Utama */}
+      <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
         <Link
           href="/lapor"
           className={cn(
             buttonVariants({ size: "default" }),
-            "h-11 sm:h-12 rounded-xl px-6 sm:px-7 font-extrabold text-sm sm:text-base bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 gap-2 transition hover:-translate-y-0.5 active:translate-y-0"
+            "h-11 rounded-xl px-6 font-bold text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm shadow-primary/15 gap-2 transition"
           )}
         >
-          <Megaphone className="size-4.5" aria-hidden />
-          <span>Lapor Masalah MBG</span>
+          <Megaphone className="size-4" aria-hidden />
+          <span>Buat Laporan</span>
         </Link>
 
-        <button
-          type="button"
-          onClick={() => {
-            if (query.trim()) {
-              handleSubmit({ preventDefault: () => {} } as React.FormEvent);
-            } else {
-              router.push("/lacak");
-            }
-          }}
+        <Link
+          href={query.trim() ? `/lacak?tiket=${encodeURIComponent(query.trim().toUpperCase())}` : "/lacak"}
           className={cn(
             buttonVariants({ variant: "outline", size: "default" }),
-            "h-11 sm:h-12 rounded-xl px-6 sm:px-7 font-bold text-sm sm:text-base bg-card hover:bg-muted/80 border-border/80 shadow-xs gap-2 transition hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+            "h-11 rounded-xl px-5 font-semibold text-sm bg-card hover:bg-secondary/50 hover:text-primary hover:border-primary/30 border-border shadow-2xs gap-2 transition"
           )}
         >
-          <Search className="size-4.5 text-muted-foreground" aria-hidden />
-          <span>Lacak Kasus & Tiket</span>
-        </button>
+          <Ticket className="size-4 text-primary" aria-hidden />
+          <span>Lacak Tiket</span>
+        </Link>
       </div>
     </div>
   );

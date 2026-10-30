@@ -27,10 +27,10 @@ const rasio = (v: number) => v.toLocaleString("id-ID", { maximumFractionDigits: 
 
 function KartuPeringatan({ p }: { p: Peringatan }) {
   return (
-    <li className={cn("rounded-3xl border bg-card p-4 sm:p-5 transition hover:shadow-xs", p.aktif && "border-rose-500/40 bg-rose-500/5 ring-2 ring-rose-500/20")}>
+    <li className={cn("rounded-3xl border bg-card p-4 sm:p-5 transition hover:shadow-xs", p.aktif && "border-darurat/40 bg-darurat-lembut/50 ring-2 ring-darurat/15")}>
       <div className="flex items-start gap-3">
         <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl",
-          p.aktif ? "bg-rose-600 text-white shadow-xs" : "bg-muted text-muted-foreground")}>
+          p.aktif ? "bg-darurat text-white shadow-xs" : "bg-muted text-muted-foreground")}>
           <Siren className="size-5" aria-hidden />
         </span>
         <div className="min-w-0 flex-1">
@@ -38,11 +38,11 @@ function KartuPeringatan({ p }: { p: Peringatan }) {
             {p.sppg}
           </Link>
           <p className="text-xs text-muted-foreground">
-            {p.kecamatan} · <span className={p.aktif ? "font-bold text-rose-600 dark:text-rose-400" : ""}>{p.aktif ? "Lonjakan Aktif" : "Normal"}</span> · Terdeteksi <Waktu iso={p.dibuatPada} />
+            {p.kecamatan} · <span className={p.aktif ? "font-bold text-darurat" : ""}>{p.aktif ? "Lonjakan Aktif" : "Normal"}</span> · Terdeteksi <Waktu iso={p.dibuatPada} />
           </p>
         </div>
         <p className="text-right">
-          <span className="angka block text-2xl font-extrabold text-rose-600 dark:text-rose-400">×{rasio(p.rasio)}</span>
+          <span className="angka block text-2xl font-extrabold text-darurat">×{rasio(p.rasio)}</span>
           <span className="text-[11px] text-muted-foreground">dari batas normal</span>
         </p>
       </div>
@@ -50,7 +50,7 @@ function KartuPeringatan({ p }: { p: Peringatan }) {
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3 text-xs">
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <Building2 className="size-3.5 shrink-0" aria-hidden />
-          <span>Fokus Penanganan: Dinkes Kota Semarang & SPPG Terkait</span>
+          <span>Fokus Penanganan: Dinas Kesehatan & SPPG Terkait</span>
         </div>
         <Link
           href={`/panel/kasus?status=menunggu`}
@@ -71,11 +71,11 @@ async function Isi() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-rose-500/20 bg-rose-500/5 p-6 sm:p-7">
+      <div className="rounded-3xl border border-darurat/25 bg-darurat-lembut/40 p-6 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-3 py-1 text-xs font-bold text-rose-700 dark:text-rose-300">
-              <Siren className="size-3.5 text-rose-600" aria-hidden /> Deteksi Lonjakan Cepat
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-darurat-lembut px-3 py-1 text-xs font-bold text-darurat">
+              <Siren className="size-3.5 text-darurat" aria-hidden /> Deteksi Lonjakan Cepat
             </span>
             <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight">Peringatan Dini Kesehatan & Wilayah</h1>
             <p className="mt-1 text-xs sm:text-sm text-muted-foreground max-w-2xl">
@@ -87,8 +87,8 @@ async function Isi() {
 
         <ul className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {ATURAN.map((a, i) => (
-            <li key={i} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-3 py-2 text-xs font-medium">
-              <a.ikon className="size-4 shrink-0 text-rose-600" aria-hidden />
+            <li key={i} className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/80 px-3 py-2 text-xs font-medium">
+              <a.ikon className="size-4 shrink-0 text-darurat" aria-hidden />
               <span>{a.teks}</span>
             </li>
           ))}
@@ -98,7 +98,7 @@ async function Isi() {
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="font-bold flex items-center gap-2">
-            <span className="size-2 rounded-full bg-rose-500 animate-pulse" />
+            <span className="size-2 rounded-full bg-darurat animate-pulse" />
             Peringatan Lonjakan Aktif ({aktif.length})
           </h2>
           <PenyegarRealtime kanal="panel-peringatan" langganan={[{ tabel: "peringatan_dini" }]} />

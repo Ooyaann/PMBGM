@@ -52,7 +52,7 @@ function KartuPeringatan({ p }: { p: Peringatan }) {
       </div>
 
       {p.aktif && (
-        <div className="mt-3 flex items-center gap-1.5 rounded-xl bg-amber-500/10 px-3 py-1.5 text-xs text-amber-800 dark:text-amber-300">
+        <div className="mt-3 flex items-center gap-1.5 rounded-xl bg-risiko-sedang-lembut px-3 py-1.5 text-xs font-medium text-risiko-sedang">
           <Building2 className="size-3.5 shrink-0" aria-hidden />
           <span className="truncate">Penanggung Jawab: Dinas Kesehatan Kota & {p.sppg}</span>
         </div>

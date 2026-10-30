@@ -1,0 +1,3367 @@
+{
+  "metadata": {
+    "dataset": "dataset_laporan_mbg.csv",
+    "total_samples": 1500,
+    "train_samples": 1200,
+    "test_samples": 300,
+    "architecture_mlp": "7 Input -> 12 Hidden (ReLU) -> 3 Output (Softmax)",
+    "optimizer": "Adam (lr=0.015, epochs=300, batch_size=32, l2=1e-4)",
+    "seed": 2026
+  },
+  "class_counts": [
+    828,
+    395,
+    277
+  ],
+  "mlp_val_accuracy": 95.33,
+  "nb_val_accuracy": 100.0,
+  "mlp_history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.7006,
+      "val_loss": 0.6529,
+      "train_acc": 71.42,
+      "val_acc": 75.33
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.2431,
+      "val_loss": 0.2228,
+      "train_acc": 91.33,
+      "val_acc": 92.0
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.1563,
+      "val_loss": 0.1415,
+      "train_acc": 93.0,
+      "val_acc": 94.33
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.1074,
+      "val_loss": 0.116,
+      "train_acc": 95.67,
+      "val_acc": 95.33
+    },
+    {
+      "epoch": 100,
+      "train_loss": 0.0871,
+      "val_loss": 0.1038,
+      "train_acc": 96.42,
+      "val_acc": 95.67
+    },
+    {
+      "epoch": 150,
+      "train_loss": 0.0818,
+      "val_loss": 0.1066,
+      "train_acc": 95.83,
+      "val_acc": 95.0
+    },
+    {
+      "epoch": 200,
+      "train_loss": 0.0735,
+      "val_loss": 0.092,
+      "train_acc": 96.67,
+      "val_acc": 95.33
+    },
+    {
+      "epoch": 250,
+      "train_loss": 0.091,
+      "val_loss": 0.1357,
+      "train_acc": 94.83,
+      "val_acc": 93.0
+    },
+    {
+      "epoch": 300,
+      "train_loss": 0.0723,
+      "val_loss": 0.0895,
+      "train_acc": 96.5,
+      "val_acc": 95.33
+    }
+  ],
+  "confusion_matrix": [
+    [
+      170,
+      7,
+      0
+    ],
+    [
+      4,
+      69,
+      1
+    ],
+    [
+      0,
+      2,
+      47
+    ]
+  ],
+  "mlp_metrics": [
+    {
+      "kelas": "Otentik & Valid",
+      "precision": 97.7,
+      "recall": 96.05,
+      "f1_score": 96.87,
+      "support": 177
+    },
+    {
+      "kelas": "Meragukan / Perlu Bukti",
+      "precision": 88.46,
+      "recall": 93.24,
+      "f1_score": 90.79,
+      "support": 74
+    },
+    {
+      "kelas": "Indikasi Fiktif / Spam",
+      "precision": 97.92,
+      "recall": 95.92,
+      "f1_score": 96.91,
+      "support": 49
+    }
+  ],
+  "W1": [
+    [
+      0.1047,
+      -0.0649,
+      -0.1853,
+      0.3622,
+      0.0,
+      -0.2908,
+      -0.0,
+      -0.5505,
+      -0.3108,
+      -0.0,
+      0.8679,
+      0.4437
+    ],
+    [
+      -0.4086,
+      0.0119,
+      0.5438,
+      -0.2462,
+      0.0,
+      -0.7273,
+      -0.0,
+      -0.2963,
+      0.4457,
+      0.0,
+      -1.7908,
+      -0.0982
+    ],
+    [
+      3.5696,
+      0.0709,
+      0.3394,
+      1.4458,
+      -0.0,
+      1.7436,
+      0.0,
+      1.3765,
+      -4.0579,
+      -0.0,
+      -1.4123,
+      -0.5047
+    ],
+    [
+      -0.0394,
+      0.1431,
+      1.3736,
+      -0.3154,
+      0.0,
+      -0.6531,
+      0.0,
+      2.3853,
+      -0.2309,
+      -0.0,
+      2.0424,
+      -2.5337
+    ],
+    [
+      0.4062,
+      0.1759,
+      1.0436,
+      -0.2872,
+      0.0,
+      -0.3108,
+      -0.0,
+      0.4217,
+      0.1226,
+      -0.0,
+      1.5944,
+      -0.8189
+    ],
+    [
+      0.7131,
+      -0.1746,
+      1.0204,
+      -1.8548,
+      -0.0,
+      -0.8313,
+      0.0,
+      -0.3832,
+      1.2035,
+      -0.0,
+      0.024,
+      0.1181
+    ],
+    [
+      1.8427,
+      -0.2019,
+      1.9993,
+      -1.7609,
+      -0.0,
+      -2.7442,
+      0.0,
+      -0.5412,
+      2.9009,
+      -0.0,
+      1.9261,
+      0.8451
+    ]
+  ],
+  "B1": [
+    -3.9992,
+    -0.7395,
+    -3.3221,
+    2.6805,
+    -0.1121,
+    3.1036,
+    -0.5268,
+    -0.7787,
+    -0.8416,
+    -0.0009,
+    -2.221,
+    2.8046
+  ],
+  "W2": [
+    [
+      1.7809,
+      1.1266,
+      -5.1536
+    ],
+    [
+      -0.0064,
+      -0.0946,
+      -0.0125
+    ],
+    [
+      1.84,
+      -0.2898,
+      -2.4559
+    ],
+    [
+      -1.4314,
+      -0.6705,
+      2.3543
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -3.0092,
+      -0.8022,
+      3.2443
+    ],
+    [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    [
+      0.3178,
+      -0.7845,
+      0.5356
+    ],
+    [
+      -1.0275,
+      4.1984,
+      -3.1878
+    ],
+    [
+      0.0,
+      -0.0,
+      0.0
+    ],
+    [
+      1.837,
+      0.2861,
+      -2.1364
+    ],
+    [
+      -1.5781,
+      1.2489,
+      0.9795
+    ]
+  ],
+  "B2": [
+    -2.7199,
+    0.8807,
+    2.4582
+  ],
+  "nb_priors": {
+    "keracunan": -1.8367,
+    "makanan_tidak_layak": -1.7047,
+    "kebersihan": -1.739,
+    "gizi_porsi": -1.8961,
+    "distribusi": -1.8431,
+    "pengadaan": -2.3979,
+    "lainnya": -2.4798
+  },
+  "nb_vocab": [
+    "akut",
+    "anggaran",
+    "asam",
+    "asem",
+    "asing",
+    "audit",
+    "ayam",
+    "bagian",
+    "bahan",
+    "baki",
+    "baku",
+    "balado",
+    "baru",
+    "basi",
+    "bau",
+    "bawa",
+    "bayam",
+    "bekas",
+    "belajar",
+    "benda",
+    "bening",
+    "berbau",
+    "berbusa",
+    "berdarah",
+    "berisi",
+    "berjamur",
+    "berker",
+    "berkerak",
+    "berlendir",
+    "berminyak",
+    "bernilai",
+    "bersama",
+    "bersih",
+    "berubah",
+    "berupa",
+    "besok",
+    "boks",
+    "buah",
+    "bukti",
+    "buncis",
+    "buruk",
+    "busuk",
+    "capcay",
+    "cuci",
+    "daging",
+    "dalamnya",
+    "dapur",
+    "darurat",
+    "datang",
+    "demam",
+    "depan",
+    "diambil",
+    "diare",
+    "dibagikan",
+    "dibandingkan",
+    "dibawa",
+    "dibuka",
+    "dicuci",
+    "diduga",
+    "dijadwalkan",
+    "dikirim",
+    "dikonsumsi",
+    "disajikan",
+    "disaksikan",
+    "distribusi",
+    "ditemukan",
+    "diterima",
+    "ditetapkan",
+    "ditindaklanjuti",
+    "dokumentasi",
+    "dugaan",
+    "fillet",
+    "foto",
+    "gangguan",
+    "gejala",
+    "gizi",
+    "goreng",
+    "gorengan",
+    "guru",
+    "halaman",
+    "hampir",
+    "hanya",
+    "harga",
+    "hebat",
+    "helai",
+    "hewani",
+    "hingga",
+    "ikan",
+    "indikasi",
+    "insiden",
+    "isi",
+    "istirahat",
+    "jadwal",
+    "jalan",
+    "jalur",
+    "jam",
+    "jauh",
+    "jumlah",
+    "kangkung",
+    "katering",
+    "kebagian",
+    "kebersihan",
+    "kecap",
+    "kecil",
+    "kecoa",
+    "kedaluwarsa",
+    "kejadian",
+    "kekurangan",
+    "kelas",
+    "keluar",
+    "kemarin",
+    "kemasan",
+    "kembung",
+    "kepala",
+    "keracunan",
+    "keras",
+    "kerikil",
+    "ketidakwajaran",
+    "komite",
+    "komposisi",
+    "kondisi",
+    "konfirmasi",
+    "kontak",
+    "kontrak",
+    "koordinasi",
+    "koridor",
+    "kosong",
+    "kotak",
+    "kotor",
+    "kuah",
+    "kualitas",
+    "kuat",
+    "lalat",
+    "lampirkan",
+    "langsung",
+    "lantai",
+    "lapar",
+    "laporan",
+    "lauk",
+    "layak",
+    "lemas",
+    "lewat",
+    "longgar",
+    "mark",
+    "masker",
+    "masuk",
+    "mati",
+    "maupun",
+    "melewati",
+    "melilit",
+    "mem",
+    "memakai",
+    "memonopoli",
+    "men",
+    "mencakup",
+    "mendadak",
+    "menerima",
+    "mengalami",
+    "mengeluarkan",
+    "mengeluh",
+    "menggumpal",
+    "menghalangi",
+    "mengonsumsi",
+    "mentah",
+    "menu",
+    "menumpuk",
+    "menyantap",
+    "menyengat",
+    "mingguan",
+    "mobil",
+    "mual",
+    "mudah",
+    "muntah",
+    "murah",
+    "murid",
+    "nampan",
+    "nasi",
+    "nomor",
+    "ompre",
+    "ompreng",
+    "pagi",
+    "pagu",
+    "pake",
+    "pangan",
+    "panjang",
+    "parkir",
+    "pasok",
+    "pemasok",
+    "pembagi",
+    "pencernaan",
+    "pendamping",
+    "penertiban",
+    "pengadaan",
+    "pengaduan",
+    "pengambilan",
+    "pengant",
+    "pengantar",
+    "pengelola",
+    "pengiriman",
+    "penyimpangan",
+    "penyok",
+    "per",
+    "perut",
+    "perwakilan",
+    "petugas",
+    "pihak",
+    "piring",
+    "plastik",
+    "porsi",
+    "potongan",
+    "protein",
+    "puku",
+    "pukul",
+    "pulang",
+    "pungli",
+    "pusing",
+    "puskesmas",
+    "putih",
+    "rambut",
+    "rantai",
+    "resmi",
+    "rincian",
+    "roti",
+    "ruang",
+    "sabun",
+    "sakit",
+    "sampai",
+    "sarung",
+    "sayur",
+    "sayuran",
+    "sebagai",
+    "sebagian",
+    "sebanding",
+    "sebanyak",
+    "sedangkan",
+    "sedik",
+    "sedikit",
+    "segar",
+    "seharusnya",
+    "seimbang",
+    "sementara",
+    "semur",
+    "sendok",
+    "seperti",
+    "serangga",
+    "sering",
+    "serta",
+    "sesaat",
+    "sesuai",
+    "setelah",
+    "siang",
+    "sisa",
+    "sop",
+    "sore",
+    "spesifikasi",
+    "sppg",
+    "stainless",
+    "standar",
+    "sudut",
+    "susu",
+    "tahu",
+    "takaran",
+    "tampak",
+    "tangan",
+    "tanggal",
+    "tanpa",
+    "tekstur",
+    "telah",
+    "telat",
+    "telur",
+    "temannya",
+    "tempe",
+    "tengik",
+    "tepung",
+    "terdapat",
+    "terdekat",
+    "terganggu",
+    "terjadi",
+    "terkait",
+    "terlalu",
+    "terlamb",
+    "terlambat",
+    "tertib",
+    "tiba",
+    "tidak",
+    "tiga",
+    "tim",
+    "tipis",
+    "transparansi",
+    "tumis",
+    "tumpah",
+    "tunggal",
+    "tutup",
+    "uks",
+    "ukuran",
+    "ulat",
+    "unit",
+    "usai",
+    "utama",
+    "verifikator",
+    "wadah",
+    "wali",
+    "warna",
+    "wilayah",
+    "wortel"
+  ],
+  "nb_log_likelihoods": {
+    "akut": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "anggaran": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -3.606,
+      "lainnya": -7.1974
+    },
+    "asam": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "asem": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -6.1786,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "asing": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "audit": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -5.0876,
+      "lainnya": -7.1974
+    },
+    "ayam": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.0111,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bagian": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -3.6435,
+      "kebersihan": -4.0386,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bahan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -3.1855,
+      "lainnya": -7.1974
+    },
+    "baki": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "baku": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -3.8937,
+      "lainnya": -7.1974
+    },
+    "balado": {
+      "keracunan": -5.3264,
+      "makanan_tidak_layak": -5.2661,
+      "kebersihan": -6.8718,
+      "gizi_porsi": -5.0111,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "baru": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "basi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -3.9137,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bau": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.7161,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bawa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -6.1742,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bayam": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -6.361,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bekas": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.6325
+    },
+    "belajar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "benda": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bening": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -6.361,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berbau": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -3.3298,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berbusa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4777,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berdarah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berisi": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berjamur": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berker": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -6.1786,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berkerak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.7923,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berlendir": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.7161,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berminyak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bernilai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.7511,
+      "lainnya": -7.1974
+    },
+    "bersama": {
+      "keracunan": -4.336,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "bersih": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berubah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "berupa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "besok": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "boks": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -3.9393
+    },
+    "buah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.6565,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "bukti": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "buncis": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.8947,
+      "kebersihan": -5.891,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "buruk": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.1862,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "busuk": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.1675,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "capcay": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.6716,
+      "kebersihan": -6.5841,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "cuci": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "daging": {
+      "keracunan": -5.2523,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -6.5841,
+      "gizi_porsi": -5.7042,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dalamnya": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.3907,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dapur": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -4.0386,
+      "gizi_porsi": -4.8392,
+      "distribusi": -3.423,
+      "pengadaan": -3.7793,
+      "lainnya": -5.588
+    },
+    "darurat": {
+      "keracunan": -4.2278,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "datang": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -3.5154,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "demam": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "depan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "diambil": {
+      "keracunan": -5.4934,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -5.1576,
+      "pengadaan": -4.9053,
+      "lainnya": -3.9393
+    },
+    "diare": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dibagikan": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "dibandingkan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "dibawa": {
+      "keracunan": -4.2278,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dibuka": {
+      "keracunan": -5.4934,
+      "makanan_tidak_layak": -3.7547,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -5.1576,
+      "pengadaan": -4.9053,
+      "lainnya": -4.5584
+    },
+    "dicuci": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "diduga": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "dijadwalkan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6056,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dikirim": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -3.6913,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "dikonsumsi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "disajikan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3457,
+      "lainnya": -7.1974
+    },
+    "disaksikan": {
+      "keracunan": -4.9469,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.1446,
+      "distribusi": -5.2446,
+      "pengadaan": -5.0876,
+      "lainnya": -5.0002
+    },
+    "distribusi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.1162,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ditemukan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -3.4931,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "diterima": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.7511,
+      "lainnya": -7.1974
+    },
+    "ditetapkan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "ditindaklanjuti": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -4.8392,
+      "distribusi": -4.6468,
+      "pengadaan": -5.4443,
+      "lainnya": -5.588
+    },
+    "dokumentasi": {
+      "keracunan": -5.4934,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -5.1576,
+      "pengadaan": -4.9053,
+      "lainnya": -4.5584
+    },
+    "dugaan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "fillet": {
+      "keracunan": -5.3264,
+      "makanan_tidak_layak": -5.8947,
+      "kebersihan": -7.2772,
+      "gizi_porsi": -5.8377,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "foto": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "gangguan": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "gejala": {
+      "keracunan": -3.7642,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "gizi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.251,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "goreng": {
+      "keracunan": -5.5887,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.7732,
+      "gizi_porsi": -5.8377,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "gorengan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "guru": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "halaman": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "hampir": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "hanya": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.4529,
+      "distribusi": -7.6425,
+      "pengadaan": -4.7511,
+      "lainnya": -7.1974
+    },
+    "harga": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -3.6525,
+      "lainnya": -7.1974
+    },
+    "hebat": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "helai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "hewani": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6056,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "hingga": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2413,
+      "pengadaan": -7.3902,
+      "lainnya": -4.6325
+    },
+    "ikan": {
+      "keracunan": -4.7133,
+      "makanan_tidak_layak": -4.8387,
+      "kebersihan": -6.8718,
+      "gizi_porsi": -4.7391,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "indikasi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3944,
+      "lainnya": -7.1974
+    },
+    "insiden": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "isi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.4878,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "istirahat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "jadwal": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -3.9016
+    },
+    "jalan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.6325
+    },
+    "jalur": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "jam": {
+      "keracunan": -3.9995,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -3.3659,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "jauh": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -5.0876,
+      "lainnya": -7.1974
+    },
+    "jumlah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kangkung": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.4893,
+      "kebersihan": -6.1786,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "katering": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "kebagian": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.3467,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kebersihan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.1862,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kecap": {
+      "keracunan": -5.0581,
+      "makanan_tidak_layak": -5.2661,
+      "kebersihan": -6.361,
+      "gizi_porsi": -5.4811,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kecil": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -4.5692,
+      "gizi_porsi": -3.8133,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kecoa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -5.5725,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kedaluwarsa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kejadian": {
+      "keracunan": -4.9469,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.1446,
+      "distribusi": -5.2446,
+      "pengadaan": -5.0876,
+      "lainnya": -5.0002
+    },
+    "kekurangan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.1162,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kelas": {
+      "keracunan": -3.8138,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -3.3553,
+      "gizi_porsi": -3.6565,
+      "distribusi": -3.3385,
+      "pengadaan": -4.3457,
+      "lainnya": -3.3908
+    },
+    "keluar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "kemarin": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kemasan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kembung": {
+      "keracunan": -5.4064,
+      "makanan_tidak_layak": -5.2016,
+      "kebersihan": -7.2772,
+      "gizi_porsi": -5.0756,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kepala": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "keracunan": {
+      "keracunan": -4.2804,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "keras": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kerikil": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.9747,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ketidakwajaran": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "komite": {
+      "keracunan": -4.9469,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.1446,
+      "distribusi": -5.2446,
+      "pengadaan": -5.0876,
+      "lainnya": -5.0002
+    },
+    "komposisi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.3497,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kondisi": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -3.8153,
+      "kebersihan": -4.2815,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "konfirmasi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kontak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "kontrak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "koordinasi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.0002
+    },
+    "koridor": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.6325
+    },
+    "kosong": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.0002
+    },
+    "kotak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.4248
+    },
+    "kotor": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -3.945,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "kuah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6056,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "kualitas": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3457,
+      "lainnya": -7.1974
+    },
+    "kuat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "lalat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.0786,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "lampirkan": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "langsung": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -4.3595,
+      "gizi_porsi": -4.5648,
+      "distribusi": -4.5515,
+      "pengadaan": -4.3457,
+      "lainnya": -4.1064
+    },
+    "lantai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "lapar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6481,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "laporan": {
+      "keracunan": -4.2278,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "lauk": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -3.7401,
+      "kebersihan": -4.7923,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "layak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "lemas": {
+      "keracunan": -4.2804,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "lewat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "longgar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.4248
+    },
+    "mark": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "masker": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "masuk": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "mati": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.1637,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "maupun": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.6565,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "melewati": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "melilit": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mem": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -6.1786,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "memakai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "memonopoli": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.6821,
+      "lainnya": -7.1974
+    },
+    "men": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -6.1824,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mencakup": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "mendadak": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "menerima": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "mengalami": {
+      "keracunan": -3.797,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.1162,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mengeluarkan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.7161,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mengeluh": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6481,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "menggumpal": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "menghalangi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -3.7634
+    },
+    "mengonsumsi": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mentah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "menu": {
+      "keracunan": -4.6725,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.7406,
+      "distribusi": -7.6425,
+      "pengadaan": -4.7511,
+      "lainnya": -4.253
+    },
+    "menumpuk": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.0619
+    },
+    "menyantap": {
+      "keracunan": -4.6725,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "menyengat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.7161,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mingguan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "mobil": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.059,
+      "pengadaan": -7.3902,
+      "lainnya": -3.9393
+    },
+    "mual": {
+      "keracunan": -3.9595,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "mudah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "muntah": {
+      "keracunan": -3.0393,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "murah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -5.0876,
+      "lainnya": -7.1974
+    },
+    "murid": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "nampan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "nasi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -3.2089,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "nomor": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "ompre": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -6.361,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ompreng": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -3.9311,
+      "kebersihan": -3.243,
+      "gizi_porsi": -3.8518,
+      "distribusi": -3.2858,
+      "pengadaan": -4.4457,
+      "lainnya": -3.2854
+    },
+    "pagi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "pagu": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "pake": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -5.4453,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pangan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3457,
+      "lainnya": -7.1974
+    },
+    "panjang": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.1862,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "parkir": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -3.9393
+    },
+    "pasok": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "pemasok": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -3.9562,
+      "lainnya": -7.1974
+    },
+    "pembagi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.3595,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pencernaan": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pendamping": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.8933,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "penertiban": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -3.9393
+    },
+    "pengadaan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.0229,
+      "lainnya": -7.1974
+    },
+    "pengaduan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "pengambilan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.0002
+    },
+    "pengant": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "pengantar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.059,
+      "pengadaan": -7.3902,
+      "lainnya": -3.6711
+    },
+    "pengelola": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "pengiriman": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.3103,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "penyimpangan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3944,
+      "lainnya": -7.1974
+    },
+    "penyok": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "per": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "perut": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "perwakilan": {
+      "keracunan": -4.9469,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.1446,
+      "distribusi": -5.2446,
+      "pengadaan": -5.0876,
+      "lainnya": -5.0002
+    },
+    "petugas": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.3595,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.4248
+    },
+    "pihak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "piring": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "plastik": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -5.1978,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "porsi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.6893,
+      "distribusi": -4.3467,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "potongan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -5.1978,
+      "gizi_porsi": -3.6248,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "protein": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6056,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "puku": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -5.8508,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pukul": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -3.2481,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pulang": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2413,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "pungli": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "pusing": {
+      "keracunan": -3.9793,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "puskesmas": {
+      "keracunan": -4.2804,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "putih": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "rambut": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.1862,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "rantai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "resmi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.1321,
+      "lainnya": -4.7125
+    },
+    "rincian": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "roti": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ruang": {
+      "keracunan": -5.4934,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -5.1576,
+      "pengadaan": -4.9053,
+      "lainnya": -4.1529
+    },
+    "sabun": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.3328,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sakit": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sampai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "sarung": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sayur": {
+      "keracunan": -4.4573,
+      "makanan_tidak_layak": -3.6175,
+      "kebersihan": -4.1202,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "sayuran": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sebagai": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "sebagian": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.3467,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sebanding": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "sebanyak": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.3467,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sedangkan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sedik": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -5.8377,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sedikit": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.7763,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "segar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.8933,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "seharusnya": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "seimbang": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sementara": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "semur": {
+      "keracunan": -5.2523,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -6.5841,
+      "gizi_porsi": -5.7042,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sendok": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.3179,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "seperti": {
+      "keracunan": -4.2804,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "serangga": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.7923,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sering": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.253
+    },
+    "serta": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -3.7845,
+      "kebersihan": -3.8929,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "sesaat": {
+      "keracunan": -5.4934,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -5.1576,
+      "pengadaan": -4.9053,
+      "lainnya": -4.5584
+    },
+    "sesuai": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.8918,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "setelah": {
+      "keracunan": -3.3915,
+      "makanan_tidak_layak": -5.4092,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.2987,
+      "distribusi": -4.146,
+      "pengadaan": -4.9053,
+      "lainnya": -4.5584
+    },
+    "siang": {
+      "keracunan": -3.5093,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -4.1461,
+      "distribusi": -4.3467,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sisa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -3.796,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sop": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.2661,
+      "kebersihan": -6.5841,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "sore": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -4.6325
+    },
+    "spesifikasi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "sppg": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -4.8392,
+      "distribusi": -3.423,
+      "pengadaan": -4.3457,
+      "lainnya": -4.4248
+    },
+    "stainless": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.6031,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "standar": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.0948,
+      "distribusi": -7.6425,
+      "pengadaan": -4.2121,
+      "lainnya": -7.1974
+    },
+    "sudut": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.7923,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "susu": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.8933,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tahu": {
+      "keracunan": -5.5887,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -6.361,
+      "gizi_porsi": -5.8377,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "takaran": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tampak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.1675,
+      "kebersihan": -4.6382,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tangan": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tanggal": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.5402,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tanpa": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -3.977,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tekstur": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.4478,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "telah": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -5.2515
+    },
+    "telat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.059,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "telur": {
+      "keracunan": -5.3264,
+      "makanan_tidak_layak": -5.2661,
+      "kebersihan": -6.8718,
+      "gizi_porsi": -5.0111,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "temannya": {
+      "keracunan": -4.336,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tempe": {
+      "keracunan": -5.5887,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -6.361,
+      "gizi_porsi": -5.8377,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tengik": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tepung": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.6926,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terdapat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -4.5047,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.3944,
+      "lainnya": -7.1974
+    },
+    "terdekat": {
+      "keracunan": -4.2804,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terganggu": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terjadi": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terkait": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -4.8392,
+      "distribusi": -4.6468,
+      "pengadaan": -5.4443,
+      "lainnya": -5.588
+    },
+    "terlalu": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.2871,
+      "distribusi": -4.2085,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terlamb": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -5.6966,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "terlambat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -3.7713,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tertib": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -5.118
+    },
+    "tiba": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tidak": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.2606,
+      "kebersihan": -4.3595,
+      "gizi_porsi": -3.3177,
+      "distribusi": -3.7713,
+      "pengadaan": -4.4457,
+      "lainnya": -7.1974
+    },
+    "tiga": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.3179,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tim": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -4.8392,
+      "distribusi": -4.6468,
+      "pengadaan": -5.4443,
+      "lainnya": -5.588
+    },
+    "tipis": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.2871,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "transparansi": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -5.0876,
+      "lainnya": -7.1974
+    },
+    "tumis": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.4054,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "tumpah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.7125
+    },
+    "tunggal": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.6821,
+      "lainnya": -7.1974
+    },
+    "tutup": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.7161,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.4248
+    },
+    "uks": {
+      "keracunan": -4.2278,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ukuran": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -4.2871,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "ulat": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "unit": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -4.4248
+    },
+    "usai": {
+      "keracunan": -4.524,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -4.5515,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "utama": {
+      "keracunan": -4.6332,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "verifikator": {
+      "keracunan": -4.8003,
+      "makanan_tidak_layak": -5.141,
+      "kebersihan": -5.2623,
+      "gizi_porsi": -4.8392,
+      "distribusi": -4.6468,
+      "pengadaan": -5.4443,
+      "lainnya": -5.588
+    },
+    "wadah": {
+      "keracunan": -4.8468,
+      "makanan_tidak_layak": -4.9785,
+      "kebersihan": -3.2082,
+      "gizi_porsi": -5.1446,
+      "distribusi": -4.9345,
+      "pengadaan": -5.3107,
+      "lainnya": -4.4894
+    },
+    "wali": {
+      "keracunan": -4.9469,
+      "makanan_tidak_layak": -5.0297,
+      "kebersihan": -5.026,
+      "gizi_porsi": -5.1446,
+      "distribusi": -5.2446,
+      "pengadaan": -5.0876,
+      "lainnya": -5.0002
+    },
+    "warna": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -4.6784,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    },
+    "wilayah": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -7.9742,
+      "kebersihan": -7.9704,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -4.557,
+      "lainnya": -7.1974
+    },
+    "wortel": {
+      "keracunan": -7.8913,
+      "makanan_tidak_layak": -5.2661,
+      "kebersihan": -6.5841,
+      "gizi_porsi": -7.7836,
+      "distribusi": -7.6425,
+      "pengadaan": -7.3902,
+      "lainnya": -7.1974
+    }
+  }
+}

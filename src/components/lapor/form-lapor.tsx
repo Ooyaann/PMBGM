@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowLeft, ArrowRight, Camera, Check, Clock, EyeOff, FileText, Loader2, Lock, LocateFixed, RotateCcw, School, Send,
   Tag, Timer, UserRound, Users, X,
@@ -28,8 +28,8 @@ import { UnggahBukti } from "./unggah-bukti";
 
 const IKON_MODE: Record<ModeIdentitas, typeof Lock> = { rahasia: Lock, publik: UserRound, anonim: EyeOff };
 const LANGKAH = [
-  { label: "Masalah", ikon: Tag },
   { label: "Sekolah", ikon: School },
+  { label: "Masalah", ikon: Tag },
   { label: "Cerita", ikon: FileText },
   { label: "Bukti", ikon: Camera },
   { label: "Kirim", ikon: Send },
@@ -90,15 +90,24 @@ function Galat({ pesan }: { pesan?: string }) {
   return pesan ? <p role="alert" className="mt-1.5 text-sm text-destructive">{pesan}</p> : null;
 }
 
-export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
+export function FormLapor({
+  pengguna,
+  sla,
+  sekolahAwal = null,
+  langsungKeMasalah = false,
+}: {
   pengguna: PenggunaLapor | null;
   sla: AturanSla;
-  /** Sekolah terisi dari Cari Sekolah (/lapor?sekolah=…). */
+  /** Sekolah terisi dari Cari Sekolah (/lapor?sekolah=…) atau profil akun. */
   sekolahAwal?: SekolahPilihan | null;
+  /** Bila true (klik Lapor dari Cari Sekolah), otomatis mulai di langkah Masalah. */
+  langsungKeMasalah?: boolean;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const paramSekolahClient = searchParams.get("sekolah") || searchParams.get("sekolahId");
   const [draf, setDraf] = useState<Draf>(sekolahAwal ? { ...DRAF_KOSONG, sekolah: sekolahAwal } : DRAF_KOSONG);
-  const [tahap, setTahap] = useState(0);
+  const [tahap, setTahap] = useState(sekolahAwal && (langsungKeMasalah || Boolean(paramSekolahClient)) ? 1 : 0);
   const [bukti, setBukti] = useState<BuktiSiap[]>([]);
   const [galat, setGalat] = useState<Record<string, string>>({});
   const [kirim, setKirim] = useState<{ status: "diam" | "menyimpan" | "mengunggah"; selesai: number }>({ status: "diam", selesai: 0 });
@@ -106,6 +115,39 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
   const [galatKirim, setGalatKirim] = useState<string | null>(null);
   const [drafDipulihkan, setDrafDipulihkan] = useState(false);
   const drafLama = useSyncExternalStore(tanpaLangganan, bacaDraf, () => null);
+
+  useEffect(() => {
+    if (sekolahAwal) {
+      setDraf((d) => ({ ...d, sekolah: sekolahAwal }));
+      if (langsungKeMasalah || paramSekolahClient) setTahap((t) => (t === 0 ? 1 : t));
+      return;
+    }
+    if (!paramSekolahClient) return;
+    let batal = false;
+    const supabase = buatKlienBrowser();
+    const adalahUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(paramSekolahClient.trim());
+    let q = supabase.from("sekolah").select("id, nama, jenjang, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama)");
+    q = adalahUuid ? q.eq("id", paramSekolahClient.trim()) : q.ilike("nama", `%${paramSekolahClient.trim()}%`);
+    q.limit(1)
+      .maybeSingle()
+      .then(({ data: s }) => {
+        if (batal || !s) return;
+        const pilihan: SekolahPilihan = {
+          id: s.id,
+          nama: s.nama,
+          jenjang: s.jenjang,
+          kecamatan: (s.wilayah as { nama: string } | null)?.nama ?? "",
+          sppgId: (s.sppg as { id: string } | null)?.id ?? null,
+          sppgNama: (s.sppg as { nama: string } | null)?.nama ?? null,
+          indeks: null,
+        };
+        setDraf((d) => ({ ...d, sekolah: pilihan }));
+        setTahap((t) => (t === 0 ? 1 : t));
+      });
+    return () => {
+      batal = true;
+    };
+  }, [sekolahAwal, langsungKeMasalah, paramSekolahClient]);
 
   useEffect(() => {
     if (adaIsi(draf)) simpanDraf(draf);
@@ -129,8 +171,8 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
 
   function validasiTahap(t: number): boolean {
     const g: Record<string, string> = {};
-    if (t === 0 && !draf.kategori) g.kategori = "Pilih salah satu.";
-    if (t === 1 && !draf.sekolah) g.sekolah = "Pilih sekolah dari daftar.";
+    if (t === 0 && !draf.sekolah) g.sekolah = "Pilih sekolah dari daftar.";
+    if (t === 1 && !draf.kategori) g.kategori = "Pilih salah satu.";
     if (t === 2) {
       const cek = skemaLaporan.pick({ waktuKejadian: true, jumlahTerdampak: true, deskripsi: true }).safeParse({
         waktuKejadian: amanIso(draf.waktu),
@@ -253,20 +295,24 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
         )}
 
         {/* Banner Konfirmasi Sekolah Otomatis Terhubung */}
-        {draf.sekolah && (
+        {draf.sekolah && tahap > 0 && (
           <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-primary/5 p-3 text-xs sm:text-sm">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <School className="size-4" aria-hidden />
               </span>
               <span className="truncate">
-                Sekolah tujuan: <strong className="text-foreground font-bold">{draf.sekolah.nama}</strong>
+                Sekolah: <strong className="text-foreground font-bold">{draf.sekolah.nama}</strong>
                 {draf.sekolah.kecamatan ? ` · ${draf.sekolah.kecamatan}` : ""}
               </span>
             </div>
-            <span className="rounded-lg bg-primary/15 px-2 py-0.5 text-[10px] sm:text-[11px] font-extrabold text-primary shrink-0">
-              Terisi Otomatis
-            </span>
+            <button
+              type="button"
+              onClick={() => keTahap(0)}
+              className="rounded-lg bg-card border px-2.5 py-1 text-xs font-bold text-primary hover:bg-muted shrink-0 cursor-pointer"
+            >
+              Ganti
+            </button>
           </div>
         )}
 
@@ -309,6 +355,14 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
 
         <div className="rounded-3xl border bg-card p-5 sm:p-7">
           {tahap === 0 && (
+            <div className="space-y-5">
+              <h2 className="text-xl font-bold">Sekolah mana?</h2>
+              <CariSekolah nilai={draf.sekolah} onPilih={(s) => ubah("sekolah", s)} />
+              <Galat pesan={galat.sekolah} />
+            </div>
+          )}
+
+          {tahap === 1 && (
             <fieldset>
               <legend className="text-xl font-bold">Apa masalahnya?</legend>
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -348,19 +402,13 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
               </div>
               <Galat pesan={galat.kategori} />
               {darurat && <PanelDarurat className="mt-5" />}
-            </fieldset>
-          )}
-
-          {tahap === 1 && (
-            <div className="space-y-5">
-              <h2 className="text-xl font-bold">Sekolah mana?</h2>
-              <CariSekolah nilai={draf.sekolah} onPilih={(s) => ubah("sekolah", s)} />
-              <Galat pesan={galat.sekolah} />
               {draf.sekolah && draf.kategori && (
-                <LaporanSerupa sekolahId={draf.sekolah.id} kategori={draf.kategori} sudahMasuk={Boolean(pengguna)}
-                  onPerluMasuk={() => setDialogMasuk(true)} />
+                <div className="mt-5">
+                  <LaporanSerupa sekolahId={draf.sekolah.id} kategori={draf.kategori} sudahMasuk={Boolean(pengguna)}
+                    onPerluMasuk={() => setDialogMasuk(true)} />
+                </div>
               )}
-            </div>
+            </fieldset>
           )}
 
           {tahap === 2 && (
@@ -424,14 +472,12 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
           )}
 
           {tahap === 3 && (
-            <div className="space-y-5">
-              <div>
-                <h2 className="flex items-center gap-2 text-xl font-bold">
-                  Foto Bukti Nyata <span className="rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 px-2.5 py-0.5 text-xs font-bold">Wajib Minimal 1 Foto</span>
-                </h2>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Foto ompreng, porsi menu, atau kondisi anak diperlukan untuk verifikasi Machine Learning dan audit independen guna mencegah laporan fiktif.
-                </p>
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-xl font-bold">Bukti Foto</h2>
+                <span className="rounded-full bg-risiko-tinggi-lembut text-risiko-tinggi px-2.5 py-0.5 text-xs font-bold">
+                  Wajib min. 1 foto
+                </span>
               </div>
               <UnggahBukti bukti={bukti} onUbah={setBukti} />
               <Galat pesan={galat.bukti} />
@@ -468,8 +514,8 @@ export function FormLapor({ pengguna, sla, sekolahAwal = null }: {
 
               <ul aria-label="Ringkasan laporan" className="grid gap-2 rounded-2xl bg-muted/60 p-4 text-sm sm:grid-cols-2">
                 {[
-                  { ikon: draf.kategori ? IKON_KATEGORI[draf.kategori] : Tag, isi: draf.kategori && KATEGORI[draf.kategori].label, ke: 0 },
-                  { ikon: School, isi: draf.sekolah?.nama, ke: 1 },
+                  { ikon: School, isi: draf.sekolah?.nama, ke: 0 },
+                  { ikon: draf.kategori ? IKON_KATEGORI[draf.kategori] : Tag, isi: draf.kategori && KATEGORI[draf.kategori].label, ke: 1 },
                   { ikon: Clock, isi: draf.waktu && new Date(draf.waktu).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" }), ke: 2 },
                   { ikon: Users, isi: `${draf.jumlah || 0} terdampak`, ke: 2 },
                   { ikon: Camera, isi: `${bukti.length} foto/video`, ke: 3 },

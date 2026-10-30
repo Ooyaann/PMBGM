@@ -14,26 +14,29 @@ export interface HasilSekolah {
   kasusTotal: number;
 }
 
-/** Cari sekolah dengan nama atau NPSN (LM-02), lengkap dengan SPPG pelayan dan jumlah kasus. Jika kueri kosong, menampilkan seluruh sekolah. */
+/** Cari sekolah dengan nama, NPSN, kecamatan, atau nama dapur SPPG (LM-02). Jika kueri kosong, menampilkan seluruh sekolah. */
 export async function cariSekolah(kueri = ""): Promise<HasilSekolah[]> {
   "use cache";
   cacheLife("minutes");
   cacheTag(TAG_DATA_PUBLIK);
-  const q = kueri.trim().replace(/[%_,()]/g, "");
+  const q = kueri.trim().replace(/[%_,()]/g, "").toLowerCase();
   const supabase = buatKlienPublik();
-  let kueriDb = supabase
+  const { data } = await supabase
     .from("sekolah")
     .select("id, nama, npsn, jenjang, jumlah_siswa, wilayah:wilayah_id (nama), sppg:sppg_id (id, nama, status_slhs)")
-    .order("nama");
+    .order("nama")
+    .limit(400);
 
-  if (q.length >= 2) {
-    kueriDb = kueriDb.or(`nama.ilike.%${q}%,npsn.eq.${q}`).limit(50);
-  } else {
-    kueriDb = kueriDb.limit(200);
-  }
+  const semuaSekolah = data ?? [];
+  const sekolah = q.length >= 2
+    ? semuaSekolah.filter((s) =>
+        s.nama.toLowerCase().includes(q) ||
+        (s.npsn && s.npsn.toLowerCase().includes(q)) ||
+        (s.wilayah?.nama && s.wilayah.nama.toLowerCase().includes(q)) ||
+        (s.sppg?.nama && s.sppg.nama.toLowerCase().includes(q))
+      )
+    : semuaSekolah.slice(0, 200);
 
-  const { data } = await kueriDb;
-  const sekolah = data ?? [];
   if (!sekolah.length) return [];
 
   const ids = sekolah.map((s) => s.id);

@@ -22,11 +22,11 @@ async function Isi() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-teal-500/20 bg-teal-500/5 p-6 sm:p-7">
+      <div className="rounded-3xl border border-primary/20 bg-secondary/40 p-6 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-bold text-teal-700 dark:text-teal-300">
-              <Radar className="size-3.5 text-teal-600" aria-hidden /> Panduan Lapangan Dinkes & Pengawas
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-primary">
+              <Radar className="size-3.5 text-primary" aria-hidden /> Panduan Lapangan Dinkes & Pengawas
             </span>
             <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight">Prioritas Inspeksi Dapur SPPG</h1>
             <p className="mt-1 text-xs sm:text-sm text-muted-foreground max-w-2xl">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ShieldAlert, Siren, TriangleAlert, Utensils } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
 import { ChipAlasan } from "@/components/data/chip-alasan";
+import { LabelSumber } from "@/components/data/label-sumber";
 import { Waktu } from "@/components/data/waktu";
 import { Tile } from "@/components/data-terbuka/remah";
 import { PetaRisiko, PetaRisikoDasar } from "@/components/insight/peta-risiko";
@@ -26,7 +27,7 @@ async function Ringkasan() {
       <Tile ikon={ShieldAlert} label="Risiko tinggi" nilai={angka(jumlah("tinggi"))} sub="SPPG" infoKey="risiko" />
       <Tile ikon={TriangleAlert} label="Risiko sedang" nilai={angka(jumlah("sedang"))} sub="SPPG" infoKey="risiko" />
       <Tile ikon={Siren} label="Peringatan aktif" nilai={angka(aktif)} sub={ditinjau ? `${ditinjau} sinyal ditinjau` : "Terverifikasi"} infoKey="sinyal" />
-      <Tile ikon={Utensils} label="SPPG terpantau" nilai={angka(daftar.length)} sub="Kota Semarang" infoKey="sppg" />
+      <Tile ikon={Utensils} label="SPPG terpantau" nilai={angka(daftar.length)} sub="Terdaftar" infoKey="sppg" />
     </dl>
   );
 }
@@ -105,7 +106,10 @@ async function PeringatanTerkini() {
 export default function HalamanInsight() {
   return (
     <div className="space-y-6">
-      <h1 className="sr-only">Insight</h1>
+      <header className="flex flex-wrap items-center gap-2">
+        <h1 className="text-3xl font-extrabold">Peta Risiko & Insight</h1>
+        <LabelSumber jenis="laporan_warga_terverifikasi" className="ml-auto" />
+      </header>
       <Suspense fallback={<div className="grid grid-cols-2 gap-3 lg:grid-cols-4">{[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-28 rounded-2xl" />)}</div>}>
         <Ringkasan />
       </Suspense>
