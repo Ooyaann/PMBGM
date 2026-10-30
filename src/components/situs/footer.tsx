@@ -7,7 +7,7 @@ import { Logo } from "./logo";
 
 export function Footer() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/panel")) return null;
+  if (pathname === "/" || pathname?.startsWith("/panel")) return null;
 
   return (
     <footer className="mt-auto border-t bg-card/60 backdrop-blur-xs text-foreground">
