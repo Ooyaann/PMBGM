@@ -151,13 +151,11 @@ export function MasukPassword({
           </>
         ) : mode === "daftar" ? (
           <>
-            <UserPlus className="mr-2 size-4" aria-hidden />
-            Daftar Akun Baru
+            Daftar
             <ArrowRight className="ml-1.5 size-4" />
           </>
         ) : (
           <>
-            <LogIn className="mr-2 size-4" aria-hidden />
             Masuk
             <ArrowRight className="ml-1.5 size-4" />
           </>

@@ -233,12 +233,11 @@ export function PilihanMasuk({
             {sibuk ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-                Memproses Akses...
+                Memproses...
               </>
             ) : (
               <>
-                <LogIn className="mr-2 size-4" aria-hidden />
-                Masuk sebagai {personaTerpilih.nama}
+                Masuk
                 <ArrowRight className="ml-1.5 size-4" />
               </>
             )}
