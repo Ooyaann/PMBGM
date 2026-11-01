@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { FolderOpen, School, Search, ShieldCheck, ShieldOff, Users } from "lucide-react";
+import { ArrowUp, FolderOpen, Loader2, School, Search, ShieldCheck, ShieldOff, Users } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
 import { InfoMetrik } from "@/components/ui/info-metrik";
 import { angka } from "@/lib/format";
@@ -22,11 +22,15 @@ export interface ButirSppg {
 }
 
 const FILTER_RISIKO: (KategoriRisiko | "semua")[] = ["semua", "tinggi", "sedang", "rendah"];
+const BATCH_SIZE = 12;
 
-/** Direktori SPPG dengan pencarian dan filter risiko (DT-03). */
+/** Direktori SPPG dengan pencarian, filter risiko, dan lazy load on scroll (DT-03). */
 export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
   const [kueri, setKueri] = useState("");
   const [risiko, setRisiko] = useState<KategoriRisiko | "semua">("semua");
+  const [jumlahTampil, setJumlahTampil] = useState(BATCH_SIZE);
+  const [sedangMemuat, setSedangMemuat] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const hasil = useMemo(() => {
     const q = kueri.trim().toLowerCase();
@@ -35,6 +39,35 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
       .filter((s) => risiko === "semua" || kategoriRisiko(s.indeks) === risiko)
       .sort((a, b) => (b.indeks ?? 0) - (a.indeks ?? 0));
   }, [data, kueri, risiko]);
+
+  useEffect(() => {
+    setJumlahTampil(BATCH_SIZE);
+  }, [kueri, risiko]);
+
+  const adaLagi = jumlahTampil < hasil.length;
+  const sppgTampil = hasil.slice(0, jumlahTampil);
+
+  useEffect(() => {
+    if (!adaLagi) return;
+    const target = sentinelRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !sedangMemuat) {
+          setSedangMemuat(true);
+          setTimeout(() => {
+            setJumlahTampil((prev) => Math.min(prev + BATCH_SIZE, hasil.length));
+            setSedangMemuat(false);
+          }, 150);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [adaLagi, sedangMemuat, hasil.length]);
 
   const jumlah = (k: KategoriRisiko) => data.filter((s) => kategoriRisiko(s.indeks) === k).length;
 
@@ -60,10 +93,12 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground" aria-live="polite">{hasil.length} SPPG</p>
+      <p className="text-xs text-muted-foreground" aria-live="polite">
+        Menampilkan {sppgTampil.length} dari {hasil.length} SPPG
+      </p>
 
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {hasil.map((s) => (
+        {sppgTampil.map((s) => (
           <li key={s.id}>
             <Link href={`/data/sppg/${s.id}`}
               className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
@@ -96,6 +131,40 @@ export function DirektoriSppg({ data }: { data: ButirSppg[] }) {
           </li>
         ))}
       </ul>
+
+      {adaLagi && <div ref={sentinelRef} className="h-6 w-full" aria-hidden="true" />}
+
+      {adaLagi && (
+        <div className="flex items-center justify-center py-4">
+          {sedangMemuat ? (
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-primary text-xs font-semibold">
+              <Loader2 className="size-3.5 animate-spin" aria-hidden />
+              <span>Memuat SPPG berikutnya...</span>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setJumlahTampil((prev) => Math.min(prev + BATCH_SIZE, hasil.length))}
+              className="text-xs text-muted-foreground hover:text-primary transition py-1 px-3 rounded-lg hover:bg-muted cursor-pointer"
+            >
+              Muat {Math.min(BATCH_SIZE, hasil.length - jumlahTampil)} SPPG lagi
+            </button>
+          )}
+        </div>
+      )}
+
+      {!adaLagi && hasil.length > BATCH_SIZE && (
+        <div className="flex items-center justify-between pt-4 border-t border-border/50 text-xs text-muted-foreground">
+          <span>Semua {hasil.length} SPPG telah ditampilkan</span>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="inline-flex items-center gap-1 font-semibold text-primary hover:underline cursor-pointer"
+          >
+            <ArrowUp className="size-3.5" /> Ke Atas
+          </button>
+        </div>
+      )}
     </div>
   );
 }
