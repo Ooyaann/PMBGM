@@ -8,6 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_17-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-pantaugizi.vercel.app-0f6b57?style=flat-square&logo=vercel)](https://pantaugizi.vercel.app)
 [![Python ML](https://img.shields.io/badge/ML_Pipeline-NumPy_%26_Colab-F9AB00?style=flat-square&logo=googlecolab)](./ml-training/Training_Model_ML_PMBGM.ipynb)
 
 *Dikembangkan oleh Tim **Ctrl Win Enter** — Kompetisi Web In Action (WIA) MIA 2026*
@@ -103,11 +104,12 @@ Seluruh modul utama, basis data, model *Machine Learning*, dan antarmuka penggun
 - [x] **Beranda Pencarian Terpadu (`/`)**: Pencarian instan sekolah, dapur SPPG, dan nomor tiket aduan beserta pemantauan metrik program.
 - [x] **Modul Lapor Masalah 2 Langkah (`/lapor`)**: Pengisian laporan dengan ekstraksi otomatis waktu & GPS foto (`EXIF`), kompresi gambar di sisi klien, deteksi laporan serupa (*deduplikasi*), dan 3 opsi perlindungan identitas (*Rahasia*, *Publik*, *Anonim*).
 - [x] **Modul Lacak Tiket & Papan Akuntabilitas (`/lacak`, `/lacak/[kode]`, `/lacak/kasus/[id]`)**: Pelacakan progres 5 tahap penanganan tanpa wajib login, hitung mundur tenggat SLA, penanda otomatis *"Tidak Ditanggapi"*, serta pemberian rating kepuasan (1–5) dan buka ulang kasus.
-- [x] **Direktori Pencarian Sekolah (`/cari-sekolah`)**: Pencarian 165 sekolah berdasarkan nama, NPSN, kecamatan, atau dapur SPPG penyedia dengan tautan pelaporan langsung (`?sekolah=`).
-- [x] **Portal Data Terbuka & Unduh Dataset (`/data`, `/data/sppg`, `/data/wilayah`, `/data/unduh`)**: Profil lengkap 25 SPPG, riwayat indeks risiko 12 minggu, rekapitulasi anggaran & kasus 35 kab/kota Jawa Tengah, serta unduhan CSV/JSON dan REST API publik (`/api/v1/[dataset]`) berlisensi CC BY 4.0.
+- [x] **Direktori Pencarian Sekolah (`/cari-sekolah`)**: Pencarian 165 sekolah dengan *Infinite Scroll Lazy Loading* (12 kartu per batch) bebas lag, filter NPSN/kecamatan/SPPG, dan tautan pelaporan langsung (`?sekolah=`).
+- [x] **Portal Data Terbuka & Unduh Dataset (`/data`, `/data/sppg`, `/data/wilayah`, `/data/unduh`)**: Profil lengkap 40 SPPG dengan *Lazy Load*, riwayat indeks risiko 12 minggu, rekapitulasi anggaran & kasus 35 kab/kota Jawa Tengah, serta unduhan CSV/JSON dan REST API publik (`/api/v1/[dataset]`) berlisensi CC BY 4.0.
 - [x] **Insight, Peta Risiko & Komparasi (`/insight`, `/insight/banding`)**: Peta koroplet interaktif Jawa Tengah & Kota Semarang, tabel prioritas inspeksi SPPG, deteksi dini lonjakan kasus 24 jam, komparasi *side-by-side* antar-SPPG/wilayah, dan ekspor laporan PDF.
 - [x] **Panduan Interaktif & Simulator DSS SAW (`/panduan`, `/metodologi`, `/faq`)**: Kamus istilah teknis ramah warga dan simulator interaktif untuk menguji perhitungan rumus Indeks Risiko SAW secara langsung.
 - [x] **Panel Kerja Multi-Peran (`/panel`)**: Dasbor khusus **Verifikator** (antrean prioritas, skor kredibilitas, evaluasi ML Multimodal), **Instansi/Dapur SPPG/Dinkes/Korwil BGN** (tindak lanjut dan unggah bukti perbaikan), serta **Admin** (kelola peran pengguna dan batas waktu SLA per kategori).
+- [x] **Resiliensi Sistem & PWA**: Halaman 404 Kustom, Global Error Boundary (`error.tsx`), Progressive Web App (`manifest.ts`), Dynamic Sitemap (`sitemap.ts`), dan Aturan Perayap (`robots.ts`).
 
 ---
 
