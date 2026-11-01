@@ -51,3 +51,9 @@ supabase/.branches
 .claude/
 CLAUDE.md
 AGENTS.md
+
+# graphify cache & backup internal (simpan hanya GRAPH_REPORT.md, graph.html, graph.json)
+graphify-out/cache/
+graphify-out/20*/
+graphify-out/.*
+graphify-out/manifest.json

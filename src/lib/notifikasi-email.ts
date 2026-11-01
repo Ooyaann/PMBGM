@@ -50,17 +50,33 @@ export async function kirimNotifikasiTertunda(batas = 50): Promise<number> {
     .is("email_terkirim_pada", null)
     .select("id, pengguna_id, judul, isi, laporan:laporan_id (kode_tiket)");
 
+  const daftar = klaim ?? [];
+  if (!daftar.length) return 0;
+
+  const penggunaUnik = [...new Set(daftar.map((n) => n.pengguna_id))];
   const email = new Map<string, string | null>();
+  await Promise.all(
+    penggunaUnik.map(async (uid) => {
+      const { data } = await admin.auth.admin.getUserById(uid);
+      email.set(uid, data.user?.email ?? null);
+    })
+  );
+
   let terkirim = 0;
-  for (const n of klaim ?? []) {
-    if (!email.has(n.pengguna_id)) {
-      const { data } = await admin.auth.admin.getUserById(n.pengguna_id);
-      email.set(n.pengguna_id, data.user?.email ?? null);
+  const UKURAN_BATCH = 10;
+  for (let i = 0; i < daftar.length; i += UKURAN_BATCH) {
+    const batch = daftar.slice(i, i + UKURAN_BATCH);
+    const hasilBatch = await Promise.allSettled(
+      batch.map(async (n) => {
+        const ke = email.get(n.pengguna_id);
+        if (!ke) return false;
+        const { teks, html } = isiEmail(n.judul, n.isi, n.laporan?.kode_tiket ?? null);
+        return kirimEmail({ ke, subjek: `PMBGM · ${n.judul}`, teks, html });
+      })
+    );
+    for (const h of hasilBatch) {
+      if (h.status === "fulfilled" && h.value) terkirim++;
     }
-    const ke = email.get(n.pengguna_id);
-    if (!ke) continue;
-    const { teks, html } = isiEmail(n.judul, n.isi, n.laporan?.kode_tiket ?? null);
-    if (await kirimEmail({ ke, subjek: `PMBGM · ${n.judul}`, teks, html })) terkirim++;
   }
   return terkirim;
 }

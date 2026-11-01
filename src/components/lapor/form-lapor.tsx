@@ -235,10 +235,18 @@ export function FormLapor({
       for (const [i, b] of bukti.entries()) {
         const ekstensi = b.jenis === "foto" ? "webp" : b.berkas.name.split(".").pop() ?? "mp4";
         const path = `${hasil.pelaporId}/${hasil.id}/${i + 1}.${ekstensi}`;
-        const unggah = await supabase.storage.from("bukti").upload(path, b.berkas, { contentType: b.berkas.type, upsert: false });
+        let unggah = await supabase.storage.from("bukti").upload(path, b.berkas, { contentType: b.berkas.type, upsert: false });
+        if (unggah.error) {
+          // Coba ulang sekali bila koneksi sempat terputus sesaat
+          unggah = await supabase.storage.from("bukti").upload(path, b.berkas, { contentType: b.berkas.type, upsert: true });
+        }
         const baris = unggah.error ? unggah : await supabase.from("bukti").insert({
           id: b.id, laporan_id: hasil.id, path_storage: path, jenis: b.jenis, ukuran_byte: b.berkas.size,
         });
+        if (!unggah.error && baris.error) {
+          // Bersihkan file yatim (orphaned object) di Storage bila insert DB gagal
+          await supabase.storage.from("bukti").remove([path]);
+        }
         if (!baris.error && b.metadata) {
           await supabase.from("bukti_metadata").insert({
             bukti_id: b.id, exif_waktu: b.metadata.exifWaktu, exif_lat: b.metadata.exifLat,

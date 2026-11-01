@@ -42,13 +42,21 @@ export async function cariSekolah(kueri = ""): Promise<HasilSekolah[]> {
   const ids = sekolah.map((s) => s.id);
   const sppgIds = [...new Set(sekolah.map((s) => s.sppg?.id).filter(Boolean))] as string[];
   const [{ data: kasus }, { data: indeks }] = await Promise.all([
-    supabase.from("v_kasus_publik").select("sekolah_id, status").in("sekolah_id", ids),
+    supabase.from("v_kasus_publik").select("sekolah_id, status").in("sekolah_id", ids).limit(5000),
     sppgIds.length ? supabase.from("indeks_risiko").select("sppg_id, indeks").in("sppg_id", sppgIds) : Promise.resolve({ data: [] }),
   ]);
   const skor = new Map((indeks ?? []).map((i) => [i.sppg_id, Number(i.indeks)]));
+  const rekapKasus = new Map<string, { terbuka: number; total: number }>();
+  for (const x of kasus ?? []) {
+    if (!x.sekolah_id) continue;
+    const sekarang = rekapKasus.get(x.sekolah_id) ?? { terbuka: 0, total: 0 };
+    sekarang.total++;
+    if (x.status !== "selesai") sekarang.terbuka++;
+    rekapKasus.set(x.sekolah_id, sekarang);
+  }
 
   return sekolah.map((s) => {
-    const k = (kasus ?? []).filter((x) => x.sekolah_id === s.id);
+    const k = rekapKasus.get(s.id) ?? { terbuka: 0, total: 0 };
     return {
       id: s.id,
       nama: s.nama,
@@ -57,8 +65,8 @@ export async function cariSekolah(kueri = ""): Promise<HasilSekolah[]> {
       siswa: s.jumlah_siswa,
       kecamatan: s.wilayah?.nama ?? "",
       sppg: s.sppg ? { id: s.sppg.id, nama: s.sppg.nama, slhs: s.sppg.status_slhs, indeks: skor.get(s.sppg.id) ?? null } : null,
-      kasusTerbuka: k.filter((x) => x.status !== "selesai").length,
-      kasusTotal: k.length,
+      kasusTerbuka: k.terbuka,
+      kasusTotal: k.total,
     };
   });
 }
