@@ -13,7 +13,6 @@ import {
   LogIn,
   Settings,
   Sparkles,
-  UserPlus,
   UserRound,
   Users,
   Utensils,
@@ -54,7 +53,7 @@ const DAFTAR_PERSONA: PersonaDemo[] = [
   {
     kunci: "sari",
     nama: "Mbak Sari",
-    peran: "Verifikator",
+    peran: "Verifikator Lapangan",
     ikon: ClipboardCheck,
     warnaAksen: "text-primary",
     warnaBg: "bg-secondary border-primary/20",
@@ -104,8 +103,8 @@ export function PilihanMasuk({
 }) {
   const router = useRouter();
   const [sibuk, mulai] = useTransition();
-  const [tabAktif, setTabAktif] = useState<"demo" | "masuk" | "daftar">(
-    modeAwal ?? (modeDemo ? "demo" : "masuk")
+  const [tabUtama, setTabUtama] = useState<"demo" | "email">(
+    modeAwal === "masuk" || modeAwal === "daftar" ? "email" : "demo"
   );
   const [kunciPilihan, setKunciPilihan] = useState<KunciDemo>("rina");
 
@@ -141,53 +140,40 @@ export function PilihanMasuk({
   }
 
   return (
-    <div className="w-full space-y-4">
-      {/* 3 Tab Segmented Control */}
-      <div className="grid w-full grid-cols-3 rounded-2xl bg-muted/80 p-1 border border-border/70">
+    <div className="w-full space-y-5">
+      {/* 2 Tab Segmented Control (Ala Referensi) */}
+      <div className="grid w-full grid-cols-2 rounded-2xl bg-muted/70 p-1 border border-border/70 shadow-2xs">
         <button
           type="button"
-          onClick={() => setTabAktif("demo")}
+          onClick={() => setTabUtama("demo")}
           className={cn(
-            "flex items-center justify-center gap-1.5 rounded-xl py-2 px-2 text-xs font-bold transition-all cursor-pointer",
-            tabAktif === "demo"
-              ? "bg-card text-primary shadow-xs font-extrabold"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <Sparkles className="size-3.5 shrink-0 text-primary" aria-hidden />
-          <span>Simulasi</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setTabAktif("masuk")}
-          className={cn(
-            "flex items-center justify-center gap-1.5 rounded-xl py-2 px-2 text-xs font-bold transition-all cursor-pointer",
-            tabAktif === "masuk"
+            "flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs sm:text-sm font-bold transition-all cursor-pointer",
+            tabUtama === "demo"
               ? "bg-card text-foreground shadow-xs font-extrabold"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          <KeyRound className="size-3.5 shrink-0" aria-hidden />
-          <span>Masuk</span>
+          <Sparkles className="size-4 shrink-0 text-primary" aria-hidden />
+          <span>Simulasi Peran</span>
         </button>
         <button
           type="button"
-          onClick={() => setTabAktif("daftar")}
+          onClick={() => setTabUtama("email")}
           className={cn(
-            "flex items-center justify-center gap-1.5 rounded-xl py-2 px-2 text-xs font-bold transition-all cursor-pointer",
-            tabAktif === "daftar"
+            "flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs sm:text-sm font-bold transition-all cursor-pointer",
+            tabUtama === "email"
               ? "bg-card text-foreground shadow-xs font-extrabold"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          <UserPlus className="size-3.5 shrink-0" aria-hidden />
-          <span>Daftar</span>
+          <KeyRound className="size-4 shrink-0" aria-hidden />
+          <span>Masuk Email</span>
         </button>
       </div>
 
-      {tabAktif === "demo" ? (
+      {tabUtama === "demo" ? (
         <div className="space-y-4 pt-1">
-          {/* Grid Persona Card Ringkas */}
+          {/* Grid Persona Card: Bersih & Terpilih via Klik */}
           <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
             {DAFTAR_PERSONA.map((p, idx) => {
               const terpilih = kunciPilihan === p.kunci;
@@ -201,16 +187,16 @@ export function PilihanMasuk({
                   onClick={() => setKunciPilihan(p.kunci)}
                   disabled={sibuk}
                   className={cn(
-                    "group flex items-center gap-2.5 rounded-2xl border p-2.5 sm:p-3 text-left transition-all outline-none cursor-pointer",
+                    "group flex items-center gap-2.5 rounded-2xl border p-2.5 sm:p-3 text-left transition-all duration-150 outline-none cursor-pointer",
                     rentangPenuh && "col-span-2",
                     terpilih
-                      ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-xs"
-                      : "border-border/80 bg-background/60 hover:border-primary/40 hover:bg-muted/30"
+                      ? "border-primary bg-primary/8 ring-2 ring-primary/20 shadow-xs"
+                      : "border-border/70 bg-card hover:border-primary/40 hover:bg-muted/30"
                   )}
                 >
                   <span
                     className={cn(
-                      "flex size-9 shrink-0 items-center justify-center rounded-xl border transition-transform group-hover:scale-105",
+                      "flex size-9 shrink-0 items-center justify-center rounded-xl border transition-transform duration-150 group-hover:scale-105",
                       p.warnaBg
                     )}
                   >
@@ -236,18 +222,18 @@ export function PilihanMasuk({
             })}
           </div>
 
-          {/* Tombol Aksi Masuk Sesuai Peran Terpilih */}
+          {/* Tombol Masuk Utama (Ala 'Masuk ->' di referensi) */}
           <Button
             type="button"
             size="lg"
             disabled={sibuk}
             onClick={() => eksekusiMasukDemo(kunciPilihan)}
-            className="w-full rounded-2xl font-bold h-11 text-sm shadow-sm shadow-primary/20 cursor-pointer"
+            className="w-full rounded-2xl font-bold h-12 text-sm shadow-md shadow-primary/20 cursor-pointer transition-all duration-150 active:scale-[0.99]"
           >
             {sibuk ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-                Memproses...
+                Memproses Akses...
               </>
             ) : (
               <>
@@ -259,7 +245,11 @@ export function PilihanMasuk({
           </Button>
         </div>
       ) : (
-        <MasukPassword modeTetap={tabAktif} onBerhasil={() => selesai()} />
+        <MasukPassword
+          modeAwal={modeAwal === "daftar" ? "daftar" : "masuk"}
+          onBerhasil={() => selesai()}
+          onBeralihKeDemo={() => setTabUtama("demo")}
+        />
       )}
     </div>
   );
