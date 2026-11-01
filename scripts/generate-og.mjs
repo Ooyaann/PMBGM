@@ -85,7 +85,7 @@ async function generateOgImage() {
 
     <!-- LEFT: Content Area -->
     <!-- Category Badge -->
-    <g transform="translate(80, 80)">
+    <g transform="translate(80, 75)">
       <rect width="360" height="38" rx="19" fill="url(#pillGrad)" stroke="#34d399" stroke-opacity="0.35" stroke-width="1" />
       <circle cx="20" cy="19" r="5" fill="#34d399" />
       <text x="36" y="24" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2" fill="#a7f3d0">
@@ -94,25 +94,28 @@ async function generateOgImage() {
     </g>
 
     <!-- Main Headings -->
-    <g transform="translate(80, 190)">
-      <text font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-weight="800" font-size="64" fill="#ffffff" letter-spacing="-0.02em">
+    <g transform="translate(80, 180)">
+      <text font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-weight="800" font-size="58" fill="#ffffff" letter-spacing="-0.02em">
         PMBGM
       </text>
-      <text y="58" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-weight="800" font-size="44" fill="#34d399" letter-spacing="-0.01em">
-        Kawal Gizi, Jaga Generasi.
+      <text y="50" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-weight="800" font-size="34" fill="#34d399" letter-spacing="-0.01em">
+        Pemantau MBG Masyarakat
       </text>
       
-      <!-- Subtitle Description -->
-      <text y="118" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#cbd5e1" opacity="0.92">
+      <!-- Slogan & Subtitle Description -->
+      <text y="104" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#f1f5f9">
+        Kawal Gizi, Jaga Generasi.
+      </text>
+      <text y="136" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#cbd5e1" opacity="0.92">
         Platform pengawasan mutu porsi, higienitas dapur SPPG,
       </text>
-      <text y="148" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#cbd5e1" opacity="0.92">
-        dan transparansi Program Makan Bergizi Gratis (MBG).
+      <text y="164" font-family="Plus Jakarta Sans, Inter, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#cbd5e1" opacity="0.92">
+        dan transparansi Program Makan Bergizi Gratis di sekolah.
       </text>
     </g>
 
     <!-- Feature Pills -->
-    <g transform="translate(80, 420)">
+    <g transform="translate(80, 430)">
       <!-- Pill 1: 165+ Sekolah -->
       <g>
         <rect width="175" height="42" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" />
