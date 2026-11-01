@@ -1,6 +1,6 @@
 <div align="center">
 
-# PMBGM
+# PMBGM (Pemantau MBG Masyarakat)
 ### Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
@@ -20,10 +20,10 @@
 ## 1. Judul Project & Deskripsi Singkat
 
 **Judul Project**  
-**PMBGM: Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
+**PMBGM (Pemantau MBG Masyarakat): Platform Pemantauan Partisipatif Berbasis Website untuk Mendukung Transparansi dan Akuntabilitas Program Makan Bergizi Gratis**
 
 **Deskripsi Singkat (2 Kalimat)**  
-**PMBGM** adalah platform pengawasan publik partisipatif berbasis web yang memfasilitasi orang tua murid, guru, dan warga dalam melaporkan kendala layanan, melacak kepatuhan batas waktu tindak lanjut (SLA), serta memantau kualitas dapur Satuan Pelayanan Pemenuhan Gizi (SPPG) pada Program Makan Bergizi Gratis secara transparan dan *real-time*. Sistem ini mengintegrasikan metode pendukung keputusan *Simple Additive Weighting* (SAW) dan model *Machine Learning* privat (*Naive Bayes* & *Multi-Layer Perceptron*) untuk mendeteksi keaslian bukti laporan, memetakan prioritas inspeksi Dinas Kesehatan, serta mencegah Kejadian Luar Biasa (KLB) keracunan pangan.
+**PMBGM (Pemantau MBG Masyarakat)** adalah platform pengawasan publik partisipatif berbasis web yang memfasilitasi orang tua murid, guru, dan warga dalam melaporkan kendala layanan, melacak kepatuhan batas waktu tindak lanjut (SLA), serta memantau kualitas dapur Satuan Pelayanan Pemenuhan Gizi (SPPG) pada Program Makan Bergizi Gratis secara transparan dan *real-time*. Sistem ini mengintegrasikan metode pendukung keputusan *Simple Additive Weighting* (SAW) dan model *Machine Learning* privat (*Naive Bayes* & *Multi-Layer Perceptron*) untuk mendeteksi keaslian bukti laporan, memetakan prioritas inspeksi Dinas Kesehatan, serta mencegah Kejadian Luar Biasa (KLB) keracunan pangan.
 
 ---
 
