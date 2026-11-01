@@ -55,14 +55,14 @@ export function AlurStatus({ aktif, sla, terlambat = false, vertikal = false, cl
                 aria-hidden
                 className={cn(
                   "absolute",
-                  vertikal ? "-top-[34px] left-[17px] h-[52px] w-0.5" : "top-[18px] right-1/2 h-0.5 w-full -translate-y-1/2",
+                  vertikal ? "-top-[34px] left-[17px] h-[52px] w-0.5" : "top-[16px] sm:top-[18px] right-1/2 h-0.5 w-full -translate-y-1/2",
                   aktif && i <= posisi && !lewat ? "bg-primary" : "bg-border",
                 )}
               />
             )}
             <span
               className={cn(
-                "relative z-10 flex size-9 items-center justify-center rounded-full border-2 bg-card transition",
+                "relative z-10 flex size-8 sm:size-9 items-center justify-center rounded-full border-2 bg-card transition shrink-0",
                 !aktif && "border-primary/30 text-primary",
                 selesai && "border-primary bg-primary text-primary-foreground",
                 sekarang && "border-primary text-primary ring-4 ring-primary/15",
@@ -72,18 +72,18 @@ export function AlurStatus({ aktif, sla, terlambat = false, vertikal = false, cl
                 lewat && "opacity-40",
               )}
             >
-              <Ikon className="size-4" aria-hidden />
+              <Ikon className="size-3.5 sm:size-4" aria-hidden />
             </span>
             <span className={cn(
-              vertikal ? "flex-1 text-sm" : "mt-1.5 text-[11px] leading-tight sm:text-xs",
-              sekarang ? "font-semibold text-foreground" : vertikal ? "text-foreground" : "text-muted-foreground",
+              vertikal ? "flex-1 text-sm" : "mt-1 text-[10px] sm:text-xs leading-tight font-medium",
+              sekarang ? "font-bold text-foreground" : vertikal ? "text-foreground" : "text-muted-foreground",
               lewat && "opacity-40",
             )}>
               {label}
             </span>
             {sla?.[t.kunci] && (
-              <span className={cn("inline-flex shrink-0 items-center gap-0.5 rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground", !vertikal && "mt-1")}>
-                <Timer className="size-3" aria-label="Batas waktu" />
+              <span className={cn("inline-flex shrink-0 items-center gap-0.5 rounded-full bg-muted px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-muted-foreground whitespace-nowrap", !vertikal && "mt-1")}>
+                <Timer className="size-2.5 sm:size-3" aria-label="Batas waktu" />
                 {sla[t.kunci]}
               </span>
             )}

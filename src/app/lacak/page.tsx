@@ -138,10 +138,10 @@ async function KasusTerbaru({
       </div>
 
       {/* BILAH FILTER TANGGAL & STATUS */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card/60 p-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border bg-card/60 p-3">
         {/* Filter Rentang Tanggal */}
-        <div className="flex items-center gap-1.5 text-xs">
-          <span className="font-semibold text-muted-foreground mr-1">Waktu:</span>
+        <div className="flex items-center gap-1.5 text-xs overflow-x-auto pb-0.5">
+          <span className="font-semibold text-muted-foreground mr-1 shrink-0">Waktu:</span>
           {[
             { id: "semua", label: "Semua" },
             { id: "7", label: "7 Hari" },
@@ -154,7 +154,7 @@ async function KasusTerbaru({
                 key={w.id}
                 href={href}
                 className={cn(
-                  "rounded-lg px-2.5 py-1 font-medium transition-colors",
+                  "rounded-lg px-2.5 py-1 font-medium transition-colors shrink-0 whitespace-nowrap",
                   isAktif
                     ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                     : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -167,8 +167,8 @@ async function KasusTerbaru({
         </div>
 
         {/* Filter Status Penanganan */}
-        <div className="flex items-center gap-1.5 text-xs">
-          <span className="font-semibold text-muted-foreground mr-1">Status:</span>
+        <div className="flex items-center gap-1.5 text-xs overflow-x-auto pb-0.5">
+          <span className="font-semibold text-muted-foreground mr-1 shrink-0">Status:</span>
           {[
             { id: "semua", label: "Semua" },
             { id: "diproses", label: "Diproses" },
@@ -181,7 +181,7 @@ async function KasusTerbaru({
                 key={s.id}
                 href={href}
                 className={cn(
-                  "rounded-lg px-2.5 py-1 font-medium transition-colors",
+                  "rounded-lg px-2.5 py-1 font-medium transition-colors shrink-0 whitespace-nowrap",
                   isAktif
                     ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                     : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"

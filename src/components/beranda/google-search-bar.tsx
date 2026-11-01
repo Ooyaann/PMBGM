@@ -175,7 +175,7 @@ export function GoogleSearchBar() {
   };
 
   return (
-    <div ref={kontainerRef} className="w-full max-w-2xl mx-auto space-y-4 relative z-20">
+    <div ref={kontainerRef} className="w-full max-w-2xl mx-auto space-y-4 relative z-30">
       {/* Search Bar Utama */}
       <form onSubmit={handleSubmit} role="search" aria-label="Pencarian Cepat PMBGM" className="w-full relative">
         <div
@@ -240,7 +240,7 @@ export function GoogleSearchBar() {
         {/* Dropdown Rekomendasi (Hanya muncul saat mengetik) */}
         {bukaRekomendasi && daftarTampil.length > 0 && (
           <div className="absolute top-full left-0 right-0 mt-2 z-50 overflow-hidden rounded-2xl border border-border/90 bg-popover/98 p-1.5 shadow-xl backdrop-blur-xl animate-in fade-in slide-in-from-top-1 duration-150 text-left">
-            <div className="p-0.5 space-y-0.5 max-h-64 overflow-y-auto">
+            <div className="p-0.5 space-y-0.5 max-h-56 sm:max-h-64 overflow-y-auto">
               {daftarTampil.map((item, index) => {
                 const Ikon = item.jenis === "sppg" ? Utensils : item.jenis === "tiket" ? Ticket : School;
                 const aktif = index === indeksAktif;

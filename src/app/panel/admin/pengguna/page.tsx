@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Search, Users } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Search, Users } from "lucide-react";
 import { BarisPengguna } from "@/components/panel/baris-pengguna";
 import { Skeleton } from "@/components/ui/skeleton";
 import { wajibPeran } from "@/lib/sesi";
@@ -21,12 +22,32 @@ async function Daftar({ searchParams }: { searchParams: PageProps<"/panel/admin/
 
   return (
     <>
-      <form role="search" className="relative max-w-md">
-        <label htmlFor="cari-pengguna" className="sr-only">Cari nama atau email</label>
-        <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-        <input id="cari-pengguna" name="q" type="search" defaultValue={cari} placeholder="Nama atau email"
-          className="h-11 w-full rounded-xl border bg-card pr-3 pl-9 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50" />
-      </form>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <form role="search" className="relative w-full max-w-md">
+          <label htmlFor="cari-pengguna" className="sr-only">Cari nama atau email</label>
+          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+          <input
+            id="cari-pengguna"
+            name="q"
+            type="search"
+            defaultValue={cari}
+            placeholder="Cari nama atau email pengguna..."
+            className="h-11 w-full rounded-xl border bg-card pr-11 pl-10 text-sm shadow-2xs outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40"
+          />
+          <button
+            type="submit"
+            className="absolute top-1/2 right-1.5 -translate-y-1/2 flex size-8 items-center justify-center rounded-lg bg-secondary text-primary hover:bg-primary hover:text-primary-foreground transition cursor-pointer"
+            aria-label="Cari pengguna"
+          >
+            <ArrowRight className="size-4" />
+          </button>
+        </form>
+        {cari && (
+          <Link href="/panel/admin/pengguna" className="text-xs font-semibold text-primary hover:underline">
+            Reset pencarian
+          </Link>
+        )}
+      </div>
       <ul className="divide-y overflow-hidden rounded-3xl border bg-card">
         {(pengguna ?? []).map((u) => (
           <BarisPengguna key={u.id} diriSendiri={u.id === admin.id} instansi={pilihanInstansi} u={{

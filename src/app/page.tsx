@@ -3,9 +3,9 @@ import { GoogleSearchBar } from "@/components/beranda/google-search-bar";
 
 export default function Beranda() {
   return (
-    <div className="relative h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] overflow-hidden flex flex-col justify-center items-center px-4 sm:px-6 bg-[radial-gradient(ellipse_75%_50%_at_50%_38%,oklch(0.42_0.095_168/0.07),transparent)]">
+    <div className="relative min-h-[calc(100dvh-4rem)] flex flex-col justify-center items-center px-4 sm:px-6 py-12 bg-[radial-gradient(ellipse_75%_50%_at_50%_38%,oklch(0.42_0.095_168/0.07),transparent)]">
       {/* Kontainer Utama Berpusat (Clean Google-Style) */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-7 -mt-10">
+      <div className="relative z-20 w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-7 -mt-6 sm:-mt-10">
         <div className="flex flex-col items-center justify-center space-y-2 select-none">
           <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-primary">
             PMBGM
@@ -19,10 +19,14 @@ export default function Beranda() {
       </div>
 
       {/* Footer Strip Minimalis */}
-      <div className="absolute bottom-5 sm:bottom-6 inset-x-0 mx-auto w-fit max-w-[92vw] px-4 py-1.5 rounded-full border border-border/80 bg-card/90 backdrop-blur-sm shadow-2xs flex items-center justify-center gap-2.5 text-xs text-muted-foreground">
+      <div className="relative z-10 mt-10 sm:mt-12 mx-auto w-fit max-w-[92vw] px-4 py-1.5 rounded-full border border-border/80 bg-card/90 backdrop-blur-sm shadow-2xs flex items-center justify-center gap-2.5 text-xs text-muted-foreground">
         <span className="inline-flex items-center gap-1.5 font-medium text-foreground/85">
           <span className="size-1.5 rounded-full bg-primary" />
-          394 Sekolah
+          165 Sekolah
+        </span>
+        <span className="text-border">·</span>
+        <span className="font-medium text-foreground/85">
+          40 Dapur SPPG
         </span>
         <span className="text-border">·</span>
         <a

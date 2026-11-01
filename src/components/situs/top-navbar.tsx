@@ -328,7 +328,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/95 backdrop-blur-md transition-all">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         {/* Sisi Kiri: Logo Resmi PMBGM */}
         <div className="flex items-center shrink-0">
           <Logo />
@@ -490,7 +490,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-extrabold text-sm truncate">{akun.nama}</span>
                     {akun.terverifikasi && (
-                      <span className="inline-flex items-center text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full shrink-0">
+                      <span className="inline-flex items-center text-[10px] font-bold text-risiko-rendah bg-risiko-rendah-lembut px-1.5 py-0.5 rounded-full border border-risiko-rendah/20 shrink-0">
                         <BadgeCheck className="size-3 mr-0.5" /> Terverifikasi
                       </span>
                     )}
@@ -645,7 +645,7 @@ export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
                     <div className="flex items-center justify-between">
                       <span className="font-extrabold text-sm truncate">{akun.nama}</span>
                       {akun.terverifikasi && (
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full shrink-0">
+                        <span className="text-[10px] font-bold text-risiko-rendah bg-risiko-rendah-lembut px-2 py-0.5 rounded-full border border-risiko-rendah/20 shrink-0">
                           Terverifikasi
                         </span>
                       )}

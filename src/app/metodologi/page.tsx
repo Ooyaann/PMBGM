@@ -225,11 +225,11 @@ export default function HalamanMetodologi() {
               <span className="text-sm font-black text-foreground">Verifikasi ≤ 6 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-risiko-sedang">Makanan & Distribusi</span>
+              <span className="block text-[10px] uppercase font-bold text-risiko-sedang">Makanan, Kebersihan & Distribusi</span>
               <span className="text-sm font-black text-foreground">Verifikasi ≤ 24 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
-              <span className="block text-[10px] uppercase font-bold text-primary">Kebersihan & Gizi</span>
+              <span className="block text-[10px] uppercase font-bold text-primary">Kuantitas & Gizi</span>
               <span className="text-sm font-black text-foreground">Verifikasi ≤ 48 Jam</span>
             </div>
             <div className="rounded-xl border bg-card p-3 text-center">
