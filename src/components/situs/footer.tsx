@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FlaskConical, PhoneCall, ShieldAlert } from "lucide-react";
+import { FlaskConical, PhoneCall } from "lucide-react";
 import { Logo } from "./logo";
 
 export function Footer() {

@@ -3,22 +3,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import {
   BadgeCheck,
-  CheckCircle2,
   Clock,
   Database,
   Gauge,
-  Layers,
-  ListOrdered,
-  MapPin,
-  Radar,
-  Scale,
   ShieldAlert,
-  ShieldCheck,
   Siren,
   Sliders,
   Timer,
-  TriangleAlert,
-  Utensils,
 } from "lucide-react";
 import { LabelSumber } from "@/components/data/label-sumber";
 import { IKON_KATEGORI } from "@/components/data/ikon-kategori";

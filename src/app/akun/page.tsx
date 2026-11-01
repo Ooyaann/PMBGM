@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   ClipboardCheck,
   FileText,
-  GraduationCap,
   LayoutDashboard,
   Lock,
   Megaphone,

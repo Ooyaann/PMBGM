@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
-  Banknote, CheckCircle2, AlertTriangle, ShieldCheck, ShieldAlert, FolderOpen, HeartPulse, Layers, Users, Utensils, Wallet,
+  Banknote, AlertTriangle, ShieldCheck, FolderOpen, HeartPulse, Layers, Users, Utensils, Wallet,
 } from "lucide-react";
 import { BadgeRisiko } from "@/components/data/badge";
 import { LabelSumber } from "@/components/data/label-sumber";

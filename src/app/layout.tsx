@@ -20,12 +20,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITUS_URL ?? "https://pantaugizi.vercel.app"),
   title: {
     default: "PMBGM · Pemantau MBG Masyarakat",
     template: "%s · PMBGM",
   },
   description:
     "PMBGM (Pemantau MBG Masyarakat) — Laporkan masalah Makan Bergizi Gratis, pantau tindak lanjutnya secara terbuka, dan cek kepatuhan higienitas dapur SPPG anak Anda.",
+  openGraph: {
+    title: "PMBGM · Pemantau MBG Masyarakat",
+    description: "Platform pengawasan independen dan akuntabilitas terbuka Program Makan Bergizi Gratis (MBG).",
+    url: "/",
+    siteName: "PMBGM",
+    locale: "id_ID",
+    type: "website",
+    images: [
+      {
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "Logo PMBGM",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "PMBGM · Pemantau MBG Masyarakat",
+    description: "Platform pengawasan independen masyarakat untuk transparansi dan mutu Program Makan Bergizi Gratis.",
+    images: ["/icon.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
