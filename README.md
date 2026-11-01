@@ -8,7 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_17-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-pantaugizi.vercel.app-0f6b57?style=flat-square&logo=vercel)](https://pantaugizi.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-pantau--gizi--three.vercel.app-0f6b57?style=flat-square&logo=vercel)](https://pantau-gizi-three.vercel.app)
 [![Python ML](https://img.shields.io/badge/ML_Pipeline-NumPy_%26_Colab-F9AB00?style=flat-square&logo=googlecolab)](./ml-training/Training_Model_ML_PMBGM.ipynb)
 
 *Dikembangkan oleh Tim **Ctrl Win Enter** — Kompetisi Web In Action (WIA) MIA 2026*

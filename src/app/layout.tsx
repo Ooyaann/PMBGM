@@ -20,34 +20,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITUS_URL ?? "https://pantaugizi.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITUS_URL ?? "https://pantau-gizi-three.vercel.app"),
   title: {
-    default: "PMBGM · Pemantau MBG Masyarakat",
+    default: "PMBGM — Kawal Gizi, Jaga Generasi",
     template: "%s · PMBGM",
   },
   description:
-    "PMBGM (Pemantau MBG Masyarakat) — Laporkan masalah Makan Bergizi Gratis, pantau tindak lanjutnya secara terbuka, dan cek kepatuhan higienitas dapur SPPG anak Anda.",
+    "Platform pengawasan partisipatif masyarakat untuk memantau mutu porsi, higienitas dapur SPPG, dan transparansi distribusi Makan Bergizi Gratis (MBG) di sekolah anak Anda.",
+  keywords: [
+    "PMBGM",
+    "Makan Bergizi Gratis",
+    "MBG",
+    "SPPG",
+    "Pengawasan MBG",
+    "Gizi Anak Sekolah",
+    "Lapor MBG",
+    "Pantau Gizi",
+  ],
+  authors: [{ name: "Tim Ctrl Win Enter" }],
+  creator: "Tim Ctrl Win Enter (MIA 2026)",
+  publisher: "PMBGM",
   openGraph: {
-    title: "PMBGM · Pemantau MBG Masyarakat",
-    description: "Platform pengawasan independen dan akuntabilitas terbuka Program Makan Bergizi Gratis (MBG).",
-    url: "/",
+    title: "PMBGM — Kawal Gizi, Jaga Generasi",
+    description:
+      "Kawal mutu porsi, higienitas dapur SPPG, dan transparansi distribusi Makan Bergizi Gratis (MBG) di sekolah anak Anda. Pantau dan laporkan secara terbuka.",
+    url: "https://pantau-gizi-three.vercel.app",
     siteName: "PMBGM",
     locale: "id_ID",
     type: "website",
     images: [
       {
-        url: "/icon.png",
-        width: 512,
-        height: 512,
-        alt: "Logo PMBGM",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "PMBGM — Platform Pengawasan Mutu & Transparansi Makan Bergizi Gratis",
       },
     ],
   },
   twitter: {
-    card: "summary",
-    title: "PMBGM · Pemantau MBG Masyarakat",
-    description: "Platform pengawasan independen masyarakat untuk transparansi dan mutu Program Makan Bergizi Gratis.",
-    images: ["/icon.png"],
+    card: "summary_large_image",
+    title: "PMBGM — Kawal Gizi, Jaga Generasi",
+    description:
+      "Kawal mutu porsi, higienitas dapur SPPG, dan transparansi distribusi Makan Bergizi Gratis (MBG) di sekolah anak Anda.",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [
