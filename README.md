@@ -158,6 +158,54 @@ Seluruh akun demo dapat langsung diakses melalui tombol pilih cepat di halaman *
 
 ---
 
+## 7. Sumber, Asal-Usul, & Spesifikasi Data (*Data Transparency*)
+
+Platform **PMBGM** menjunjung tinggi transparansi asal-usul data agar seluruh metrik, pengawasan publik, dan rekomendasi analitik dapat dipertanggungjawabkan secara ilmiah dan objektif. Data yang digunakan dalam sistem ini terbagi menjadi 6 pilar utama:
+
+### A. Data Referensi Satuan Pendidikan (Sekolah)
+* **Asal Sumber**: Mengadopsi struktur data terbuka **Data Pokok Pendidikan (Dapodik)** dan Portal Referensi Kementerian Pendidikan Dasar dan Menengah (Kemendikdasmen).
+* **Cakupan Wilayah**: 165 sekolah di 16 kecamatan Kota Semarang, mencakup jenjang SD/MI, SMP/MTs, dan SMA/SMK.
+* **Atribut Kunci**: Nama sekolah, NPSN, jenjang pendidikan, kecamatan, koordinat geospasial (*latitude* & *longitude*), serta estimasi daya tampung siswa (digunakan sistem sebagai batas ambang kewajaran pelaporan dampak insiden).
+
+### B. Data Unit Pelayanan Gizi (Dapur SPPG)
+* **Asal Sumber**: Pemodelan tata kelola rantai pasok **Badan Gizi Nasional (BGN)** dan dinas terkait.
+* **Cakupan Wilayah**: 40 unit dapur SPPG terdaftar yang melayani distribusi ke 165 sekolah di wilayah Kota Semarang.
+* **Atribut Kunci**: ID SPPG, nama unit dapur, alamat fisik, kapasitas produksi harian (porsi/hari), status **Sertifikat Laik Higiene Sanitasi (SLHS)** Dinas Kesehatan, nama penanggung jawab dapur, kontak operasional, serta relasi pemetaan sekolah yang dilayani.
+
+### C. Data Spasial & Batas Wilayah Administrasi (GeoJSON)
+* **Asal Sumber**: Peta batas administrasi resmi **Badan Informasi Geospasial (BIG)** dan kontribusi komunitas *OpenStreetMap Indonesia*.
+* **Cakupan Peta**: 
+  1. Batas administrasi 35 Kabupaten/Kota di Provinsi Jawa Tengah (untuk pemetaan makro kesiapan dan sebaran isu MBG wilayah).
+  2. Batas administrasi detail 16 Kecamatan di Kota Semarang (untuk peta koroplet zonasi risiko dapur SPPG dan sebaran aduan lokal).
+* **Format**: Berkas vektor GeoJSON teroptimasi yang dirender secara dinamis melalui pustaka proyeksi kartografi `d3-geo`.
+
+### D. Dataset Pelatihan Machine Learning (1.500 Sampel Laporan)
+* **Asal Sumber**: Berkas data mandiri pada [`ml-training/dataset_laporan_mbg.csv`](./ml-training/dataset_laporan_mbg.csv), diproses dan dievaluasi melalui [`ml-training/Training_Model_ML_PMBGM.ipynb`](./ml-training/Training_Model_ML_PMBGM.ipynb).
+* **Metode Penyusunan**: Disintesis secara metodis merefleksikan variasi insiden riil uji coba MBG di Indonesia, laporan investigasi masyarakat sipil (JPPI, ICW), serta taksonomi medis keracunan makanan (BPOM/Kemenkes).
+* **Struktur Data**: 1.500 baris sampel aduan dengan rasio *stratified split* 80% data latih (1.200 sampel) dan 20% data uji (300 sampel) mencakup 7 fitur ekstraksi leksikal-multimodal untuk mengklasifikasi 3 kelas otentisitas (*Otentik & Valid*, *Meragukan*, dan *Indikasi Fiktif*).
+
+### E. Data Parameter & Pembobotan DSS (Metode SAW)
+* **Asal Sumber**: Standar operasional pengawasan mutu pangan dan penilaian risiko berbasis bukti multi-kriteria:
+  1. **$C_1$ (35%)**: Frekuensi laporan warga terverifikasi dalam 30 hari terakhir.
+  2. **$C_2$ (25%)**: Riwayat insiden dugaan keracunan pangan terverifikasi medis.
+  3. **$C_3$ (15%)**: Status kepatuhan Sertifikat Laik Higiene Sanitasi (SLHS) Kemenkes.
+  4. **$C_4$ (15%)**: Persentase keterlambatan penanganan laporan melewati batas waktu SLA.
+  5. **$C_5$ (10%)**: Rata-rata indeks kepuasan orang tua murid / guru ($100 - \text{Rating}$).
+* **Kategori Hasil**: Dikelompokkan menjadi Risiko Rendah ($0 \le \text{Skor} \le 39$), Risiko Sedang ($40 \le \text{Skor} \le 69$), dan Risiko Tinggi ($70 \le \text{Skor} \le 100$).
+
+### F. Literatur Ilmiah & Regulasi Acuan
+* **Regulasi Kebijakan**:
+  - **Perpres No. 83 Tahun 2024** tentang Badan Gizi Nasional (BGN).
+  - **Permenkes No. 14 Tahun 2021** tentang Standar Usaha Jasa Boga & Sertifikat Laik Higiene Sanitasi (SLHS).
+  - **Permenkes No. 28 Tahun 2019** tentang Angka Kecukupan Gizi (AKG) yang Dianjurkan untuk Masyarakat Indonesia.
+  - **UU No. 14 Tahun 2008** tentang Keterbukaan Informasi Publik (KIP).
+  - **Perpres No. 76 Tahun 2013** tentang Pengelolaan Pengaduan Pelayanan Publik (Acuan waktu SLA eskalasi berjenjang).
+* **Rujukan Ilmiah**:
+  - Konsep *Multi-Criteria Decision Making* (MCDM) metode *Simple Additive Weighting* (Fishburn, 1967; MacCrimmon, 1968).
+  - Teori klasifikasi teks *Multinomial Naive Bayes* (McCallum & Nigam, 1998) dan arsitektur *Multimodal Feedforward Neural Network* (Haykin, 2009).
+
+---
+
 <div align="center">
   <small>© 2026 Tim Ctrl Win Enter — PMBGM. Lisensi Data Terbuka CC BY 4.0.</small>
 </div>
