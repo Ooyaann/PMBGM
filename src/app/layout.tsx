@@ -105,6 +105,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Suspense>
           <Toaster position="top-center" richColors />
         </TooltipProvider>
+        {process.env.NODE_ENV === "development" && (
+          <script src="/__studio/client.js" async />
+        )}
       </body>
     </html>
   );

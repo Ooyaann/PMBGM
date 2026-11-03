@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
       allowedOrigins: ["localhost:3000", "*.vercel.app", "*.ngrok-free.app", "*.ngrok.app"],
     },
   },
+  async rewrites() {
+    return [
+      {
+        source: "/__studio/:path*",
+        destination: "http://127.0.0.1:5500/__studio/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
