@@ -106,9 +106,53 @@ export function FormLapor({
   const router = useRouter();
   const searchParams = useSearchParams();
   const paramSekolahClient = searchParams.get("sekolah") || searchParams.get("sekolahId");
-  const [draf, setDraf] = useState<Draf>(sekolahAwal ? { ...DRAF_KOSONG, sekolah: sekolahAwal } : DRAF_KOSONG);
-  const [tahap, setTahap] = useState(sekolahAwal && (langsungKeMasalah || Boolean(paramSekolahClient)) ? 1 : 0);
-  const [bukti, setBukti] = useState<BuktiSiap[]>([]);
+  const paramTahap = searchParams.get("tahap");
+  const tahapAwal = paramTahap !== null ? Math.max(0, Math.min(4, parseInt(paramTahap, 10) || 0)) : (sekolahAwal && (langsungKeMasalah || Boolean(paramSekolahClient)) ? 1 : 0);
+  const [draf, setDraf] = useState<Draf>(() => {
+    const dasar = sekolahAwal ? { ...DRAF_KOSONG, sekolah: sekolahAwal } : DRAF_KOSONG;
+    if (paramTahap !== null && parseInt(paramTahap, 10) >= 1) {
+      return {
+        ...dasar,
+        kategori: (searchParams.get("kategori") as Kategori) || "makanan_tidak_layak",
+        sekolah: dasar.sekolah || {
+          id: "337401-001",
+          nama: "SD Negeri Tembalang 01",
+          jenjang: "SD",
+          kecamatan: "Tembalang",
+          sppgId: "793d2f16-7350-4c6b-b8c9-8c136383865e",
+          sppgNama: "SPPG Semarang Tengah 01",
+          indeks: 72.4,
+        },
+        waktu: waktuLokal(new Date()),
+        jumlah: "14",
+        deskripsi: "Ditemukan sayur berlendir dan berbau masam pada paket menu makan siang siswa kelas 4 dan 5. Beberapa siswa mengeluhkan rasa pahit tidak wajar saat mencicipi kuah sayur.",
+        lokasi: { lat: -7.0524, lng: 110.4398 },
+        mode: "rahasia",
+      };
+    }
+    return dasar;
+  });
+  const [tahap, setTahap] = useState(tahapAwal);
+  const [bukti, setBukti] = useState<BuktiSiap[]>(() => {
+    if (paramTahap !== null && parseInt(paramTahap, 10) >= 3) {
+      return [
+        {
+          id: "bukti-sampel-01",
+          berkas: new File(["sampel-gambar"], "foto_kondisi_sayur_mbg.jpg", { type: "image/jpeg" }),
+          jenis: "foto",
+          pratinjau: "/og-image.png",
+          metadata: {
+            exifWaktu: new Date().toISOString(),
+            exifLat: -7.0524,
+            exifLng: 110.4398,
+            perangkat: "Samsung Galaxy A54 5G (Kamera Utama 50MP)",
+          },
+          ukuranAsli: 2450000,
+        },
+      ];
+    }
+    return [];
+  });
   const [galat, setGalat] = useState<Record<string, string>>({});
   const [kirim, setKirim] = useState<{ status: "diam" | "menyimpan" | "mengunggah"; selesai: number }>({ status: "diam", selesai: 0 });
   const [dialogMasuk, setDialogMasuk] = useState(false);
@@ -117,6 +161,7 @@ export function FormLapor({
   const drafLama = useSyncExternalStore(tanpaLangganan, bacaDraf, () => null);
 
   useEffect(() => {
+    if (paramTahap !== null) return;
     if (sekolahAwal) {
       setDraf((d) => ({ ...d, sekolah: sekolahAwal }));
       if (langsungKeMasalah || paramSekolahClient) setTahap((t) => (t === 0 ? 1 : t));
@@ -281,7 +326,7 @@ export function FormLapor({
       <AlurStatus className="mt-4" sla={slaTampil} vertikal={vertikal} />
       {slaTampil && (
         <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Timer className="size-3.5" aria-hidden /> Batas waktu {KATEGORI[draf.kategori!].label.toLowerCase()}
+          <Timer className="size-3.5" aria-hidden /> Batas waktu {draf.kategori && KATEGORI[draf.kategori] ? KATEGORI[draf.kategori].label.toLowerCase() : ""}
         </p>
       )}
     </div>
@@ -447,7 +492,7 @@ export function FormLapor({
                 <textarea id="deskripsi" rows={5} value={draf.deskripsi} maxLength={4000}
                   onChange={(e) => ubah("deskripsi", e.target.value)} aria-invalid={Boolean(galat.deskripsi)}
                   aria-describedby="petunjuk-deskripsi"
-                  placeholder={draf.kategori ? `Contoh: ${KATEGORI[draf.kategori].contoh}` : "Menu, kondisi makanan, gejala, jam."}
+                  placeholder={draf.kategori && KATEGORI[draf.kategori] ? `Contoh: ${KATEGORI[draf.kategori].contoh}` : "Menu, kondisi makanan, gejala, jam."}
                   className="w-full rounded-xl border border-input bg-background p-3.5 text-base leading-relaxed focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none aria-invalid:border-destructive" />
                 <p id="petunjuk-deskripsi" className="mt-1.5 flex items-center justify-between gap-3 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1"><EyeOff className="size-3.5" aria-hidden /> Tanpa nama anak</span>
@@ -523,7 +568,7 @@ export function FormLapor({
               <ul aria-label="Ringkasan laporan" className="grid gap-2 rounded-2xl bg-muted/60 p-4 text-sm sm:grid-cols-2">
                 {[
                   { ikon: School, isi: draf.sekolah?.nama, ke: 0 },
-                  { ikon: draf.kategori ? IKON_KATEGORI[draf.kategori] : Tag, isi: draf.kategori && KATEGORI[draf.kategori].label, ke: 1 },
+                  { ikon: draf.kategori ? IKON_KATEGORI[draf.kategori] : Tag, isi: draf.kategori && KATEGORI[draf.kategori] ? KATEGORI[draf.kategori].label : "", ke: 1 },
                   { ikon: Clock, isi: draf.waktu && new Date(draf.waktu).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" }), ke: 2 },
                   { ikon: Users, isi: `${draf.jumlah || 0} terdampak`, ke: 2 },
                   { ikon: Camera, isi: `${bukti.length} foto/video`, ke: 3 },

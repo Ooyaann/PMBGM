@@ -58,5 +58,9 @@ graphify-out/20*/
 graphify-out/.*
 graphify-out/manifest.json
 
+# python
+__pycache__/
+*.pyc
+
 # antigravity live studio
 .antigravity_studio/
