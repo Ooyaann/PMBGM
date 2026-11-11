@@ -19,7 +19,7 @@ export default function Beranda() {
       </div>
 
       {/* Footer Strip Minimalis */}
-      <div className="relative z-10 mt-10 sm:mt-12 mx-auto w-fit max-w-[92vw] px-4 py-1.5 rounded-full border border-border/80 bg-card/90 backdrop-blur-sm shadow-2xs flex items-center justify-center gap-2.5 text-xs text-muted-foreground">
+      <div className="relative z-10 mt-10 sm:mt-12 mx-auto w-fit max-w-[92vw] px-4 py-1.5 rounded-2xl sm:rounded-full border border-border/80 bg-card/90 backdrop-blur-sm shadow-2xs flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs text-muted-foreground">
         <span className="inline-flex items-center gap-1.5 font-medium text-foreground/85">
           <span className="size-1.5 rounded-full bg-primary" />
           165 Sekolah

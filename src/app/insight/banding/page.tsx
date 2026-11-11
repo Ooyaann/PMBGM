@@ -119,7 +119,7 @@ function ModeWarga({ h }: { h: HasilBanding }) {
               <p className="flex items-center gap-2 text-sm font-medium">
                 <Ikon className="size-4 text-muted-foreground" aria-hidden /> {m.label}
               </p>
-              <ul className={cn("grid gap-2", h.butir.length === 3 ? "grid-cols-3" : "grid-cols-2")}>
+              <ul className={cn("grid gap-2", h.butir.length === 3 ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2")}>
                 {m.nilai.map((v, i) => (
                   <li key={i} className={cn("flex items-center gap-2 rounded-xl px-2.5 py-2",
                     baik.has(i) ? "bg-risiko-rendah-lembut" : "bg-muted/50")}>

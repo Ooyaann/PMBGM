@@ -509,7 +509,7 @@ async function Isi() {
                           Uraian Masalah yang Dilaporkan:
                         </span>
                         <p className="line-clamp-2 leading-relaxed italic text-foreground">
-                          "{l.deskripsi}"
+                          &ldquo;{l.deskripsi}&rdquo;
                         </p>
                       </div>
                     )}

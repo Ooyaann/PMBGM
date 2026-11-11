@@ -40,18 +40,18 @@ async function KartuKepatuhanDapur({ wilayahId }: { wilayahId: string }) {
       }}
     >
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-2 text-center text-xs">
-          <div className="rounded-xl border border-risiko-rendah/25 bg-risiko-rendah-lembut p-2.5">
-            <span className="block text-lg font-bold text-risiko-rendah">{data.slhsBerlaku}</span>
-            <span className="font-semibold text-risiko-rendah">SLHS Berlaku</span>
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-xs">
+          <div className="rounded-xl border border-risiko-rendah/25 bg-risiko-rendah-lembut p-2 sm:p-2.5">
+            <span className="block text-base sm:text-lg font-bold text-risiko-rendah">{data.slhsBerlaku}</span>
+            <span className="font-semibold text-risiko-rendah text-[11px] sm:text-xs leading-tight block">SLHS Berlaku</span>
           </div>
-          <div className="rounded-xl border border-risiko-sedang/25 bg-risiko-sedang-lembut p-2.5">
-            <span className="block text-lg font-bold text-risiko-sedang">{data.slhsProses}</span>
-            <span className="font-semibold text-risiko-sedang">Proses Uji</span>
+          <div className="rounded-xl border border-risiko-sedang/25 bg-risiko-sedang-lembut p-2 sm:p-2.5">
+            <span className="block text-base sm:text-lg font-bold text-risiko-sedang">{data.slhsProses}</span>
+            <span className="font-semibold text-risiko-sedang text-[11px] sm:text-xs leading-tight block">Proses Uji</span>
           </div>
-          <div className="rounded-xl border border-risiko-tinggi/25 bg-risiko-tinggi-lembut p-2.5">
-            <span className="block text-lg font-bold text-risiko-tinggi">{data.slhsTanpa}</span>
-            <span className="font-semibold text-risiko-tinggi">Tanpa SLHS</span>
+          <div className="rounded-xl border border-risiko-tinggi/25 bg-risiko-tinggi-lembut p-2 sm:p-2.5">
+            <span className="block text-base sm:text-lg font-bold text-risiko-tinggi">{data.slhsTanpa}</span>
+            <span className="font-semibold text-risiko-tinggi text-[11px] sm:text-xs leading-tight block">Tanpa SLHS</span>
           </div>
         </div>
 

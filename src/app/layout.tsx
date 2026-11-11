@@ -78,6 +78,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0f6b57",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -105,9 +108,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Suspense>
           <Toaster position="top-center" richColors />
         </TooltipProvider>
-        {process.env.NODE_ENV === "development" && (
-          <script src="/__studio/client.js" async />
-        )}
+
       </body>
     </html>
   );

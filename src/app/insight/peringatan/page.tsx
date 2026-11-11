@@ -82,7 +82,7 @@ async function Isi() {
   const riwayat = daftar.filter((p) => !p.aktif);
   return (
     <>
-      <dl className="grid grid-cols-3 gap-3">
+      <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Tile ikon={Siren} label="Aktif" nilai={angka(aktif.length)} />
         <Tile
           ikon={Eye}

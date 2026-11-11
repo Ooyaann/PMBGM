@@ -127,8 +127,8 @@ export function TabelAkuntabilitas({ sppg, kecamatan }: { sppg: BarisAkuntabilit
       </div>
 
       {/* Tabel (layar lebar) */}
-      <div className="mt-4 hidden overflow-hidden rounded-3xl border bg-card md:block">
-        <table className="w-full text-sm">
+      <div className="mt-4 hidden overflow-x-auto rounded-3xl border bg-card md:block">
+        <table className="w-full min-w-[34rem] text-sm">
           <caption className="sr-only">Papan akuntabilitas {tampil === "sppg" ? "per SPPG" : "per kecamatan"}</caption>
           <thead className="bg-muted/50 text-xs text-muted-foreground">
             <tr>
@@ -172,7 +172,7 @@ export function TabelAkuntabilitas({ sppg, kecamatan }: { sppg: BarisAkuntabilit
               </div>
               <Nilai kolom="kepuasan" b={b} />
             </div>
-            <dl className="mt-3 grid grid-cols-4 gap-2 text-center text-xs">
+            <dl className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
               {KOLOM.filter((k) => k.kunci !== "kepuasan").map((k) => (
                 <div key={k.kunci} className="rounded-lg bg-muted/60 p-2">
                   <dt className="flex justify-center text-muted-foreground"><k.ikon className="size-3.5" aria-label={k.label} /></dt>

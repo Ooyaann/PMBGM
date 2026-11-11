@@ -256,9 +256,10 @@ const MENU_ADMIN: MenuItemPeran[] = [
 
 export function TopNavbar({ akun }: { akun: InfoAkunNavbar | null }) {
   const pathname = usePathname();
-  if (pathname === "/masuk") return null;
   const [mobileBuka, setMobileBuka] = useState(false);
   const [sedangKeluar, startKeluar] = useTransition();
+
+  if (pathname === "/masuk") return null;
 
   const tanganiKeluar = () => {
     startKeluar(async () => {

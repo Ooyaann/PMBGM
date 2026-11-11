@@ -114,7 +114,7 @@ async function HasilTiket({ searchParams }: { searchParams: PageProps<"/lacak">[
               Uraian Masalah Makanan:
             </span>
             <p className="text-sm sm:text-base leading-relaxed font-medium text-foreground whitespace-pre-wrap">
-              "{hasil.deskripsi}"
+              &ldquo;{hasil.deskripsi}&rdquo;
             </p>
           </div>
 
