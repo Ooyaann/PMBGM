@@ -93,7 +93,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <TooltipProvider>
           <div className="flex min-h-screen flex-col">
             <TopNavbarSlot />
-            <main id="konten" className="flex-1 min-w-0">
+            <main id="konten" className="flex-1 min-w-0 pb-20 sm:pb-10">
               {children}
             </main>
             <Suspense fallback={null}>

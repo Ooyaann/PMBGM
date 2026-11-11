@@ -56,6 +56,10 @@ export interface StatusTiket {
   kodeTiket: string;
   kategori: Kategori;
   status: StatusAlur;
+  deskripsi: string;
+  jumlahTerdampak: number;
+  modeIdentitas: "publik" | "rahasia" | "anonim";
+  fotoBukti: FotoBukti[];
   dibuatPada: string;
   waktuKejadian: string;
   alasanTolak: string | null;
@@ -85,12 +89,25 @@ export async function ambilStatusTiket(kode: string): Promise<StatusTiket | null
   if (!data) return null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- bentuk JSON dari RPC
   const d = data as any;
+
+  const buktiMentah = d.bukti_awal ?? d.foto_bukti ?? [];
+  const fotoBukti: FotoBukti[] = Array.isArray(buktiMentah) && buktiMentah.length > 0
+    ? buktiMentah.map((b: any) => {
+        const path = typeof b === "string" ? b : b.path ?? b.path_storage ?? "";
+        return urlTindakLanjut(path);
+      })
+    : [{ url: "/simulasi/makanan.svg", jenis: "foto", ilustrasi: true }];
+
   return {
     kodeTiket: d.kode_tiket,
     kategori: d.kategori,
     status: d.status,
+    deskripsi: d.deskripsi || (d.kasus?.judul ? `Aduan terkait: ${d.kasus.judul}` : "Laporan permasalahan kualitas porsi makanan bergizi gratis di sekolah terkait."),
+    jumlahTerdampak: d.jumlah_terdampak ?? 1,
+    modeIdentitas: (d.mode_identitas as "publik" | "rahasia" | "anonim") ?? "rahasia",
+    fotoBukti,
     dibuatPada: d.dibuat_pada,
-    waktuKejadian: d.waktu_kejadian,
+    waktuKejadian: d.waktu_kejadian ?? d.dibuat_pada,
     alasanTolak: d.alasan_tolak,
     sekolah: d.sekolah,
     sppg: d.sppg,

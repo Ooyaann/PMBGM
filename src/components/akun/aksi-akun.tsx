@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, CheckCheck, Loader2, Pencil, RotateCcw, Save, Star, X } from "lucide-react";
+import { Bell, CheckCheck, CheckCircle2, Loader2, Lock, Pencil, RotateCcw, Save, Star, X } from "lucide-react";
 import { toast } from "sonner";
 import { Waktu } from "@/components/data/waktu";
 import { Button } from "@/components/ui/button";
@@ -50,54 +50,127 @@ export function AksiSelesai({ laporanId, rating, bisaBukaUlang }: {
     );
   }
 
-  return (
-    <div className="space-y-2">
-      {ubah ? (
-        <div className="space-y-2 rounded-2xl bg-secondary/50 p-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-semibold">Nilai penanganan</span>
-            <div role="radiogroup" aria-label="Nilai 1 sampai 5 bintang" className="flex" onPointerLeave={() => setArah(0)}>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button key={n} type="button" role="radio" aria-checked={skor === n} aria-label={`${n} bintang, ${ARTI_BINTANG[n]}`}
-                  onPointerEnter={() => setArah(n)} onClick={() => setSkor(n)}
-                  className="flex size-9 items-center justify-center rounded-lg hover:bg-card/70">
-                  <Star className={cn("size-6 transition", n <= (arah || skor) ? "fill-risiko-sedang text-risiko-sedang" : "text-muted-foreground/50")} aria-hidden />
-                </button>
-              ))}
+  if (rating) {
+    return (
+      <div className="space-y-2">
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-3.5 space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="flex" aria-label={`Nilai Anda ${rating.skor} dari 5 bintang`}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star
+                    key={n}
+                    className={cn(
+                      "size-4",
+                      n <= rating.skor ? "fill-risiko-sedang text-risiko-sedang" : "text-muted-foreground/30"
+                    )}
+                    aria-hidden
+                  />
+                ))}
+              </span>
+              <span className="font-bold text-xs text-foreground">
+                {ARTI_BINTANG[rating.skor] || `${rating.skor} Bintang`}
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground">{ARTI_BINTANG[arah || skor]}</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold text-primary">
+              <Lock className="size-3" /> Penilaian Terkunci
+            </span>
           </div>
-          {skor > 0 && (
-            <>
-              <Textarea value={komentar} onChange={(e) => setKomentar(e.target.value)} rows={2} maxLength={500}
-                placeholder="Komentar (opsional)" aria-label="Komentar penilaian" className="bg-card" />
-              <Button size="lg" disabled={sibuk} onClick={() => mulai(async () => {
-                const r = await beriRating({ laporanId, skor, komentar: komentar || undefined });
-                if (!r.ok) { toast.error(r.pesan); return; }
-                toast.success("Terima kasih, penilaian Anda tercatat");
-                setUbah(false);
-                router.refresh();
-              })}>
-                {sibuk ? <Loader2 className="animate-spin" aria-hidden /> : <Save aria-hidden />} Kirim nilai
-              </Button>
-            </>
+
+          {rating.komentar ? (
+            <p className="text-xs text-foreground/90 italic bg-card/70 p-2.5 rounded-xl border border-border/50">
+              “{rating.komentar}”
+            </p>
+          ) : (
+            <p className="text-[11px] text-muted-foreground">Penilaian Anda tercatat resmi untuk indeks kepuasan SPPG.</p>
           )}
         </div>
-      ) : rating && (
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <span className="flex" aria-label={`Nilai Anda ${rating.skor} dari 5`}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <Star key={n} className={cn("size-4", n <= rating.skor ? "fill-risiko-sedang text-risiko-sedang" : "text-muted-foreground/40")} aria-hidden />
-            ))}
-          </span>
-          {rating.komentar && <span className="text-muted-foreground">“{rating.komentar}”</span>}
-          <button type="button" onClick={() => setUbah(true)} className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-            <Pencil className="size-3.5" aria-hidden /> Ubah
+
+        {bisaBukaUlang && (
+          <button
+            type="button"
+            onClick={() => setBuka(true)}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors ml-1"
+          >
+            <RotateCcw className="size-3.5" aria-hidden /> Belum tuntas? Buka ulang
           </button>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="space-y-2 rounded-2xl bg-secondary/50 p-3 sm:p-4 border border-border/60">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs sm:text-sm font-semibold">Beri Nilai Penanganan:</span>
+          <div role="radiogroup" aria-label="Nilai 1 sampai 5 bintang" className="flex" onPointerLeave={() => setArah(0)}>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <button
+                key={n}
+                type="button"
+                role="radio"
+                aria-checked={skor === n}
+                aria-label={`${n} bintang, ${ARTI_BINTANG[n]}`}
+                onPointerEnter={() => setArah(n)}
+                onClick={() => setSkor(n)}
+                className="flex size-9 items-center justify-center rounded-lg hover:bg-card/70 transition"
+              >
+                <Star
+                  className={cn(
+                    "size-6 transition",
+                    n <= (arah || skor) ? "fill-risiko-sedang text-risiko-sedang scale-110" : "text-muted-foreground/40"
+                  )}
+                  aria-hidden
+                />
+              </button>
+            ))}
+          </div>
+          <span className="text-xs font-medium text-muted-foreground">{ARTI_BINTANG[arah || skor]}</span>
         </div>
-      )}
+        {skor > 0 && (
+          <div className="space-y-2 pt-1">
+            <Textarea
+              value={komentar}
+              onChange={(e) => setKomentar(e.target.value)}
+              rows={2}
+              maxLength={500}
+              placeholder="Berikan ulasan Anda terkait tindak lanjut masalah makanan ini (opsional)..."
+              aria-label="Komentar penilaian"
+              className="bg-card text-xs sm:text-sm"
+            />
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[11px] text-muted-foreground italic">
+                *Penilaian bersifat final dan tidak dapat diubah setelah dikirim.
+              </span>
+              <Button
+                size="sm"
+                disabled={sibuk}
+                onClick={() =>
+                  mulai(async () => {
+                    const r = await beriRating({ laporanId, skor, komentar: komentar || undefined });
+                    if (!r.ok) {
+                      toast.error(r.pesan);
+                      return;
+                    }
+                    toast.success("Terima kasih, penilaian Anda resmi tercatat dan terkunci");
+                    router.refresh();
+                  })
+                }
+              >
+                {sibuk ? <Loader2 className="animate-spin size-4" aria-hidden /> : <Save className="size-4" aria-hidden />} Kirim Nilai
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {bisaBukaUlang && (
-        <button type="button" onClick={() => setBuka(true)} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
+        <button
+          type="button"
+          onClick={() => setBuka(true)}
+          className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors ml-1"
+        >
           <RotateCcw className="size-3.5" aria-hidden /> Belum tuntas? Buka ulang
         </button>
       )}

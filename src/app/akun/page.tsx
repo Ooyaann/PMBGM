@@ -442,55 +442,121 @@ async function Isi() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section aria-labelledby="judul-laporan" className="space-y-3">
-          <h2 id="judul-laporan" className="font-bold">Laporan saya</h2>
+          <h2 id="judul-laporan" className="font-extrabold text-xl text-foreground">Laporan saya</h2>
           {laporan.length ? (
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {laporan.map((l) => {
                 const Ikon = IKON_KATEGORI[l.kategori] ?? Megaphone;
                 const namaKategori = KATEGORI[l.kategori]?.label ?? "Laporan MBG";
                 const selesai = l.status === "selesai";
                 return (
-                  <li key={l.id} className={cn("rounded-3xl border bg-card p-4", selesai && !l.rating && "border-primary/40")}>
-                    <div className="flex items-start gap-3">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
-                        <Ikon className="size-5" aria-hidden />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                          <span className="font-semibold">{namaKategori}</span>
-                          <BadgeStatus status={l.status} />
-                        </p>
-                        <p className="mt-0.5 flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground">
-                          <span className="font-mono">{l.kodeTiket}</span>
-                          <span className="flex items-center gap-1">
-                            <School className="size-3.5" aria-hidden />
-                            {l.sekolah}
-                          </span>
-                          {l.kasus?.instansi && (
-                            <span className="flex items-center gap-1">
-                              <Building2 className="size-3.5" aria-hidden />
-                              {l.kasus.instansi}
+                  <li
+                    key={l.id}
+                    className={cn(
+                      "group rounded-3xl border bg-card p-5 sm:p-6 transition-all hover:border-primary/50 hover:shadow-md space-y-3.5",
+                      selesai && !l.rating && "border-primary/40 ring-1 ring-primary/20"
+                    )}
+                  >
+                    {/* Header Baris Utama */}
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 min-w-0">
+                        <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary shadow-xs">
+                          <Ikon className="size-5.5" aria-hidden />
+                        </span>
+                        <div className="min-w-0 space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-extrabold text-base sm:text-lg text-foreground tracking-tight">
+                              {namaKategori}
+                            </h3>
+                            <BadgeStatus status={l.status} />
+                          </div>
+                          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                            <span className="font-mono font-bold bg-muted/80 text-foreground px-2 py-0.5 rounded-md">
+                              {l.kodeTiket}
                             </span>
-                          )}
-                          <Waktu iso={l.dibuatPada} />
-                        </p>
+                            <span className="flex items-center gap-1 font-medium">
+                              <School className="size-3.5" aria-hidden />
+                              {l.sekolah}
+                            </span>
+                            {l.kasus?.instansi && (
+                              <span className="flex items-center gap-1">
+                                <Building2 className="size-3.5" aria-hidden />
+                                {l.kasus.instansi}
+                              </span>
+                            )}
+                            <span className="text-muted-foreground/80">
+                              Dilaporkan <Waktu iso={l.dibuatPada} />
+                            </span>
+                          </p>
+                        </div>
                       </div>
+
+                      {/* Tombol Lacak Jelas & Lebar */}
                       <Link
                         href={`/lacak?tiket=${l.kodeTiket}`}
-                        aria-label={`Lihat perkembangan ${l.kodeTiket}`}
-                        className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition shadow-xs"
+                        aria-label={`Lacak perkembangan laporan ${l.kodeTiket}`}
                       >
-                        <ArrowUpRight className="size-4" aria-hidden />
+                        <span>Lacak Kasus</span>
+                        <ArrowRight className="size-3.5" aria-hidden />
                       </Link>
                     </div>
-                    {l.status === "ditolak" && l.alasanTolak && (
-                      <p className="mt-3 rounded-2xl bg-muted/60 p-3 text-sm text-muted-foreground">{l.alasanTolak}</p>
+
+                    {/* Cuplikan Teks Aduan Warga */}
+                    {l.deskripsi && (
+                      <div className="rounded-2xl border border-border/60 bg-muted/30 p-3.5 text-xs sm:text-sm text-foreground/90">
+                        <span className="block text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                          Uraian Masalah yang Dilaporkan:
+                        </span>
+                        <p className="line-clamp-2 leading-relaxed italic text-foreground">
+                          "{l.deskripsi}"
+                        </p>
+                      </div>
                     )}
+
+                    {l.status === "ditolak" && l.alasanTolak && (
+                      <div className="rounded-2xl bg-destructive/10 border border-destructive/20 p-3.5 text-xs sm:text-sm text-destructive">
+                        <span className="font-bold block mb-0.5">Alasan Penolakan Verifikator:</span>
+                        {l.alasanTolak}
+                      </div>
+                    )}
+
                     {selesai && (
-                      <div className="mt-3">
+                      <div className="pt-1">
                         <AksiSelesai laporanId={l.id} rating={l.rating} bisaBukaUlang={l.bisaBukaUlang} />
                       </div>
                     )}
+
+                    {/* Baris Informasi Tambahan & Link Cepat */}
+                    <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-border/40 text-xs">
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        <span>Status Privasi:</span>
+                        <span className="font-semibold text-foreground inline-flex items-center gap-1">
+                          {l.modeIdentitas === "anonim" ? (
+                            <>
+                              <Lock className="size-3 text-muted-foreground" aria-hidden />
+                              <span>Anonim (Terproteksi)</span>
+                            </>
+                          ) : l.modeIdentitas === "rahasia" ? (
+                            <>
+                              <ShieldCheck className="size-3 text-primary" aria-hidden />
+                              <span>Rahasia (Hanya Petugas)</span>
+                            </>
+                          ) : (
+                            <>
+                              <Users className="size-3 text-muted-foreground" aria-hidden />
+                              <span>Publik Terbuka</span>
+                            </>
+                          )}
+                        </span>
+                      </span>
+                      <Link
+                        href={`/lacak?tiket=${l.kodeTiket}`}
+                        className="font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                      >
+                        Buka linimasa penanganan lengkap <ArrowRight className="size-3.5" aria-hidden />
+                      </Link>
+                    </div>
                   </li>
                 );
               })}

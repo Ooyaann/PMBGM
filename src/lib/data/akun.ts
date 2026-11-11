@@ -9,6 +9,10 @@ export interface LaporanSaya {
   id: string;
   kodeTiket: string;
   kategori: Kategori;
+  deskripsi: string;
+  waktuKejadian: string;
+  modeIdentitas: "publik" | "rahasia" | "anonim";
+  jumlahTerdampak: number;
   /** Status yang dilihat pelapor: status kasus bila sudah diverifikasi. */
   status: StatusAlur;
   alasanTolak: string | null;
@@ -24,7 +28,7 @@ export async function ambilLaporanSaya(penggunaId: string): Promise<LaporanSaya[
   const supabase = await buatKlienServer();
   const { data } = await supabase
     .from("laporan")
-    .select("id, kode_tiket, kategori, status, alasan_tolak, dibuat_pada, sekolah:sekolah_id (nama), kasus:kasus_id (id, kode_kasus, status, selesai_pada, instansi:instansi_id (nama)), rating (skor, komentar)")
+    .select("id, kode_tiket, kategori, deskripsi, waktu_kejadian, mode_identitas, jumlah_terdampak, status, alasan_tolak, dibuat_pada, sekolah:sekolah_id (nama), kasus:kasus_id (id, kode_kasus, status, selesai_pada, instansi:instansi_id (nama)), rating (skor, komentar)")
     .eq("pelapor_id", penggunaId)
     .order("dibuat_pada", { ascending: false })
     .limit(100);
@@ -36,6 +40,10 @@ export async function ambilLaporanSaya(penggunaId: string): Promise<LaporanSaya[
       id: l.id,
       kodeTiket: l.kode_tiket,
       kategori: l.kategori,
+      deskripsi: l.deskripsi ?? "",
+      waktuKejadian: l.waktu_kejadian ?? l.dibuat_pada,
+      modeIdentitas: (l.mode_identitas as "publik" | "rahasia" | "anonim") ?? "rahasia",
+      jumlahTerdampak: l.jumlah_terdampak ?? 1,
       status: l.kasus?.status ?? l.status,
       alasanTolak: l.alasan_tolak,
       dibuatPada: l.dibuat_pada,

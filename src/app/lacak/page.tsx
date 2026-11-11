@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Building2, MapPin, School, SearchX, Users, XCircle } from "lucide-react";
+import { ArrowUpRight, Building2, Calendar, FileText, MapPin, School, SearchX, ShieldCheck, Users, Utensils, XCircle } from "lucide-react";
 import { FormCekTiket } from "@/components/beranda/form-cek-tiket";
 import { AlurStatus } from "@/components/data/alur-status";
 import { BadgeSla, BadgeStatus } from "@/components/data/badge";
 import { IKON_KATEGORI } from "@/components/data/ikon-kategori";
 import { LabelSumber } from "@/components/data/label-sumber";
 import { Waktu } from "@/components/data/waktu";
+import { GaleriBuktiAduan } from "@/components/lacak/galeri-bukti-aduan";
 import { HitungMundur } from "@/components/lacak/hitung-mundur";
 import { NavLacak } from "@/components/lacak/nav-lacak";
 import { Timeline } from "@/components/lacak/timeline";
@@ -70,15 +71,109 @@ async function HasilTiket({ searchParams }: { searchParams: PageProps<"/lacak">[
           </div>
 
           {hasil.status === "ditolak" && hasil.alasanTolak && (
-            <p className="mt-5 flex gap-2 rounded-2xl bg-muted p-4 text-sm">
-              <XCircle className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
-              <span><span className="font-semibold">Alasan: </span>{hasil.alasanTolak}</span>
+            <p className="mt-5 flex gap-2 rounded-2xl bg-destructive/10 border border-destructive/20 p-4 text-sm text-destructive">
+              <XCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <span><span className="font-semibold">Alasan Penolakan: </span>{hasil.alasanTolak}</span>
             </p>
           )}
         </section>
 
+        {/* ========================================================= */}
+        {/* RINCIAN ADUAN WARGA (TRANSPARANSI KELUHAN MUTU PANGAN)    */}
+        {/* ========================================================= */}
+        <section className="rounded-3xl border bg-card p-5 sm:p-6 space-y-4" aria-labelledby="judul-aduan">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
+            <div className="flex items-center gap-2.5">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <FileText className="size-5" aria-hidden />
+              </span>
+              <div>
+                <h3 id="judul-aduan" className="font-extrabold text-base sm:text-lg text-foreground">
+                  Aduan yang Disampaikan Pelapor
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Transparansi substansi keluhan untuk pengawasan mutu pangan bersama.
+                </p>
+              </div>
+            </div>
+
+            {/* Status Perlindungan Privasi */}
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-primary border border-primary/20">
+              <ShieldCheck className="size-3.5" aria-hidden />
+              {hasil.modeIdentitas === "anonim"
+                ? "Pelapor Anonim"
+                : hasil.modeIdentitas === "rahasia"
+                ? "Identitas Dilindungi (UU PDP)"
+                : "Pelapor Terverifikasi"}
+            </span>
+          </div>
+
+          {/* Uraian Keluhan Makanan */}
+          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:p-5">
+            <span className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+              Uraian Masalah Makanan:
+            </span>
+            <p className="text-sm sm:text-base leading-relaxed font-medium text-foreground whitespace-pre-wrap">
+              "{hasil.deskripsi}"
+            </p>
+          </div>
+
+          {/* Grid Metadata Kejadian */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+            <div className="rounded-2xl border bg-muted/20 p-3 space-y-0.5">
+              <span className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground uppercase">
+                <Calendar className="size-3 text-primary" /> Waktu Kejadian
+              </span>
+              <p className="text-xs font-semibold text-foreground truncate">
+                <Waktu iso={hasil.waktuKejadian} />
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-muted/20 p-3 space-y-0.5">
+              <span className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground uppercase">
+                <Users className="size-3 text-primary" /> Terdampak
+              </span>
+              <p className="text-xs font-semibold text-foreground">
+                {hasil.jumlahTerdampak ? `± ${hasil.jumlahTerdampak} Porsi` : "1 Porsi"}
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-muted/20 p-3 space-y-0.5">
+              <span className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground uppercase">
+                <School className="size-3 text-primary" /> Sekolah
+              </span>
+              <p className="text-xs font-semibold text-foreground truncate" title={hasil.sekolah}>
+                {hasil.sekolah}
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-muted/20 p-3 space-y-0.5">
+              <span className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground uppercase">
+                <Utensils className="size-3 text-primary" /> Dapur SPPG
+              </span>
+              <p className="text-xs font-semibold text-foreground truncate" title={hasil.sppg || "Mitra Wilayah"}>
+                {hasil.sppg || "SPPG Wilayah"}
+              </p>
+            </div>
+          </div>
+
+          {/* Galeri Foto Bukti Awal */}
+          {hasil.fotoBukti && hasil.fotoBukti.length > 0 && (
+            <div className="pt-2 border-t border-border/50">
+              <GaleriBuktiAduan foto={hasil.fotoBukti} />
+            </div>
+          )}
+        </section>
+
         <section className="rounded-3xl border bg-card p-5 sm:p-6" aria-labelledby="judul-riwayat">
-          <h2 id="judul-riwayat" className="mb-5 font-bold">Riwayat</h2>
+          <div className="mb-4">
+            <h2 id="judul-riwayat" className="font-extrabold text-base sm:text-lg text-foreground">
+              Riwayat Tindak Lanjut & Investigasi Resmi
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Kronologi langkah nyata penanganan oleh pihak sekolah, verifikator, SPPG, dan instansi.
+            </p>
+          </div>
           <Timeline peristiwa={hasil.timeline} />
         </section>
       </div>
